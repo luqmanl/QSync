@@ -6,3 +6,4 @@ frontend/build
 # Dependency Files
 yarn.lock
 yarn-error.log
+frontend/yarn.lock
