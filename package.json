@@ -4,7 +4,7 @@
   "description": "Capturing and Visualising Cryptocurrency Market Data",
   "license": "UNLICENSED",
   "scripts": {
-    "build": "yarn --cwd frontend tsc",
+    "compile": "yarn --cwd frontend tsc",
     "test": ":",
     "format": "yarn prettier --ignore-path .gitignore --write .",
     "lint": "yarn eslint --ignore-path .gitignore .",
