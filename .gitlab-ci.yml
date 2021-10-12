@@ -1,0 +1,58 @@
+image: node:latest
+
+stages:
+  - compile
+  - lint
+  - format
+  - test
+  - deploy
+
+before_script:
+  - yarn install
+
+compile-front:
+  stage: compile
+  script:
+    - yarn compile
+  needs: []
+
+# compile-back:
+#   stage: build
+#   script: 
+#     - pybuild
+#   needs: []
+
+lint-front:
+  stage: lint
+  script:
+    - yarn lint
+
+# lint-back:
+#   stage: lint
+#   script:
+#     - pylint
+
+format-front:
+  stage: format
+  script:
+    - yarn format --check
+
+# format-back:
+#   stage: format
+#   script:
+#     - autopep8
+
+test-front:
+  stage: test
+  script:
+    - CI=true yarn test
+
+# test-back:
+#   stage: test
+#   script:
+#     - pytest
+
+deploy-app:
+  stage: deploy
+  script:
+    - echo "To Do"

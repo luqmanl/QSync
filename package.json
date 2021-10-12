@@ -1,0 +1,25 @@
+{
+  "name": "qsync",
+  "version": "1.0.0",
+  "description": "Capturing and Visualising Cryptocurrency Market Data",
+  "license": "UNLICENSED",
+  "scripts": {
+    "build": "yarn --cwd frontend tsc",
+    "test": ":",
+    "format": "yarn prettier --ignore-path .gitignore --write .",
+    "lint": "yarn eslint --ignore-path .gitignore .",
+    "check-format": "yarn prettier --ignore-path .gitignore --check ."
+  },
+  "author": "qsync",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "typescript": "^4.3.5"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.29.1",
+    "@typescript-eslint/parser": "^4.29.1",
+    "eslint": "^7.32.0",
+    "eslint-plugin-react": "^7.24.0",
+    "prettier": "2.3.2"
+  }
+}
