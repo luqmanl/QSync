@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
-import logo from "./logo.svg";
 import "./App.css";
 import Modal from "./components/CustomModal";
-import { createFalse } from "typescript";
 
 export interface Item {
   id: number;
@@ -13,7 +11,7 @@ export interface Item {
 }
 
 const App = () => {
-  let defaultItem: Item = {
+  const defaultItem: Item = {
     id: 1,
     title: "",
     description: "",
@@ -25,15 +23,15 @@ const App = () => {
   const [todoList, setTodoList] = useState<Item[]>([]);
   const [modal, setModal] = useState(false);
 
-  const componentDidMount = () => {
-    refreshList();
-  }
-
   const refreshList = () => {
     axios
       .get<Item[]>("http://localhost:8000/api/qsync/")
       .then((res) => setTodoList(res.data))
       .catch((err) => console.log(err));
+  };
+
+  const componentDidMount = () => {
+    refreshList();
   };
 
   const displayCompleted = (status: boolean) => {
@@ -57,6 +55,45 @@ const App = () => {
         </span>
       </div>
     );
+  };
+
+  const toggle = () => {
+    setModal(!modal);
+  };
+
+  const handleSubmit = (itemData: Item) => {
+    toggle();
+    const item = {
+      title: "sanchit", // itemData.title,
+      description: "sanchit desc", // itemData.description,
+      completed: true, // itemData.completed
+    };
+    if (itemData.id) {
+      axios
+        .put(`http://localhost:8000/api/qsync/${itemData.id}/`, item)
+        .then(() => refreshList());
+      return;
+    }
+    axios
+      .post("http://localhost:8000/api/qsync/", item)
+      .then(() => refreshList());
+  };
+
+  const handleDelete = (item: Item) => {
+    axios
+      .delete(`http://localhost:8000/api/qsync/${item.id}`)
+      .then(() => refreshList());
+  };
+
+  const createItem = () => {
+    const item: Item = { title: "", description: "", completed: false, id: 0 };
+    setActiveItem(item);
+    toggle();
+  };
+
+  const editItem = (item: Item) => {
+    setActiveItem(item);
+    toggle();
   };
 
   const renderItems = () => {
@@ -88,45 +125,6 @@ const App = () => {
         </span>
       </li>
     ));
-  };
-
-  const toggle = () => {
-    setModal(!modal);
-  };
-
-  const handleSubmit = (item_data: Item) => {
-    toggle();
-    const item = {
-      title: "sanchit",//item_data.title,
-      description: "sanchit desc",//item_data.description,
-      completed: true,//item_data.completed
-    }
-    if (item_data.id) {
-      axios
-        .put(`http://localhost:8000/api/qsync/${item_data.id}/`, item)
-        .then((res) => refreshList());
-      return;
-    }
-    axios
-      .post("http://localhost:8000/api/qsync/", item)
-      .then((res) => refreshList());
-  };
-
-  const handleDelete = (item: Item) => {
-    axios
-      .delete(`http://localhost:8000/api/qsync/${item.id}`)
-      .then((res) => refreshList());
-  };
-
-  const createItem = () => {
-    const item: Item = { title: "", description: "", completed: false, id: 0 };
-    setActiveItem(item);
-    toggle();
-  };
-
-  const editItem = (item: Item) => {
-    setActiveItem(item);
-    toggle();
   };
 
   return (
