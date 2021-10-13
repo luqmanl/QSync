@@ -22,6 +22,7 @@ stages:
 compile-front:
   stage: compile
   script:
+    - !reference [.setup_front, script]
     - yarn compile
   needs: []
 
@@ -34,6 +35,7 @@ compile-front:
 lint-front:
   stage: lint
   script:
+    - !reference [.setup_front, script]
     - yarn lint
 
 # lint-back:
@@ -44,6 +46,7 @@ lint-front:
 format-front:
   stage: format
   script:
+    - !reference [.setup_front, script]
     - yarn format --check
 
 # format-back:
@@ -54,6 +57,7 @@ format-front:
 test-front:
   stage: test
   script:
+    - !reference [.setup_front, script]
     - CI=true yarn test
 
 # test-back:
