@@ -7,8 +7,17 @@ stages:
   - test
   - deploy
 
-before_script:
-  - yarn install
+# Setup for frontend
+.setup_front:
+  script:
+    - cd frontend
+    - yarn install
+
+# Setup for backend
+# .setup_back:
+#   script:
+#     - cd backend
+#     - pyinstall
 
 compile-front:
   stage: compile
