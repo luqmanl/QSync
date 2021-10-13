@@ -25,9 +25,13 @@ const App = () => {
   const [todoList, setTodoList] = useState<Item[]>([]);
   const [modal, setModal] = useState(false);
 
+  const componentDidMount = () => {
+    refreshList();
+  }
+
   const refreshList = () => {
     axios
-      .get("http://localhost:8000/api/todos/")
+      .get<Item[]>("http://localhost:8000/api/qsync/")
       .then((res) => setTodoList(res.data))
       .catch((err) => console.log(err));
   };
@@ -90,22 +94,27 @@ const App = () => {
     setModal(!modal);
   };
 
-  const handleSubmit = (item: Item) => {
+  const handleSubmit = (item_data: Item) => {
     toggle();
-    if (item.id) {
+    const item = {
+      title: "sanchit",//item_data.title,
+      description: "sanchit desc",//item_data.description,
+      completed: true,//item_data.completed
+    }
+    if (item_data.id) {
       axios
-        .put(`http://localhost:8000/api/todos/${item.id}/`, item)
+        .put(`http://localhost:8000/api/qsync/${item_data.id}/`, item)
         .then((res) => refreshList());
       return;
     }
     axios
-      .post("http://localhost:8000/api/todos/", item)
+      .post("http://localhost:8000/api/qsync/", item)
       .then((res) => refreshList());
   };
 
   const handleDelete = (item: Item) => {
     axios
-      .delete(`http://localhost:8000/api/todos/${item.id}`)
+      .delete(`http://localhost:8000/api/qsync/${item.id}`)
       .then((res) => refreshList());
   };
 
