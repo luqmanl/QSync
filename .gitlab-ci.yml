@@ -59,6 +59,7 @@ format-back:
   stage: format
   script:
     - !reference [.setup, back]
+    - pip3 install autopep8
     - autopep8 -d --exit-code -r .
   # needs: [lint-back]
 
@@ -74,6 +75,7 @@ test-back:
   stage: test
   script:
     - !reference [.setup, back]
+    - pip3 install pytest
     - pytest
   needs: [format-back]
 
