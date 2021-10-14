@@ -1,4 +1,4 @@
-image: node:latest
+image: nikolaik/python3.8-nodejs16
 
 stages:
   - compile
@@ -7,66 +7,76 @@ stages:
   - test
   - deploy
 
-# Setup for frontend
-.setup_front:
-  script:
+# Setup scripts
+.setup:
+  front:
     - cd frontend
-    - yarn set version berry
+    - yarn set version latest
     - yarn install
+  back:
+    - cd backend
 
-# Setup for backend
-# .setup_back:
-#   script:
-#     - cd backend
-#     - pyinstall
-
+# Compile
 compile-front:
   stage: compile
   script:
-    - !reference [.setup_front, script]
+    - !reference [.setup, front]
     - yarn compile
   needs: []
 
-# compile-back:
-#   stage: build
-#   script: 
-#     - pybuild
-#   needs: []
+compile-back:
+  stage: build
+  script: 
+    - python3 -m compileall -q .
+  needs: []
 
+# Lint
 lint-front:
   stage: lint
   script:
-    - !reference [.setup_front, script]
+    - !reference [.setup, front]
     - yarn lint
+  needs: [compile-front]
 
-# lint-back:
-#   stage: lint
-#   script:
-#     - pylint
+lint-back:
+  stage: lint
+  script:
+    - touch backend/__init__.py
+    - pylint backend
 
+# Format
 format-front:
   stage: format
   script:
-    - !reference [.setup_front, script]
+    - !reference [.setup, front]
     - yarn format --check
+  needs: [lint-front]
 
-# format-back:
-#   stage: format
-#   script:
-#     - autopep8
+format-back:
+  stage: format
+  script:
+    - !reference [.setup, back]
+    - autopep8 -d --exit-code -r .
 
+# Test
 test-front:
   stage: test
   script:
-    - !reference [.setup_front, script]
+    - !reference [.setup, front]
     - CI=true yarn test
+  needs: [format-front]
 
-# test-back:
-#   stage: test
-#   script:
-#     - pytest
+test-back:
+  stage: test
+  script:
+    - !reference [.setup, back]
+    - pytest
+  needs: [format-back]
 
+# Deploy
 deploy-app:
   stage: deploy
   script:
     - echo "To Do"
+  needs: [test-front, test-back]
+
