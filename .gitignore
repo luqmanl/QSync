@@ -2,9 +2,8 @@
 .vscode
 
 # Builds and Compiled Files
-node_modules
-frontend/node_modules/*
-frontend/build
+node_modules/
+build/
 
 # Yarn Files
 frontend/.yarn/*
@@ -15,3 +14,7 @@ frontend/.yarn/*
 !frontend/.yarn/sdks
 !frontend/.yarn/versions
 yarn-error.log
+
+# Python Files
+__pycache__/
+.pytest_cache/
