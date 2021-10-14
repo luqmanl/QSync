@@ -22,10 +22,12 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "all": "yarn compile && yarn lint && yarn format",
     "compile": "yarn tsc",
     "format": "yarn prettier --write .",
     "lint": "yarn eslint .",
     "check-format": "yarn prettier --check .",
+    "vscode": "yarn sdks && mv .vscode .. && sed -i 's:.yarn:frontend/.yarn:g' ../.vscode/settings.json",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
