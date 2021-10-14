@@ -1,0 +1,71 @@
+image: node:latest
+
+stages:
+  - compile
+  - lint
+  - format
+  - test
+  - deploy
+
+# Setup for frontend
+.setup_front:
+  script:
+    - cd frontend
+    - yarn install
+
+# Setup for backend
+# .setup_back:
+#   script:
+#     - cd backend
+#     - pyinstall
+
+compile-front:
+  stage: compile
+  script:
+    - !reference [.setup_front, script]
+    - yarn compile
+  needs: []
+
+# compile-back:
+#   stage: build
+#   script: 
+#     - pybuild
+#   needs: []
+
+lint-front:
+  stage: lint
+  script:
+    - !reference [.setup_front, script]
+    - yarn lint
+
+# lint-back:
+#   stage: lint
+#   script:
+#     - pylint
+
+format-front:
+  stage: format
+  script:
+    - !reference [.setup_front, script]
+    - yarn format --check
+
+# format-back:
+#   stage: format
+#   script:
+#     - autopep8
+
+test-front:
+  stage: test
+  script:
+    - !reference [.setup_front, script]
+    - CI=true yarn test
+
+# test-back:
+#   stage: test
+#   script:
+#     - pytest
+
+deploy-app:
+  stage: deploy
+  script:
+    - echo "To Do"
