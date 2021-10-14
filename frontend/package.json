@@ -22,7 +22,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "all": "yarn compile && yarn lint && yarn format",
+    "all": "yarn compile && yarn lint --fix && yarn format",
     "compile": "yarn tsc",
     "format": "yarn prettier --write .",
     "lint": "yarn eslint .",
