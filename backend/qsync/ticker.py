@@ -39,16 +39,18 @@ async def trade(t, receipt_timestamp):
     if (t.symbol == "BTC-USDT"):
         side = "ask" if t.side == "sell" else "bid"
         print(f'{receipt_timestamp} : {t.exchange} : {t.amount} : {side} : {t.price} ')
-        command = "`trades insert (`" + side + "," + str(t.price) + "," + str(t.amount) + ")"
+        command = "`trades insert (`" + side + "," + \
+            str(t.price) + "," + str(t.amount) + ")"
         q(command)
 
 # -------- OTHER FUNCTIONS FOR OTHER DATA INPUTS ----------- #
+
 
 async def book(book, receipt_timestamp):
     pass
     # if (book.symbol == "BTC-USDT"):
     #     print(book)
-        # print(f'{book.exchange} : BTC-USD : ASKS - {len(book.book.asks)} : BIDS - {len(book.book.bids)} : Last ASK - {book.quantity} : Last BID - {book.book.bid.index(0)} ')
+    # print(f'{book.exchange} : BTC-USD : ASKS - {len(book.book.asks)} : BIDS - {len(book.book.bids)} : Last ASK - {book.quantity} : Last BID - {book.book.bid.index(0)} ')
 
 
 async def funding(f, receipt_timestamp):
@@ -76,21 +78,22 @@ async def liquidations(liquidation, receipt_timestamp):
     # print(f"Liquidation received at {receipt_timestamp}: {liquidation}")
 
 
-
 def main():
-    config = {'log': {'filename': 'demo.log', 'level': 'DEBUG', 'disabled': False}}
+    config = {'log': {'filename': 'demo.log',
+                      'level': 'DEBUG', 'disabled': False}}
     # the config will be automatically passed into any exchanges set up by string. Instantiated exchange objects would need to pass the config in manually.
     f = FeedHandler(config=config)
     # pair is ['BTC-USDT']
     pairs = Binance.symbols()[10:11]
-    f.add_feed(Binance(symbols=pairs, channels=[L2_BOOK, TRADES], callbacks={L2_BOOK: book, CANDLES: candle_callback, TRADES: trade, TICKER: ticker}))
+    f.add_feed(Binance(symbols=pairs, channels=[L2_BOOK, TRADES], callbacks={
+               L2_BOOK: book, CANDLES: candle_callback, TRADES: trade, TICKER: ticker}))
     f.run()
 
 
 if __name__ == '__main__':
     # capture orderbook quote date for BTC-USD from Binance
-    with qconnection.QConnection(host = 'localhost', port = 6969) as q:
-        
+    with qconnection.QConnection(host='localhost', port=6969) as q:
+
         # create table for trades
         q("trades:([]side:`bid`ask; price: 0.0 0.0 ; quantity: 0.0 0.0)")
         main()
