@@ -11,6 +11,7 @@ stages:
 .setup_front:
   script:
     - cd frontend
+    - yarn set version berry
     - yarn install
 
 # Setup for backend
