@@ -43,6 +43,8 @@ lint-back:
   script:
     - touch backend/__init__.py
     - pylint backend
+  needs: [compile-back]
+  
 
 # Format
 format-front:
@@ -57,6 +59,7 @@ format-back:
   script:
     - !reference [.setup, back]
     - autopep8 -d --exit-code -r .
+  needs: [lint-back]
 
 # Test
 test-front:
