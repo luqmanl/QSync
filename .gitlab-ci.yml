@@ -60,7 +60,7 @@ format-back:
   script:
     - !reference [.setup, back]
     - autopep8 -d --exit-code -r .
-  needs: [lint-back]
+  # needs: [lint-back]
 
 # Test
 test-front:
