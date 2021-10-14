@@ -1,4 +1,4 @@
-image: nikolaik/python-nodejs:python3.8-nodejs16
+image: nikolaik/python-nodejs:python3.8-nodejs16-slim
 
 stages:
   - compile
@@ -38,13 +38,13 @@ lint-front:
     - yarn lint
   needs: [compile-front]
 
-lint-back:
-  stage: lint
-  script:
-    - pip3 install pylint
-    - touch backend/__init__.py
-    - pylint backend
-  needs: [compile-back]
+# lint-back:
+#   stage: lint
+#   script:
+#     - pip3 install pylint
+#     - touch backend/__init__.py
+#     - pylint backend
+#   needs: [compile-back]
   
 
 # Format
