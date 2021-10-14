@@ -11,7 +11,7 @@ stages:
 .setup:
   front:
     - cd frontend
-    - yarn set version latest
+    - yarn set version stable
     - yarn install
   back:
     - cd backend
@@ -41,6 +41,7 @@ lint-front:
 lint-back:
   stage: lint
   script:
+    - pip3 install pylint
     - touch backend/__init__.py
     - pylint backend
   needs: [compile-back]
