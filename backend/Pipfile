@@ -9,6 +9,9 @@ djangorestframework = "*"
 django-cors-headers = "*"
 
 [dev-packages]
+pytest = "*"
+autopep8 = "*"
+pylint = "*"
 
 [requires]
 python_version = "3.8"
