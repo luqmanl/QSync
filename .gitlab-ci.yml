@@ -29,7 +29,7 @@ compile-front:
 
 compile-back:
   stage: compile
-  image: python:3.8.12-slim-buster
+  image: python:3.8.10-buster
   script: 
     - !reference [.setup, back]
     - python3 -m compileall -q .
@@ -45,7 +45,7 @@ lint-front:
 
 lint-back:
   stage: lint
-  image: python:3.8.12-buster
+  image: python:3.8.10-buster
   script:
     - !reference [.setup, back]
     - touch backend/__init__.py
@@ -63,7 +63,7 @@ format-front:
 
 format-back:
   stage: format
-  image: python:3.8.12-slim-buster
+  image: python:3.8.10-buster
   script:
     - !reference [.setup, back]
     - autopep8 -d --exit-code -r .
@@ -79,7 +79,7 @@ test-front:
 
 test-back:
   stage: test
-  image: python:3.8.12-slim-buster
+  image: python:3.8.10-buster
   script:
     - !reference [.setup, back]
     - pytest
