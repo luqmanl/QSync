@@ -47,9 +47,7 @@ lint-back:
   image: python:3.8.10-slim-buster
   script:
     - !reference [.setup, back]
-    - cd ..
-    - touch backend/__init__.py
-    - pipenv run pylint --rcfile=backend/.pylintrc backend
+    - pipenv run pylint --rcfile=.pylintrc ${PWD}
   needs: [compile-back] 
 
 # Format

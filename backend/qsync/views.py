@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 from django.shortcuts import HttpResponse  # , render
-from .models import Qsync
-from .serializers import QsyncSerializer
+from models import Qsync
+from serializers import QsyncSerializer
 
 
 def index(request):

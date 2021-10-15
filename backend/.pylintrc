@@ -92,6 +92,8 @@ disable=raw-checker-failed,
         R0903, # Too few public methods
         C0325, # Unnecessary parens after if keyword
         C0415, # Import outside toplevel
+        E0401, # Unable to import doesnt seem to work properly?
+        E0402, # Relative import beyond top level
 
 
 # Enable the message, report, category or checker with the given id(s). You can
