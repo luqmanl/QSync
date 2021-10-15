@@ -28,7 +28,7 @@ compile-front:
 
 compile-back:
   stage: compile
-  image: python:3.8.10-buster
+  image: python:3.8.10-slim-buster
   script: 
     - !reference [.setup, back]
     - pipenv run python3 -m compileall -q .
@@ -44,9 +44,10 @@ lint-front:
 
 lint-back:
   stage: lint
-  image: python:3.8.10-buster
+  image: python:3.8.10-slim-buster
   script:
     - !reference [.setup, back]
+    - cd ..
     - touch backend/__init__.py
     - pipenv run pylint backend
   needs: [compile-back]
@@ -62,7 +63,7 @@ format-front:
 
 format-back:
   stage: format
-  image: python:3.8.10-buster
+  image: python:3.8.10-slim-buster
   script:
     - !reference [.setup, back]
     - pipenv run autopep8 -d --exit-code -r .
@@ -78,7 +79,7 @@ test-front:
 
 test-back:
   stage: test
-  image: python:3.8.10-buster
+  image: python:3.8.10-slim-buster
   script:
     - !reference [.setup, back]
     - pipenv run pytest
@@ -90,4 +91,3 @@ deploy-app:
   script:
     - echo "To Do"
   needs: [test-front, test-back]
-
