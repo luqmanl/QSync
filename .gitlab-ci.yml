@@ -49,9 +49,8 @@ lint-back:
     - !reference [.setup, back]
     - cd ..
     - touch backend/__init__.py
-    - pipenv run pylint backend
-  needs: [compile-back]
-  
+    - pipenv run pylint --rcfile=backend/.pylintrc backend
+  needs: [compile-back] 
 
 # Format
 format-front:
