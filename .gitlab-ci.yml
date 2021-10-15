@@ -17,7 +17,6 @@ stages:
     - cd backend
     - pip3 install pipenv
     - pipenv install --dev
-    - pipenv shell
 
 # Compile
 compile-front:
@@ -32,7 +31,7 @@ compile-back:
   image: python:3.8.10-buster
   script: 
     - !reference [.setup, back]
-    - python3 -m compileall -q .
+    - pipenv run python3 -m compileall -q .
   needs: []
 
 # Lint
@@ -49,7 +48,7 @@ lint-back:
   script:
     - !reference [.setup, back]
     - touch backend/__init__.py
-    - pylint backend
+    - pipenv run pylint backend
   needs: [compile-back]
   
 
@@ -66,7 +65,7 @@ format-back:
   image: python:3.8.10-buster
   script:
     - !reference [.setup, back]
-    - autopep8 -d --exit-code -r .
+    - pipenv run autopep8 -d --exit-code -r .
   needs: [lint-back]
 
 # Test
@@ -82,7 +81,7 @@ test-back:
   image: python:3.8.10-buster
   script:
     - !reference [.setup, back]
-    - pytest
+    - pipenv run pytest
   needs: [format-back]
 
 # Deploy
