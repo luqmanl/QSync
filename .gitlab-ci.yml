@@ -45,7 +45,7 @@ lint-front:
 
 lint-back:
   stage: lint
-  image: python:3.8.12-slim-buster
+  image: python:3.8.12-buster
   script:
     - !reference [.setup, back]
     - touch backend/__init__.py
