@@ -63,7 +63,7 @@ format-back:
   image: python:3.8.10-slim-buster
   script:
     - !reference [.setup, back]
-    - pipenv run format
+    - pipenv run check-format
   needs: [lint-back]
 
 # Test
