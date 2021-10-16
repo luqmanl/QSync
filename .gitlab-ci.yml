@@ -31,7 +31,7 @@ compile-back:
   image: python:3.8.10-slim-buster
   script: 
     - !reference [.setup, back]
-    - pipenv run python3 -m compileall -q .
+    - pipenv run compile
   needs: []
 
 # Lint
@@ -47,7 +47,7 @@ lint-back:
   image: python:3.8.10-slim-buster
   script:
     - !reference [.setup, back]
-    - pipenv run pylint --rcfile=.pylintrc ${PWD}
+    - pipenv run lint
   needs: [compile-back] 
 
 # Format
@@ -63,7 +63,7 @@ format-back:
   image: python:3.8.10-slim-buster
   script:
     - !reference [.setup, back]
-    - pipenv run autopep8 -d --exit-code -r .
+    - pipenv run format
   needs: [lint-back]
 
 # Test
@@ -79,7 +79,7 @@ test-back:
   image: python:3.8.10-slim-buster
   script:
     - !reference [.setup, back]
-    - pipenv run pytest
+    - pipenv run test
   needs: [format-back]
 
 # Deploy
