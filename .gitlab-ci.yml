@@ -7,65 +7,84 @@ stages:
   - test
   - deploy
 
-# Setup for frontend
-.setup_front:
-  script:
+# Setup scripts
+.setup:
+  front:
     - cd frontend
+    - yarn set version stable
     - yarn install
+  back:
+    - cd backend
+    - pip3 install pipenv
+    - pipenv install --dev
 
-# Setup for backend
-# .setup_back:
-#   script:
-#     - cd backend
-#     - pyinstall
-
+# Compile
 compile-front:
   stage: compile
   script:
-    - !reference [.setup_front, script]
+    - !reference [.setup, front]
     - yarn compile
   needs: []
 
-# compile-back:
-#   stage: build
-#   script: 
-#     - pybuild
-#   needs: []
+compile-back:
+  stage: compile
+  image: python:3.8.10-slim-buster
+  script: 
+    - !reference [.setup, back]
+    - pipenv run compile
+  needs: []
 
+# Lint
 lint-front:
   stage: lint
   script:
-    - !reference [.setup_front, script]
+    - !reference [.setup, front]
     - yarn lint
+  needs: [compile-front]
 
-# lint-back:
-#   stage: lint
-#   script:
-#     - pylint
+lint-back:
+  stage: lint
+  image: python:3.8.10-slim-buster
+  script:
+    - !reference [.setup, back]
+    - pipenv run lint
+  needs: [compile-back] 
 
+# Format
 format-front:
   stage: format
   script:
-    - !reference [.setup_front, script]
+    - !reference [.setup, front]
     - yarn format --check
+  needs: [lint-front]
 
-# format-back:
-#   stage: format
-#   script:
-#     - autopep8
+format-back:
+  stage: format
+  image: python:3.8.10-slim-buster
+  script:
+    - !reference [.setup, back]
+    - pipenv run format
+  needs: [lint-back]
 
+# Test
 test-front:
   stage: test
   script:
-    - !reference [.setup_front, script]
+    - !reference [.setup, front]
     - CI=true yarn test
+  needs: [format-front]
 
-# test-back:
-#   stage: test
-#   script:
-#     - pytest
+test-back:
+  stage: test
+  image: python:3.8.10-slim-buster
+  script:
+    - !reference [.setup, back]
+    - pipenv run test
+  needs: [format-back]
 
+# Deploy
 deploy-app:
   stage: deploy
   script:
     - echo "To Do"
+  needs: [test-front, test-back]

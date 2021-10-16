@@ -7,8 +7,19 @@ name = "pypi"
 django = "*"
 djangorestframework = "*"
 django-cors-headers = "*"
+cryptofeed = "*"
+qpython = "*"
 
 [dev-packages]
+pytest = "*"
+autopep8 = "*"
+pylint = "*"
 
 [requires]
 python_version = "3.8"
+
+[scripts]
+compile = "python3 -m compileall -q ."
+lint = "pylint --rcfile=.pylintrc ${PWD}"
+format = "autopep8 -d --exit-code -r ."
+test = "pytest"

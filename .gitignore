@@ -2,11 +2,19 @@
 .vscode
 
 # Builds and Compiled Files
-node_modules
-frontend/node_modules/*
-frontend/build
+node_modules/
+build/
 
-# Dependency Files
-yarn.lock
+# Yarn Files
+frontend/.yarn/*
+!frontend/.yarn/cache
+!frontend/.yarn/patches
+!frontend/.yarn/plugins
+!frontend/.yarn/releases
+!frontend/.yarn/sdks
+!frontend/.yarn/versions
 yarn-error.log
-frontend/yarn.lock
+
+# Python Files
+__pycache__/
+.pytest_cache/
