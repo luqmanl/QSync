@@ -1,1 +1,1 @@
-book:([]time:`timespan$(); sym:`symbol$(); unicorn:`symbol$(); price:`float$(); qty:`float$())
+book:([]time:`timespan$(); sym:`g#`symbol$(); feedhandlerTime:`timestamp$(); side:`g#`symbol$(); price:`float$(); qty:`float$())
