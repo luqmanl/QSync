@@ -1,0 +1,1 @@
+book:([]time:`timespan$(); sym:`symbol$(); unicorn:`symbol$(); price:`float$(); qty:`float$())
