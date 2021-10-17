@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import Chart from './components/Chart'
+import Chart from "./components/Chart";
 
 export interface Item {
   id: number;
@@ -9,9 +9,9 @@ export interface Item {
   completed: boolean;
 }
 
-export type dataPoint = { x: number, y: number };
-type thisState = { data: dataPoint[], socket: WebSocket };
-type thisProps = unknown
+export type dataPoint = { x: number; y: number };
+type thisState = { data: dataPoint[]; socket: WebSocket };
+type thisProps = unknown;
 
 class App extends React.Component<thisProps, thisState> {
   constructor(props: thisProps) {
@@ -19,21 +19,25 @@ class App extends React.Component<thisProps, thisState> {
 
     this.state = {
       data: [],
-      socket: new WebSocket('ws://localhost:2000')
+      socket: new WebSocket("ws://localhost:2000"),
     };
   }
 
   componentDidMount() {
-    this.state.socket.addEventListener('message', (event: MessageEvent) => {
-      this.setState({data: JSON.parse(event.data).points, socket: this.state.socket});
+    this.state.socket.addEventListener("message", (event: MessageEvent) => {
+      this.setState({
+        data: JSON.parse(event.data).points,
+        socket: this.state.socket,
+      });
     });
   }
 
   render() {
     return (
       <div>
-        <Chart id='chart-1' data={this.state.data}/>
-      </div>);
+        <Chart id="chart-1" data={this.state.data} />
+      </div>
+    );
   }
 }
 
