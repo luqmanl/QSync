@@ -144,8 +144,8 @@ const App = () => {
 
     socket.onmessage = function(event) {
       const data = JSON.parse(event.data);
-      console.log(data);
-      setText(data);
+      console.log(data.message);
+      setText(data.message);
     }
     return (
       <p>{text}</p>
