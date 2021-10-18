@@ -4,7 +4,6 @@ from django.core import serializers
 from .models import Book
 
 
-
 class WSConsumer(WebsocketConsumer):
 
     def connect(self):

@@ -8,6 +8,7 @@ from qpython.qcollection import QTable
 
 import requests
 
+
 class ListenerThread(threading.Thread):
     def __init__(self, q):
         super().__init__()
@@ -29,8 +30,10 @@ class ListenerThread(threading.Thread):
 
                 if message.type != MessageType.ASYNC:
                     print('Unexpected message, expected message of type: ASYNC')
-                data_str = (f'type: {type(message)}, message type: {message.type},')
-                data_str += (f'data size: {message.size}, is_compressed: {message.is_compressed}')
+                data_str = (
+                    f'type: {type(message)}, message type: {message.type},')
+                data_str += (
+                    f'data size: {message.size}, is_compressed: {message.is_compressed}')
                 print(data_str)
 
                 if isinstance(message.data, list) and len(message.data) == 3:
@@ -57,7 +60,8 @@ class ListenerThread(threading.Thread):
 if __name__ == '__main__':
     with qconnection.QConnection(host='localhost', port=5010) as Q:
         print(Q)
-        print(f'IPC version: {Q.protocol_version}. Is connected: {Q.is_connected()}')
+        print(
+            f'IPC version: {Q.protocol_version}. Is connected: {Q.is_connected()}')
         print('Press <ENTER> to close application')
 
         # subscribe to tick
