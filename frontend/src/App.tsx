@@ -10,7 +10,18 @@ export interface Item {
   completed: boolean;
 }
 
+const socket = new WebSocket("ws://localhost:8000/ws/some_url/")
+
 const App = () => {
+
+  const componentWillMount = () => {
+    socket.onmessage = (event) => {
+      console.log(event);
+
+    };
+  }
+
+
   const defaultItem: Item = {
     id: 1,
     title: "",
@@ -22,6 +33,7 @@ const App = () => {
   const [viewCompleted, setViewCompleted] = useState(false);
   const [todoList, setTodoList] = useState<Item[]>([]);
   const [modal, setModal] = useState(false);
+  const [text, setText] = useState<string[]>([]);
 
   const refreshList = () => {
     axios
@@ -127,6 +139,19 @@ const App = () => {
     ));
   };
 
+  const renderNum = () => {
+    const socket = new WebSocket("ws://localhost:8000/ws/some_url/")
+
+    socket.onmessage = function(event) {
+      const data = JSON.parse(event.data);
+      console.log(data);
+      setText(data);
+    }
+    return (
+      <p>{text}</p>
+    );
+  }
+
   return (
     <main className="content">
       <h1 className="text-white text-uppercase text-center my-4">Todo app</h1>
@@ -139,7 +164,7 @@ const App = () => {
               </button>
             </div>
             {renderTabList()}
-            <ul className="list-group list-group-flush">{renderItems()}</ul>
+            <ul className="list-group list-group-flush">{renderNum()}</ul>
           </div>
         </div>
       </div>

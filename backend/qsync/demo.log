@@ -1,0 +1,101 @@
+2021-10-17 22:26:19,310 : INFO : Config: use dict containing the following main keys: log
+2021-10-17 22:26:19,311 : DEBUG : BINANCE: reading symbol information from https://api.binance.com/api/v3/exchangeInfo
+2021-10-17 22:26:19,311 : DEBUG : HTTPSync: requesting data from https://api.binance.com/api/v3/exchangeInfo
+2021-10-17 22:26:20,251 : DEBUG : BINANCE.ws.1: connecting to wss://stream.binance.com:9443/stream?streams=btcusdt@depth@100ms
+2021-10-17 22:26:21,489 : DEBUG : BINANCE.http.0: create HTTP session
+2021-10-17 22:26:21,489 : DEBUG : BINANCE.http.0: requesting data from https://www.binance.com/api/v3/depth?symbol=BTCUSDT&limit=5000
+2021-10-17 22:34:27,395 : INFO : FH: System Exit received - shutting down
+2021-10-17 22:34:27,395 : INFO : FH: shutdown connections handlers in feeds
+2021-10-17 22:34:27,395 : INFO : FH: create the tasks to properly shutdown the backends (to flush the local cache)
+2021-10-17 22:34:27,395 : INFO : FH: wait 1 backend tasks until termination
+2021-10-17 22:34:27,403 : INFO : BINANCE: feed shutdown starting...
+2021-10-17 22:34:27,467 : INFO : BINANCE.http.0: closed connection 'ClientSession'
+2021-10-17 22:34:27,475 : INFO : BINANCE: feed shutdown completed
+2021-10-17 22:34:27,476 : INFO : FH: stop the AsyncIO loop
+2021-10-17 22:34:27,476 : INFO : FH: run the AsyncIO event loop one last time
+2021-10-17 22:34:27,477 : INFO : FH: cancel the 4 pending tasks
+2021-10-17 22:34:27,477 : INFO : FH: run the pending tasks until complete
+2021-10-17 22:34:47,484 : INFO : BINANCE.ws.1: closed connection 'WebSocketClientProtocol'
+2021-10-17 22:34:47,484 : WARNING : BINANCE.ws.1: encountered connection issue [Errno 104] Connection reset by peer - reconnecting in 1.0 seconds...
+Traceback (most recent call last):
+  File "/home/sanchit/.local/lib/python3.8/site-packages/cryptofeed/connection_handler.py", line 68, in _create_connection
+    await self._handler(connection, self.handler)
+  File "/home/sanchit/.local/lib/python3.8/site-packages/cryptofeed/connection_handler.py", line 117, in _handler
+    await handler(message, connection, self.conn.last_message)
+  File "/home/sanchit/.local/lib/python3.8/site-packages/cryptofeed/exchanges/binance.py", line 492, in message_handler
+    await self._book(msg, pair, timestamp)
+  File "/home/sanchit/.local/lib/python3.8/site-packages/cryptofeed/exchanges/binance.py", line 352, in _book
+    return await self._handle_book_msg(*book_args)
+  File "/home/sanchit/.local/lib/python3.8/site-packages/cryptofeed/exchanges/binance.py", line 320, in _handle_book_msg
+    await self.book_callback(L2_BOOK, self._l2_book[std_pair], timestamp, timestamp=self.timestamp_normalize(msg['E']), raw=msg, delta=delta, sequence_number=self.last_update_id[std_pair])
+  File "/home/sanchit/.local/lib/python3.8/site-packages/cryptofeed/feed.py", line 190, in book_callback
+    await self.callback(book_type, book, receipt_timestamp)
+  File "/home/sanchit/.local/lib/python3.8/site-packages/cryptofeed/feed.py", line 201, in callback
+    await cb(obj, receipt_timestamp)
+  File "feed_handler.py", line 34, in book
+    q.sendAsync('.u.upd', np.string_('book'), [
+  File "/home/sanchit/.local/lib/python3.8/site-packages/qpython/qconnection.py", line 338, in sendAsync
+    self.query(MessageType.ASYNC, query, *parameters, **options)
+  File "/home/sanchit/.local/lib/python3.8/site-packages/qpython/qconnection.py", line 245, in query
+    self._writer.write([query] + list(parameters), msg_type, **self._options.union_dict(**options))
+  File "/home/sanchit/.local/lib/python3.8/site-packages/qpython/qwriter.py", line 95, in write
+    self._stream.sendall(self._buffer.getvalue())
+ConnectionResetError: [Errno 104] Connection reset by peer
+2021-10-17 22:34:48,493 : INFO : BINANCE.ws.1: terminate the connection handler because not running
+2021-10-17 22:34:48,493 : INFO : FH: shutdown asynchronous generators
+2021-10-17 22:34:48,494 : INFO : FH: close the AsyncIO loop
+2021-10-17 22:34:48,495 : INFO : FH: leaving run()
+2021-10-17 22:35:17,694 : INFO : Config: use dict containing the following main keys: log
+2021-10-17 22:35:17,696 : DEBUG : BINANCE: reading symbol information from https://api.binance.com/api/v3/exchangeInfo
+2021-10-17 22:35:17,696 : DEBUG : HTTPSync: requesting data from https://api.binance.com/api/v3/exchangeInfo
+2021-10-17 22:35:18,146 : DEBUG : BINANCE.ws.1: connecting to wss://stream.binance.com:9443/stream?streams=btcusdt@depth@100ms
+2021-10-17 22:35:19,375 : DEBUG : BINANCE.http.0: create HTTP session
+2021-10-17 22:35:19,377 : DEBUG : BINANCE.http.0: requesting data from https://www.binance.com/api/v3/depth?symbol=BTCUSDT&limit=5000
+2021-10-17 22:45:03,705 : INFO : Config: use dict containing the following main keys: log
+2021-10-17 22:45:03,705 : DEBUG : BINANCE: reading symbol information from https://api.binance.com/api/v3/exchangeInfo
+2021-10-17 22:45:03,706 : DEBUG : HTTPSync: requesting data from https://api.binance.com/api/v3/exchangeInfo
+2021-10-17 22:45:04,238 : DEBUG : BINANCE.ws.1: connecting to wss://stream.binance.com:9443/stream?streams=btcusdt@depth@100ms
+2021-10-17 22:45:05,357 : DEBUG : BINANCE.http.0: create HTTP session
+2021-10-17 22:45:05,358 : DEBUG : BINANCE.http.0: requesting data from https://www.binance.com/api/v3/depth?symbol=BTCUSDT&limit=5000
+2021-10-17 22:51:42,089 : INFO : Config: use dict containing the following main keys: log
+2021-10-17 22:51:42,089 : DEBUG : BINANCE: reading symbol information from https://api.binance.com/api/v3/exchangeInfo
+2021-10-17 22:51:42,089 : DEBUG : HTTPSync: requesting data from https://api.binance.com/api/v3/exchangeInfo
+2021-10-17 22:51:42,993 : DEBUG : BINANCE.ws.1: connecting to wss://stream.binance.com:9443/stream?streams=btcusdt@depth@100ms
+2021-10-17 22:51:44,116 : DEBUG : BINANCE.http.0: create HTTP session
+2021-10-17 22:51:44,117 : DEBUG : BINANCE.http.0: requesting data from https://www.binance.com/api/v3/depth?symbol=BTCUSDT&limit=5000
+2021-10-17 22:57:24,995 : INFO : Config: use dict containing the following main keys: log
+2021-10-17 22:57:24,995 : DEBUG : BINANCE: reading symbol information from https://api.binance.com/api/v3/exchangeInfo
+2021-10-17 22:57:24,995 : DEBUG : HTTPSync: requesting data from https://api.binance.com/api/v3/exchangeInfo
+2021-10-17 22:57:25,473 : DEBUG : BINANCE.ws.1: connecting to wss://stream.binance.com:9443/stream?streams=btcusdt@depth@100ms
+2021-10-17 22:57:26,566 : DEBUG : BINANCE.http.0: create HTTP session
+2021-10-17 22:57:26,567 : DEBUG : BINANCE.http.0: requesting data from https://www.binance.com/api/v3/depth?symbol=BTCUSDT&limit=5000
+2021-10-18 01:18:53,462 : INFO : Config: use dict containing the following main keys: log
+2021-10-18 01:18:53,463 : DEBUG : BINANCE: reading symbol information from https://api.binance.com/api/v3/exchangeInfo
+2021-10-18 01:18:53,464 : DEBUG : HTTPSync: requesting data from https://api.binance.com/api/v3/exchangeInfo
+2021-10-18 01:18:54,313 : DEBUG : BINANCE.ws.1: connecting to wss://stream.binance.com:9443/stream?streams=btcusdt@depth@100ms
+2021-10-18 01:18:55,433 : DEBUG : BINANCE.http.0: create HTTP session
+2021-10-18 01:18:55,433 : DEBUG : BINANCE.http.0: requesting data from https://www.binance.com/api/v3/depth?symbol=BTCUSDT&limit=5000
+2021-10-18 01:30:39,027 : INFO : Config: use dict containing the following main keys: log
+2021-10-18 01:30:39,029 : DEBUG : BINANCE: reading symbol information from https://api.binance.com/api/v3/exchangeInfo
+2021-10-18 01:30:39,029 : DEBUG : HTTPSync: requesting data from https://api.binance.com/api/v3/exchangeInfo
+2021-10-18 01:30:39,879 : DEBUG : BINANCE.ws.1: connecting to wss://stream.binance.com:9443/stream?streams=btcusdt@depth@100ms
+2021-10-18 01:30:41,047 : DEBUG : BINANCE.http.0: create HTTP session
+2021-10-18 01:30:41,047 : DEBUG : BINANCE.http.0: requesting data from https://www.binance.com/api/v3/depth?symbol=BTCUSDT&limit=5000
+2021-10-18 01:48:41,357 : INFO : Config: use dict containing the following main keys: log
+2021-10-18 01:48:41,367 : DEBUG : BINANCE: reading symbol information from https://api.binance.com/api/v3/exchangeInfo
+2021-10-18 01:48:41,368 : DEBUG : HTTPSync: requesting data from https://api.binance.com/api/v3/exchangeInfo
+2021-10-18 01:48:42,039 : DEBUG : BINANCE.ws.1: connecting to wss://stream.binance.com:9443/stream?streams=btcusdt@depth@100ms
+2021-10-18 01:48:43,323 : DEBUG : BINANCE.http.0: create HTTP session
+2021-10-18 01:48:43,324 : DEBUG : BINANCE.http.0: requesting data from https://www.binance.com/api/v3/depth?symbol=BTCUSDT&limit=5000
+2021-10-18 01:58:36,232 : INFO : Config: use dict containing the following main keys: log
+2021-10-18 01:58:36,234 : DEBUG : BINANCE: reading symbol information from https://api.binance.com/api/v3/exchangeInfo
+2021-10-18 01:58:36,234 : DEBUG : HTTPSync: requesting data from https://api.binance.com/api/v3/exchangeInfo
+2021-10-18 01:58:36,691 : DEBUG : BINANCE.ws.1: connecting to wss://stream.binance.com:9443/stream?streams=btcusdt@depth@100ms
+2021-10-18 01:58:37,877 : DEBUG : BINANCE.http.0: create HTTP session
+2021-10-18 01:58:37,877 : DEBUG : BINANCE.http.0: requesting data from https://www.binance.com/api/v3/depth?symbol=BTCUSDT&limit=5000
+2021-10-18 13:43:34,297 : INFO : Config: use dict containing the following main keys: log
+2021-10-18 13:43:34,299 : DEBUG : BINANCE: reading symbol information from https://api.binance.com/api/v3/exchangeInfo
+2021-10-18 13:43:34,300 : DEBUG : HTTPSync: requesting data from https://api.binance.com/api/v3/exchangeInfo
+2021-10-18 13:43:35,202 : DEBUG : BINANCE.ws.1: connecting to wss://stream.binance.com:9443/stream?streams=btcusdt@depth@100ms
+2021-10-18 13:43:36,344 : DEBUG : BINANCE.http.0: create HTTP session
+2021-10-18 13:43:36,345 : DEBUG : BINANCE.http.0: requesting data from https://www.binance.com/api/v3/depth?symbol=BTCUSDT&limit=5000

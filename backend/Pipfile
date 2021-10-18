@@ -9,6 +9,9 @@ djangorestframework = "*"
 django-cors-headers = "*"
 cryptofeed = "*"
 qpython = "*"
+numpy = "*"
+channels = "*"
+pylint-django = "*"
 
 [dev-packages]
 pytest = "*"
