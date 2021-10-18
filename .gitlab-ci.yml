@@ -71,7 +71,7 @@ test-front:
   stage: test
   script:
     - !reference [.setup, front]
-    - CI=true yarn test
+    - CI=true yarn test --passWithNoTests
   needs: [format-front]
 
 test-back:
