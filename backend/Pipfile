@@ -1,0 +1,30 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django = "*"
+djangorestframework = "*"
+django-cors-headers = "*"
+cryptofeed = "*"
+qpython = "*"
+numpy = "*"
+channels = "*"
+
+[dev-packages]
+pytest = "*"
+autopep8 = "*"
+pylint = "*"
+pylint-django = "*"
+channels-redis = "*"
+
+[requires]
+python_version = "3.8"
+
+[scripts]
+compile = "python3 -m compileall -q ."
+lint = "pylint --rcfile=.pylintrc ${PWD}"
+check-format = "autopep8 -d --exit-code -r ."
+format = "autopep8 -i --exit-code -r ."
+test = "pytest"
