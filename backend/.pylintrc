@@ -94,6 +94,8 @@ disable=raw-checker-failed,
         C0415, # Import outside toplevel
         E0401, # Unable to import doesnt seem to work properly?
         E0402, # Relative import beyond top level
+        E0611, # No-name-in-module
+        E1101, # No-member
 
 
 # Enable the message, report, category or checker with the given id(s). You can
