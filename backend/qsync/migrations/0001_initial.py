@@ -14,7 +14,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Book',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('time', models.CharField(max_length=120)),
                 ('sym', models.CharField(max_length=120)),
                 ('feedhandlerTime', models.CharField(max_length=120)),
@@ -26,7 +27,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Qsync',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('title', models.CharField(max_length=120)),
                 ('description', models.TextField()),
                 ('completed', models.BooleanField(default=False)),

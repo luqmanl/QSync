@@ -1,5 +1,6 @@
 from rest_framework import viewsets
-from django.shortcuts import HttpResponse  # , render
+from django.shortcuts import HttpResponse
+
 from .models import Book
 from .serializers import QsyncSerializer
 
