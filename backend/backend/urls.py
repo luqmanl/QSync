@@ -19,9 +19,10 @@ from rest_framework import routers
 from qsync import views
 
 router = routers.DefaultRouter()
-router.register(r'qsync', views.QsyncView, 'qsync')
+router.register(r'book', views.QsyncView, 'qsync')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
+    path('', include('qsync.urls'))
 ]
