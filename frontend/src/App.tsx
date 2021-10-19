@@ -1,16 +1,12 @@
 import React from "react";
 import "./App.css";
-import Chart from "./components/Chart";
-
-export interface Item {
-  id: number;
-  title: string;
-  description: string;
-  completed: boolean;
-}
+import RealTimeCandleSticksChart from "./components/RealTimeCandleSticksChart";
+import StandardLineChart from "./components/StandardLineChart";
+import OrderBook from "./components/OrderBook";
 
 export type dataPoint = { x: number; y: number };
-type thisState = { data: dataPoint[]; socket: WebSocket };
+type thisState = { 
+  data: dataPoint[]; socket: WebSocket };
 type thisProps = unknown;
 
 class App extends React.Component<thisProps, thisState> {
@@ -35,7 +31,9 @@ class App extends React.Component<thisProps, thisState> {
   render() {
     return (
       <div>
-        <Chart id="chart-1" data={this.state.data} />
+        <StandardLineChart id="chart-1" data={this.state.data} yAxis="Price (USD)" xAxis="Time (UTC)" graphTitle="Random number generator" />
+        <RealTimeCandleSticksChart id="chart-2" data={this.state.data} yAxis="Price (USD)" xAxis="Time (UTC)" graphTitle="Random number generator" />
+        <OrderBook />
       </div>
     );
   }

@@ -1,8 +1,5 @@
 import { WebSocketServer } from "ws";
 
-let counter = 1;
-let prev = Math.floor(Math.random() * (10000 - 1 + 1) + 1);
-
 const wss = new WebSocketServer({
   port: 2000,
   perMessageDeflate: {
@@ -29,6 +26,9 @@ const wss = new WebSocketServer({
 // 1. listen for socket connections
 wss.on("connection", (client) => {
   let count = 0;
+  let counter = 1;
+  let prev = Math.floor(Math.random() * (10000 - 1 + 1) + 1);
+  let date = Date.now();
   setInterval(() => {
     // 2. every second, emit a 'cpu' event to user
     client.send(
