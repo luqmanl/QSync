@@ -10,17 +10,14 @@ export interface Item {
   completed: boolean;
 }
 
-const socket = new WebSocket("ws://localhost:8000/ws/some_url/")
+const socket = new WebSocket("ws://localhost:8000/ws/some_url/");
 
 const App = () => {
-
   const componentWillMount = () => {
     socket.onmessage = (event) => {
       console.log(event);
-
     };
-  }
-
+  };
 
   const defaultItem: Item = {
     id: 1,
@@ -140,17 +137,15 @@ const App = () => {
   };
 
   const renderNum = () => {
-    const socket = new WebSocket("ws://localhost:8000/ws/some_url/")
+    const socket = new WebSocket("ws://localhost:8000/ws/some_url/");
 
-    socket.onmessage = function(event) {
+    socket.onmessage = function (event) {
       const data = JSON.parse(event.data);
       console.log(data);
       setText(data);
-    }
-    return (
-      <p>{text}</p>
-    );
-  }
+    };
+    return <p>{text}</p>;
+  };
 
   return (
     <main className="content">

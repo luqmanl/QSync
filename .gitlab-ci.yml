@@ -39,7 +39,7 @@ style-front:
   script:
     - !reference [.setup, front]
     - yarn lint
-    - yarn format --check
+    - yarn check-format
   needs: [compile-front]
 
 style-back:
