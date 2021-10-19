@@ -2,7 +2,7 @@ image: node:latest
 
 stages:
   - compile
-  - lint
+  - style
   - test
   - deploy
 
