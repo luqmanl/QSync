@@ -26,16 +26,14 @@ const wss = new WebSocketServer({
 // 1. listen for socket connections
 wss.on("connection", (client) => {
   let count = 0;
-  let counter = 1;
   let prev = Math.floor(Math.random() * (10000 - 1 + 1) + 1);
-  let date = Date.now();
   setInterval(() => {
     // 2. every second, emit a 'cpu' event to user
     client.send(
       JSON.stringify({
         points: [
           {
-            x: counter++,
+            x: count++,
             y: (prev *= Math.random() * (1.0309278351 - 0.97) + 0.97),
           },
         ],

@@ -106,7 +106,7 @@ class OrderBook extends React.Component<unknown, thisState> {
         xAxis.title.text = "Price (BTC/ETH)";
 
         const yAxis = chart.yAxes.push(new am4charts.ValueAxis());
-        yAxis.title.text = "Volume";
+        yAxis.title.text = "Volume:";
 
         // Create series
         const series = chart.series.push(new am4charts.StepLineSeries());
@@ -124,22 +124,22 @@ class OrderBook extends React.Component<unknown, thisState> {
         series2.strokeWidth = 2;
         series2.stroke = am4core.color("#f00");
         series2.fill = series2.stroke;
-        series2.fillOpacity = 0.1;
+        series2.fillOpacity = 0.5;
         series2.tooltipText = "Ask: [bold]{categoryX}[/]\nTotal volume: [bold]{valueY}[/]\nVolume: [bold]{asksvolume}[/]"
 
         const series3 = chart.series.push(new am4charts.ColumnSeries());
         series3.dataFields.categoryX = "value";
         series3.dataFields.valueY = "bidsvolume";
-        series3.strokeWidth = 0;
+        series3.strokeWidth = 1;
         series3.fill = am4core.color("#000");
-        series3.fillOpacity = 0.2;
+        series3.fillOpacity = 0.5;
 
         const series4 = chart.series.push(new am4charts.ColumnSeries());
         series4.dataFields.categoryX = "value";
         series4.dataFields.valueY = "asksvolume";
-        series4.strokeWidth = 0;
+        series4.strokeWidth = 5;
         series4.fill = am4core.color("#000");
-        series4.fillOpacity = 0.2;
+        series4.fillOpacity = 0.5;
 
         // Add cursor
         chart.cursor = new am4charts.XYCursor();

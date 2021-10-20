@@ -20,4 +20,4 @@ __pycache__/
 .pytest_cache/
 
 # TestServer
-src/testServer.js
+frontend/src/testServer.js

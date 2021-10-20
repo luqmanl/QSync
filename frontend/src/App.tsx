@@ -3,6 +3,7 @@ import "./App.css";
 import RealTimeCandleSticksChart from "./components/RealTimeCandleSticksChart";
 import StandardLineChart from "./components/StandardLineChart";
 import OrderBook from "./components/OrderBook";
+import OrderBookTable from "./components/OrderBookTable";
 
 export type dataPoint = { x: number; y: number };
 type thisState = { 
@@ -15,7 +16,7 @@ class App extends React.Component<thisProps, thisState> {
 
     this.state = {
       data: [],
-      socket: new WebSocket("ws://localhost:2006"),
+      socket: new WebSocket("ws://localhost:2000"),
     };
   }
 
@@ -33,6 +34,7 @@ class App extends React.Component<thisProps, thisState> {
       <div>
         <RealTimeCandleSticksChart id="chart-2" data={this.state.data} yAxis="Price (USD)" xAxis="Time (UTC)" graphTitle="Random number generator" />
         <OrderBook />
+        <OrderBookTable />
       </div>
     );
   }
