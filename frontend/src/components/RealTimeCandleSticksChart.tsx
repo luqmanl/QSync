@@ -1,6 +1,14 @@
-import { lightningChart, LineSeries, OHLCSeriesTypes, OHLCSeriesWithAutomaticPacking, AxisScrollStrategies } from "@arction/lcjs";
+import {
+  lightningChart,
+  LineSeries,
+  OHLCSeriesTypes,
+  OHLCSeriesWithAutomaticPacking,
+  AxisScrollStrategies,
+  AxisTickStrategies
+} from "@arction/lcjs";
 import { dataPoint } from "../App";
 import React from "react";
+import { AxisTick } from "@amcharts/amcharts4/charts";
 
 type stateType = { 
   series: LineSeries; 
@@ -28,7 +36,7 @@ class RealTimeCandleSticksChart extends React.Component<propsType, stateType> {
     const ohlcSeriesAutoPacking = chart.addOHLCSeries(
       // Specify type of OHLC-series for adding points
       { seriesConstructor: OHLCSeriesTypes.AutomaticPacking }
-    ).setPackingResolution(50);
+    ).setPackingResolution(100);
 
     this.setState({
       series: series,
@@ -37,9 +45,13 @@ class RealTimeCandleSticksChart extends React.Component<propsType, stateType> {
     });
 
     chart.getDefaultAxisX()
-    .setScrollStrategy(AxisScrollStrategies.progressive)
+      .setScrollStrategy(AxisScrollStrategies.progressive)
+      .setTickStrategy(
+        AxisTickStrategies.DateTime,
+        (ts) => ts.setDateOrigin(new Date())
+      )
       // View fits 5 minutes.
-      .setInterval(0, 2000)
+      .setInterval(0, 2000);
 
     chart.setTitle(this.props.graphTitle);
 

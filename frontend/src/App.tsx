@@ -15,7 +15,7 @@ class App extends React.Component<thisProps, thisState> {
 
     this.state = {
       data: [],
-      socket: new WebSocket("ws://localhost:2000"),
+      socket: new WebSocket("ws://localhost:2006"),
     };
   }
 
@@ -31,7 +31,6 @@ class App extends React.Component<thisProps, thisState> {
   render() {
     return (
       <div>
-        <StandardLineChart id="chart-1" data={this.state.data} yAxis="Price (USD)" xAxis="Time (UTC)" graphTitle="Random number generator" />
         <RealTimeCandleSticksChart id="chart-2" data={this.state.data} yAxis="Price (USD)" xAxis="Time (UTC)" graphTitle="Random number generator" />
         <OrderBook />
       </div>
