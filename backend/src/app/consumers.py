@@ -7,8 +7,9 @@ class WSConsumer(WebsocketConsumer):
     # def __init__(self):
     #     self.x = 0
 
-    def connect(self):
-        self.accept()
+    async def connect(self):
+        await self.channel_layer.group_add(self.group_name, self.channel_name)
+        await self.accept()
 
-        for i in range(1, 10):
-            self.send(json.dumps({'message': 0}))
+        # for i in range(1, 10):
+        #     await self.send(json.dumps({'message': i}))
