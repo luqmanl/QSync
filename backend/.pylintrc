@@ -571,3 +571,4 @@ load-plugins=pylint_django
 # "BaseException, Exception".
 overgeneral-exceptions=BaseException,
                        Exception
+
