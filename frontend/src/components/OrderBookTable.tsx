@@ -1,140 +1,85 @@
-import React from 'react';
+import React from "react";
+import { Item } from "../App";
 
 // time     tickersymbol     bid/ask     price      quantity
 
-interface OrderBookDataType {
-    time: number,
-    ticker : string,
-    price: number,
-    quantity: number
-}
+const OrderBookTableDivision = (props: { data: string | number }) => {
+  return (
+    <td
+      style={{
+        padding: "20px",
+        border: "1px solid black",
+      }}
+    >
+      {props.data}
+    </td>
+  );
+};
 
-interface OrderBookType { 
-    bids : OrderBookDataType[],
-    asks: OrderBookDataType[]
-}
+type rowPropType = {
+  data: Item;
+  index: number;
+};
 
-const exampleData : OrderBookType = {
-    bids : [
-        {
-            time: 0,
-            ticker: "BTC-USD",
-            price: 11,
-            quantity: 20   
-        },
-        {
-            time: 0,
-            ticker: "BTC-USD",
-            price: 11,
-            quantity: 20   
-        },
-        {
-            time: 0,
-            ticker: "BTC-USD",
-            price: 11,
-            quantity: 20   
-        }
-    ],
-    asks: [
-        {
-            time: 0,
-            ticker: "BTC-USD",
-            price: 11,
-            quantity: 20   
-        },
-        {
-            time: 0,
-            ticker: "BTC-USD",
-            price: 11,
-            quantity: 20   
-        },
-        {
-            time: 0,
-            ticker: "BTC-USD",
-            price: 11,
-            quantity: 20   
-        }
-    ]
-}
+const numDPs = 2;
 
+const OrderBookTableRow = (props: rowPropType) => {
+  return (
+    <tr>
+      <OrderBookTableDivision data={props.data.bookData.sym} />
+      <OrderBookTableDivision data={props.data.bookData.asks[props.index]} />
+      <OrderBookTableDivision
+        data={props.data.bookData.askSizes[props.index]}
+      />
+      <OrderBookTableDivision
+        data={(
+          props.data.bookData.askSizes[props.index] *
+          props.data.bookData.asks[props.index]
+        ).toFixed(numDPs)}
+      />
+      <OrderBookTableDivision data={props.data.bookData.sym} />
+      <OrderBookTableDivision data={props.data.bookData.bids[props.index]} />
+      <OrderBookTableDivision
+        data={props.data.bookData.bidSizes[props.index]}
+      />
+      <OrderBookTableDivision
+        data={(
+          props.data.bookData.bidSizes[props.index] *
+          props.data.bookData.bids[props.index]
+        ).toFixed(numDPs)}
+      />
+    </tr>
+  );
+};
 
-const OrderBookTable = () => {
-    return (
+const OrderBookTable = (data: { data: Item }) => {
+  return (
     <div>
-        <table style={{
-            border: "1px solid black",
-            textAlign: "center"
-        }}>
-            <tr>
-                <th></th>
-                <th colSpan={2}>bids</th>
-                <th colSpan={2}>asks</th>
-            </tr>
-            <tr>
-                <td style={{
-                        border: "1px solid black"
-                    }}>time</td>
-                <td style={{
-                        border: "1px solid black"
-                    }}>price</td>
-                <td style={{
-                        border: "1px solid black"
-                    }}>quantity</td>
-                <td style={{
-                        border: "1px solid black"
-                    }}>price</td>
-                <td style={{
-                        border: "1px solid black"
-                    }}>quantity</td>
-            </tr>
-            {exampleData.bids.map((item, i) => {
-                return (
-                    <tr key={i} style={{
-                        border: "1px solid black"
-                    }}>
-                        <td style={{
-                            padding: "20px"
-                        }}>{item.time}</td>
-                        <td style={{
-                            padding: "20px"
-                        }}>{item.price}</td>
-                        <td style={{
-                            padding: "20px"
-                        }}>{item.quantity}</td>
-                        <td style={{
-                            padding: "20px"
-                        }}>{exampleData.asks[i].price}</td>
-                        <td style={{
-                            padding: "20px"
-                        }}>{exampleData.asks[i].price}</td>
-                    </tr>
-                );
-            })}
-            {exampleData.asks.map((item, i) => {
-                return (
-                    <tr key={i} style={{
-                        border: "1px solid black"
-                    }}>
-                        <td style={{
-                            padding: "20px"
-                        }}>{item.time}</td>
-                        <td style={{
-                            padding: "20px"
-                        }}>{item.price}</td>
-                        <td style={{
-                            padding: "20px"
-                        }}>{item.quantity}</td>
-                        <td style={{
-                            padding: "20px"
-                        }}>{exampleData.asks[i].price}</td>
-                        <td style={{
-                            padding: "20px"
-                        }}>{exampleData.asks[i].price}</td>
-                    </tr>
-                );
-            })}
-        </table>
-    </div>);
-}
+      <table style={{ border: "1px solid black", textAlign: "center" }}>
+        <tr>
+          <th colSpan={4} style={{ border: "1px solid black" }}>
+            bids
+          </th>
+          <th colSpan={4} style={{ border: "1px solid black" }}>
+            asks
+          </th>
+        </tr>
+        <tr>
+          <OrderBookTableDivision data="ticker" />
+          <OrderBookTableDivision data="price ($)" />
+          <OrderBookTableDivision data="quantity" />
+          <OrderBookTableDivision data="order total ($)" />
+          <OrderBookTableDivision data="ticker" />
+          <OrderBookTableDivision data="price ($)" />
+          <OrderBookTableDivision data="quantity" />
+          <OrderBookTableDivision data="order total ($)" />
+        </tr>
+        {data.data.bookData.asks.map((item, i) => {
+          return <OrderBookTableRow key={i} data={data.data} index={i} />;
+        })}
+      </table>
+    </div>
+  );
+};
 
-export default OrderBookTable
+export default OrderBookTable;

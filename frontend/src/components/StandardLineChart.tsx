@@ -3,8 +3,8 @@ import { dataPoint } from "../App";
 import React from "react";
 
 type stateType = { series: LineSeries; id: string };
-type propsType = { 
-  id: string; 
+type propsType = {
+  id: string;
   data: dataPoint[];
   graphTitle: string;
   xAxis: string;
@@ -23,11 +23,9 @@ class StandardLineChart extends React.Component<propsType, stateType> {
 
     chart.setTitle(this.props.graphTitle);
 
-    chart.getDefaultAxisX()
-      .setTitle(this.props.xAxis);
+    chart.getDefaultAxisX().setTitle(this.props.xAxis);
 
-    chart.getDefaultAxisY()
-      .setTitle(this.props.yAxis);
+    chart.getDefaultAxisY().setTitle(this.props.yAxis);
 
     series.add(this.props.data);
   }

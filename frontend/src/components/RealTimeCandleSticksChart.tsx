@@ -4,19 +4,19 @@ import {
   OHLCSeriesTypes,
   OHLCSeriesWithAutomaticPacking,
   AxisScrollStrategies,
-  AxisTickStrategies
+  AxisTickStrategies,
 } from "@arction/lcjs";
 import { dataPoint } from "../App";
 import React from "react";
 import { AxisTick } from "@amcharts/amcharts4/charts";
 
-type stateType = { 
-  series: LineSeries; 
+type stateType = {
+  series: LineSeries;
   id: string;
   ohlcSeriesAutoPacking: OHLCSeriesWithAutomaticPacking;
 };
-type propsType = { 
-  id: string; 
+type propsType = {
+  id: string;
   data: dataPoint[];
   graphTitle: string;
   xAxis: string;
@@ -26,40 +26,40 @@ type propsType = {
 class RealTimeCandleSticksChart extends React.Component<propsType, stateType> {
   componentDidMount() {
     const chart = lightningChart().ChartXY({ container: this.props.id });
-    const series = chart.addLineSeries()
+    const series = chart
+      .addLineSeries()
       .setCursorEnabled(false)
-      .setStrokeStyle((strokeStyle) => strokeStyle
-        .setFillStyle((fill: any) => fill.setA(70))
-        .setThickness(1)
-    );
+      .setStrokeStyle((strokeStyle) =>
+        strokeStyle.setFillStyle((fill: any) => fill.setA(70)).setThickness(1)
+      );
 
-    const ohlcSeriesAutoPacking = chart.addOHLCSeries(
-      // Specify type of OHLC-series for adding points
-      { seriesConstructor: OHLCSeriesTypes.AutomaticPacking }
-    ).setPackingResolution(100);
+    const ohlcSeriesAutoPacking = chart
+      .addOHLCSeries(
+        // Specify type of OHLC-series for adding points
+        { seriesConstructor: OHLCSeriesTypes.AutomaticPacking }
+      )
+      .setPackingResolution(100);
 
     this.setState({
       series: series,
       id: this.props.id,
-      ohlcSeriesAutoPacking: ohlcSeriesAutoPacking
+      ohlcSeriesAutoPacking: ohlcSeriesAutoPacking,
     });
 
-    chart.getDefaultAxisX()
+    chart
+      .getDefaultAxisX()
       .setScrollStrategy(AxisScrollStrategies.progressive)
-      .setTickStrategy(
-        AxisTickStrategies.DateTime,
-        (ts) => ts.setDateOrigin(new Date())
+      .setTickStrategy(AxisTickStrategies.DateTime, (ts) =>
+        ts.setDateOrigin(new Date())
       )
       // View fits 5 minutes.
       .setInterval(0, 2000);
 
     chart.setTitle(this.props.graphTitle);
 
-    chart.getDefaultAxisX()
-      .setTitle(this.props.xAxis);
+    chart.getDefaultAxisX().setTitle(this.props.xAxis);
 
-    chart.getDefaultAxisY()
-      .setTitle(this.props.yAxis);
+    chart.getDefaultAxisY().setTitle(this.props.yAxis);
 
     series.add(this.props.data);
   }

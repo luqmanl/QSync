@@ -2,12 +2,12 @@
 // import { dataPoint } from "../App";
 import React from "react";
 
-// type stateType = { 
-//     series: LineSeries; 
-//     id: string 
+// type stateType = {
+//     series: LineSeries;
+//     id: string
 // };
-// type propsType = { 
-//   id: string; 
+// type propsType = {
+//   id: string;
 //   stockData: dataPoint[];
 //   volumeData: dataPoint[];
 //   graphTitle: string;
@@ -18,7 +18,7 @@ import React from "react";
 // class VolumeMovingAverageChart extends React.Component<propsType, stateType> {
 //   componentDidMount() {
 //     const db = lightningChart().Dashboard({
-//         // theme: Themes.darkGold 
+//         // theme: Themes.darkGold
 //         numberOfRows: 2,
 //         numberOfColumns: 1
 //     });
@@ -45,11 +45,11 @@ import React from "react";
 //             cursor.setGridStrokeYStyle(emptyLine)
 //         })
 //         .setPadding({ right: 40 })
-    
+
 //     // The top chart should have 66% of view height allocated to it. By giving the first row a height of 2, the relative
 //     // height of the row becomes 2/3 of the whole view (default value for row height / column width is 1)
 //     db.setRowHeight(0, 2)
-    
+
 //     // Create a LegendBox for Candle-Stick and Bollinger Band
 //     const legendBoxOHLC = chartOHLC.addLegendBox(LegendBoxBuilders.VerticalLegendBox)
 //         // Dispose example UI elements automatically if they take too much space. This is to avoid bad UI on mobile / etc. devices.
@@ -57,32 +57,31 @@ import React from "react";
 //             type: 'max-width',
 //             maxWidth: 0.30,
 //         })
-    
+
 //     // Define function which sets Y axis intervals nicely.
 //     let setViewNicely
-    
+
 //     // Create OHLC Figures and Area-range.
 //     //#region
-    
+
 //     // Get Y-axis for series (view is set manually).
 //     const stockAxisY = chartOHLC.getDefaultAxisY()
 //         .setScrollStrategy(undefined)
 //         .setTitle('USD')
 //         // Synchronize left margins of the stacked charts by assigning a static Y Axis thickness for both.
 //         .setThickness(80)
-    
+
 //     // Add series.
 //     const areaRange = chartOHLC.addAreaRangeSeries({ yAxis: stockAxisY })
 //         .setName('Bollinger band')
 //         .setMouseInteractions(false)
 //         .setCursorEnabled(false)
-    
+
 //     const stockFigureWidth = 5.0
 //     const stock = chartOHLC.addOHLCSeries({ yAxis: stockAxisY })
 //         .setName('Candle-Sticks')
 //         // Setting width of figures
 //         .setFigureWidth(stockFigureWidth)
-    
 
 //     const chart = lightningChart().ChartXY({ container: this.props.id });
 //     const series = chart.addLineSeries();
