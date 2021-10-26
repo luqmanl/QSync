@@ -25,7 +25,7 @@ SECRET_KEY = 'kudy$9lgb+riw&te*$^wwo@@b_6ro%%cs9g#cs(n4-ab#srsw-'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -70,7 +70,17 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'router.wsgi.application'
-ASGI_APPLICATION = 'router.asgi.application'
+ASGI_APPLICATION = 'router.routing.application'
+
+
+CHANNEL_LAYERS = {
+  "default": {
+    "BACKEND": "channels_redis.core.RedisChannelLayer",
+    "CONFIG": {
+      "hosts": [("127.0.0.1", 6379)],
+    },
+  },
+}
 
 
 # Database
