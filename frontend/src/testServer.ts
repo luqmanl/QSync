@@ -40,5 +40,5 @@ wss.on("connection", (client) => {
       })
     );
     console.log(`sent ${count++}`);
-  }, 10);
+  }, 2000);
 });

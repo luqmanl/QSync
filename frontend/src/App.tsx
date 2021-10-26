@@ -2,7 +2,9 @@ import React from "react";
 import "./App.css";
 import OrderBook from "./components/OrderBook";
 import OrderBookTable from "./components/OrderBookTable";
+import RealTimeCandleSticksChart from "./components/RealTimeCandleSticksChart";
 import axios from "axios";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 export type dataPoint = {
   x: number;
@@ -27,6 +29,8 @@ interface bookData {
 type thisState = {
   data: Item;
   counter: number;
+  socket: WebSocket;
+  graphData: dataPoint[];
 };
 
 const otherData: Item = {
@@ -65,12 +69,20 @@ class App extends React.Component<thisProps, thisState> {
     this.state = {
       data: otherData,
       counter: 0,
+      socket: new WebSocket("ws://localhost:2000"),
+      graphData: [{ x: 1, y: 2 }],
     };
   }
 
   componentDidMount() {
     this.setState({
       ...this.state,
+    });
+    this.state.socket.addEventListener("message", (event: MessageEvent) => {
+      this.setState({
+        ...this.state,
+        graphData: JSON.parse(event.data).points,
+      });
     });
     window.setInterval(() => this.refreshList(), 1000);
   }
@@ -91,7 +103,13 @@ class App extends React.Component<thisProps, thisState> {
   render() {
     return (
       <div>
-        {/* <RealTimeCandleSticksChart id="chart-2" data={this.state.data} yAxis="Price (USD)" xAxis="Time (UTC)" graphTitle="Price against Time" /> */}
+        <RealTimeCandleSticksChart
+          id="chart-2"
+          data={this.state.graphData}
+          yAxis="Price (USD)"
+          xAxis="Time (UTC)"
+          graphTitle="Price against Time"
+        />
         <OrderBook />
         <OrderBookTable data={this.state.data} />
       </div>
