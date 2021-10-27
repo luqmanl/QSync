@@ -1,5 +1,6 @@
 import React from "react";
 import { Item } from "../App";
+import { Table } from "react-bootstrap";
 
 // time     tickersymbol     bid/ask     price      quantity
 
@@ -55,29 +56,33 @@ const OrderBookTableRow = (props: rowPropType) => {
 const OrderBookTable = (data: { data: Item }) => {
   return (
     <div>
-      <table style={{ border: "1px solid black", textAlign: "center" }}>
-        <tr>
-          <th colSpan={4} style={{ border: "1px solid black" }}>
-            bids
-          </th>
-          <th colSpan={4} style={{ border: "1px solid black" }}>
-            asks
-          </th>
-        </tr>
-        <tr>
-          <OrderBookTableDivision data="ticker" />
-          <OrderBookTableDivision data="price ($)" />
-          <OrderBookTableDivision data="quantity" />
-          <OrderBookTableDivision data="order total ($)" />
-          <OrderBookTableDivision data="ticker" />
-          <OrderBookTableDivision data="price ($)" />
-          <OrderBookTableDivision data="quantity" />
-          <OrderBookTableDivision data="order total ($)" />
-        </tr>
-        {data.data.bookData.asks.map((item, i) => {
-          return <OrderBookTableRow key={i} data={data.data} index={i} />;
-        })}
-      </table>
+      <Table striped bordered hover variant="dark">
+        <thead>
+          <tr>
+            <th colSpan={4} style={{ border: "1px solid black" }}>
+              bids
+            </th>
+            <th colSpan={4} style={{ border: "1px solid black" }}>
+              asks
+            </th>
+          </tr>
+          <tr>
+            <OrderBookTableDivision data="ticker" />
+            <OrderBookTableDivision data="price ($)" />
+            <OrderBookTableDivision data="quantity" />
+            <OrderBookTableDivision data="order total ($)" />
+            <OrderBookTableDivision data="ticker" />
+            <OrderBookTableDivision data="price ($)" />
+            <OrderBookTableDivision data="quantity" />
+            <OrderBookTableDivision data="order total ($)" />
+          </tr>
+        </thead>
+        <tbody>
+          {data.data.bookData.asks.map((item, i) => {
+            return <OrderBookTableRow key={i} data={data.data} index={i} />;
+          })}
+        </tbody>
+      </Table>
     </div>
   );
 };
