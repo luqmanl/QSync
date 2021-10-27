@@ -5,6 +5,7 @@ import OrderBookTable from "./components/OrderBookTable";
 import RealTimeCandleSticksChart from "./components/RealTimeCandleSticksChart";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { Container, Row, Col } from "react-bootstrap";
 
 export type dataPoint = {
   x: number;
@@ -103,15 +104,21 @@ class App extends React.Component<thisProps, thisState> {
   render() {
     return (
       <div>
-        <RealTimeCandleSticksChart
-          id="chart-2"
-          data={this.state.graphData}
-          yAxis="Price (USD)"
-          xAxis="Time (UTC)"
-          graphTitle="Price against Time"
-        />
+        <div className="flex-container">
+          <div className="graph-container">
+            <RealTimeCandleSticksChart
+              id="chart-2"
+              data={this.state.graphData}
+              yAxis="Price (USD)"
+              xAxis="Time (UTC)"
+              graphTitle="Price against Time"
+            />
+          </div>
+          <div className="order-book-container">
+            <OrderBookTable data={this.state.data} />
+          </div>
+        </div>
         <OrderBook />
-        <OrderBookTable data={this.state.data} />
       </div>
     );
   }
