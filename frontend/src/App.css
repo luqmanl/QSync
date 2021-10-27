@@ -1,15 +1,16 @@
 .flex-container {
   display: flex;
   width: 100vw;
+  padding: 10px 0 10px 0;
 }
 
 .graph-container {
   width: 66vw;
+  padding-right: 10px;
 }
 
 .order-book-container {
   width: 34vw;
   overflow: auto;
   height: 100vh;
-  padding-left: 50px;
 }
