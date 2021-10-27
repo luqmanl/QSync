@@ -1,20 +1,12 @@
 import React from "react";
 import { Item } from "../App";
 import { Table } from "react-bootstrap";
+import "./OrderBookTable.css";
 
 // time     tickersymbol     bid/ask     price      quantity
 
 const OrderBookTableDivision = (props: { data: string | number }) => {
-  return (
-    <td
-      style={{
-        padding: "20px",
-        border: "1px solid black",
-      }}
-    >
-      {props.data}
-    </td>
-  );
+  return <td className="table-row">{props.data}</td>;
 };
 
 type rowPropType = {
@@ -59,10 +51,10 @@ const OrderBookTable = (data: { data: Item }) => {
       <Table striped bordered hover variant="dark">
         <thead>
           <tr>
-            <th colSpan={4} style={{ border: "1px solid black" }}>
+            <th className="table-header" colSpan={4}>
               bids
             </th>
-            <th colSpan={4} style={{ border: "1px solid black" }}>
+            <th className="table-header" colSpan={4}>
               asks
             </th>
           </tr>
