@@ -5,6 +5,7 @@ import OrderBookTable from "./components/OrderBookTable";
 import RealTimeCandleSticksChart from "./components/RealTimeCandleSticksChart";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
+import NavBar from "./components/NvBar";
 import { Container, Row, Col } from "react-bootstrap";
 
 export type dataPoint = {
@@ -104,6 +105,7 @@ class App extends React.Component<thisProps, thisState> {
   render() {
     return (
       <div>
+        <NavBar/>
         <div className="flex-container">
           <div className="graph-container">
             <RealTimeCandleSticksChart
@@ -118,7 +120,6 @@ class App extends React.Component<thisProps, thisState> {
             <OrderBookTable data={this.state.data} />
           </div>
         </div>
-        <OrderBook />
       </div>
     );
   }
