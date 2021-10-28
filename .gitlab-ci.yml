@@ -11,7 +11,7 @@ stages:
   front:
     - cd frontend
     - yarn set version stable
-    - yarn install
+    - yarn install --cache-folder.yarn
   back:
     - cd backend
     - pip3 install pipenv
@@ -20,6 +20,11 @@ stages:
 # Compile
 compile-front:
   stage: compile
+  cache:
+    paths:
+      - frontend/node_modules/
+      - frontend/.yarn
+    key: qsync_cache
   script:
     - !reference [.setup, front]
     - yarn compile
@@ -28,6 +33,7 @@ compile-front:
 compile-back:
   stage: compile
   image: python:3.8.10-slim-buster
+  cache: []
   script: 
     - !reference [.setup, back]
     - pipenv run compile
@@ -45,6 +51,7 @@ style-front:
 style-back:
   stage: style
   image: python:3.8.10-slim-buster
+  cache: []
   script:
     - !reference [.setup, back]
     - pipenv run lint
@@ -62,6 +69,7 @@ test-front:
 test-back:
   stage: test
   image: python:3.8.10-slim-buster
+  cache: []
   script:
     - !reference [.setup, back]
     - pipenv run test
