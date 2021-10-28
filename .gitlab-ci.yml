@@ -11,7 +11,7 @@ stages:
   front:
     - cd frontend
     - yarn set version stable
-    - yarn install --cache-folder.yarn
+    - yarn install --cache-folder .yarn
   back:
     - cd backend
     - pip3 install pipenv
