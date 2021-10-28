@@ -11,7 +11,7 @@ stages:
   front:
     - cd frontend
     - yarn set version stable
-    - CI=true yarn install
+    - YARN_ENABLE_IMMUTABLE_INSTALLS=false CI=true yarn install
   back:
     - cd backend
     - pip3 install pipenv
@@ -24,7 +24,7 @@ compile-front:
     paths:
       - frontend/node_modules/
       - frontend/.yarn
-    key: 
+    key:
       files:
         - yarn.lock
   script:
@@ -36,7 +36,7 @@ compile-back:
   stage: compile
   image: python:3.8.10-slim-buster
   cache: []
-  script: 
+  script:
     - !reference [.setup, back]
     - pipenv run compile
   needs: []
@@ -58,7 +58,7 @@ style-back:
     - !reference [.setup, back]
     - pipenv run lint
     - pipenv run check-format
-  needs: [compile-back] 
+  needs: [compile-back]
 
 # Test
 test-front:
