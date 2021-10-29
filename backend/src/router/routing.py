@@ -7,7 +7,7 @@ application = ProtocolTypeRouter({
   'websocket': AllowedHostsOriginValidator(
     URLRouter(
       [
-        url("", QsyncConsumer())
+        url("ws/data", QsyncConsumer())
       ]
     )
   )

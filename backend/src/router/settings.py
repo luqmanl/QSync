@@ -69,6 +69,10 @@ TEMPLATES = [
     },
 ]
 
+TEMPLATE_DIRS = [
+    os.path.join(BASE_DIR, 'templates/'),
+]
+
 WSGI_APPLICATION = 'router.wsgi.application'
 ASGI_APPLICATION = 'router.routing.application'
 
