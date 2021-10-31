@@ -13,6 +13,7 @@ type propsType = {
 
 class StandardLineChart extends React.Component<propsType, stateType> {
   componentDidMount() {
+    // eslint-disable-next-line new-cap
     const chart = lightningChart().ChartXY({ container: this.props.id });
     const series = chart.addLineSeries();
 

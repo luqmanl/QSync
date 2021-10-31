@@ -123,7 +123,7 @@ class App extends React.Component<thisProps, thisState> {
             <Form.Check
               type="checkbox"
               id="default-checkbox"
-              label="default checkbox"
+              label="Toggle latest trade/order book view"
               onChange={() => {
                 this.setState({
                   ...this.state,

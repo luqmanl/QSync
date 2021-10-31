@@ -1,6 +1,14 @@
+import React from "react";
+
+const VolumeMovingAverageChart = () => {
+  return <div></div>;
+};
+
+export default VolumeMovingAverageChart;
+
 // import { lightningChart, LineSeries, LegendBoxBuilders } from "@arction/lcjs";
 // import { dataPoint } from "../App";
-import React from "react";
+// import React from "react";
 
 // type stateType = {
 //     series: LineSeries;
