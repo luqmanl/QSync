@@ -1,12 +1,13 @@
+/* eslint-disable no-magic-numbers */
 import React from "react";
 import "./App.css";
-import OrderBook from "./components/OrderBook";
 import OrderBookTable from "./components/OrderBookTable";
 import RealTimeCandleSticksChart from "./components/RealTimeCandleSticksChart";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import NavBar from "./components/NvBar";
-import { Container, Row, Col } from "react-bootstrap";
+import LatestTrades from "./components/LatestTrades";
+import { Form } from "react-bootstrap";
 
 export type dataPoint = {
   x: number;
@@ -33,6 +34,7 @@ type thisState = {
   counter: number;
   socket: WebSocket;
   graphData: dataPoint[];
+  showLatest: boolean;
 };
 
 const otherData: Item = {
@@ -73,6 +75,7 @@ class App extends React.Component<thisProps, thisState> {
       counter: 0,
       socket: new WebSocket("ws://localhost:2000"),
       graphData: [{ x: 1, y: 2 }],
+      showLatest: false,
     };
   }
 
@@ -105,7 +108,7 @@ class App extends React.Component<thisProps, thisState> {
   render() {
     return (
       <div>
-        <NavBar/>
+        <NavBar />
         <div className="flex-container">
           <div className="graph-container">
             <RealTimeCandleSticksChart
@@ -116,8 +119,25 @@ class App extends React.Component<thisProps, thisState> {
               graphTitle="Price against Time"
             />
           </div>
+          <Form>
+            <Form.Check
+              type="checkbox"
+              id="default-checkbox"
+              label="default checkbox"
+              onChange={() => {
+                this.setState({
+                  ...this.state,
+                  showLatest: !this.state.showLatest,
+                });
+              }}
+            ></Form.Check>
+          </Form>
           <div className="order-book-container">
-            <OrderBookTable data={this.state.data} />
+            {this.state.showLatest ? (
+              <LatestTrades />
+            ) : (
+              <OrderBookTable data={this.state.data} />
+            )}
           </div>
         </div>
       </div>

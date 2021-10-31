@@ -1,3 +1,4 @@
+/* eslint-disable no-magic-numbers */
 import {
   lightningChart,
   LineSeries,
@@ -8,7 +9,6 @@ import {
 } from "@arction/lcjs";
 import { dataPoint } from "../App";
 import React from "react";
-import { AxisTick } from "@amcharts/amcharts4/charts";
 
 type stateType = {
   series: LineSeries;
@@ -25,11 +25,13 @@ type propsType = {
 
 class RealTimeCandleSticksChart extends React.Component<propsType, stateType> {
   componentDidMount() {
+    // eslint-disable-next-line new-cap
     const chart = lightningChart().ChartXY({ container: this.props.id });
     const series = chart
       .addLineSeries()
       .setCursorEnabled(false)
       .setStrokeStyle((strokeStyle) =>
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         strokeStyle.setFillStyle((fill: any) => fill.setA(70)).setThickness(1)
       );
 
