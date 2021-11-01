@@ -82,7 +82,6 @@
     "no-else-return": "error",
     "no-empty-function": "error",
     "no-implicit-coercion": "error",
-    "no-invalid-this": "error",
     "no-iterator": "error",
     "no-labels": "error",
     "no-lone-blocks": "error",

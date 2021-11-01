@@ -12,7 +12,7 @@ stages:
   front:
     - cd frontend
     - yarn set version stable
-    - yarn install
+    - YARN_ENABLE_IMMUTABLE_INSTALLS=false CI=true yarn install
   back:
     - cd backend
     - pip3 install pipenv
@@ -71,7 +71,7 @@ test-front:
   stage: test
   script:
     - !reference [.setup, front]
-    - CI=true yarn test
+    - CI=true yarn test --passWithNoTests
   needs: [format-front]
 
 test-back:
