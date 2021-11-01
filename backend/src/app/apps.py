@@ -6,6 +6,7 @@ import numpy
 from qpython.qcollection import QTable
 from qpython.qconnection import QConnection
 
+
 class AppConfig(AppConfig):
     name = 'app'
 

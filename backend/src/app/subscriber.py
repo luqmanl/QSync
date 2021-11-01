@@ -7,10 +7,11 @@ from asgiref.sync import async_to_sync
 from time import sleep
 import json
 
-import sys 
+import sys
 import numpy as np
 from qpython.qcollection import QTable
 from qpython.qconnection import QConnection
+
 
 class ListenerThread(threading.Thread):
     def __init__(self):
@@ -38,7 +39,10 @@ class ListenerThread(threading.Thread):
 
             while True:
                 sleep(1)
-                async_to_sync(channel_layer.group_send)("qsync", {"type": "send_tick_data", "text": "test"})
+                async_to_sync(
+                    channel_layer.group_send)(
+                    "qsync", {
+                        "type": "send_tick_data", "text": "test"})
                 try:
                     # retrieve entire message
                     message = self.q.receive(data_only=False, raw=False)
@@ -51,10 +55,13 @@ class ListenerThread(threading.Thread):
                         f'data size: {message.size}, is_compressed: {message.is_compressed}')
                     print(data_str)
 
-                    if isinstance(message.data, list) and len(message.data) == 3:
+                    if isinstance(message.data, list) and len(
+                            message.data) == 3:
                         # unpack upd message
-                        if message.data[0] == b'upd' and isinstance(message.data[2], QTable):
-                            for (time, sym, fht, side, price, qty) in message.data[2]:
+                        if message.data[0] == b'upd' and isinstance(
+                                message.data[2], QTable):
+                            for (time, sym, fht, side, price,
+                                 qty) in message.data[2]:
                                 data = {
                                     'time': str(time),
                                     'sym': str(sym),
@@ -65,7 +72,10 @@ class ListenerThread(threading.Thread):
                                 }
                                 print(data)
 
-                                async_to_sync(channel_layer.group_send)("qsync", {"type": "send_tick_data", "text": json.dumps(data)})
+                                async_to_sync(
+                                    channel_layer.group_send)(
+                                    "qsync", {
+                                        "type": "send_tick_data", "text": json.dumps(data)})
                 except QException as e:
                     print(e)
 
