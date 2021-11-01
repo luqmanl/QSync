@@ -1,7 +1,8 @@
 from rest_framework import viewsets
-from django.shortcuts import HttpResponse  # , render
-from models import Qsync
-from serializers import QsyncSerializer
+from django.shortcuts import HttpResponse
+
+from .models import Book
+from .serializers import QsyncSerializer
 
 
 def index(request):
@@ -12,4 +13,4 @@ def index(request):
 class QsyncView(viewsets.ModelViewSet):
     serializer_class = QsyncSerializer
     # queryset = Qsync.objects.all() # Apparently Qsync has no 'objects' member
-    queryset = Qsync  # To change
+    queryset = Book.objects.all()  # To change
