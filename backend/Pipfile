@@ -11,12 +11,14 @@ cryptofeed = "*"
 qpython = "*"
 numpy = "*"
 channels = "*"
-pylint-django = "*"
+channels-redis = "*"
 
 [dev-packages]
 pytest = "*"
 autopep8 = "*"
 pylint = "*"
+pylint-django = "*"
+channels-redis = "*"
 
 [requires]
 python_version = "3.8"
