@@ -28,7 +28,6 @@ compile-front:
 compile-back:
   stage: compile
   image: python:3.8.10-slim-buster
-  cache: []
   script:
     - !reference [.setup, back]
     - pipenv run compile
@@ -46,7 +45,6 @@ style-front:
 style-back:
   stage: style
   image: python:3.8.10-slim-buster
-  cache: []
   script:
     - !reference [.setup, back]
     - pipenv run lint
@@ -59,12 +57,11 @@ test-front:
   script:
     - !reference [.setup, front]
     - CI=true yarn test --passWithNoTests
-  needs: [format-front]
+  needs: [style-front]
 
 test-back:
   stage: test
   image: python:3.8.10-slim-buster
-  cache: []
   script:
     - !reference [.setup, back]
     - pipenv run test
