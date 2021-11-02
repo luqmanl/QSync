@@ -2,8 +2,7 @@ image: node:latest
 
 stages:
   - compile
-  - lint
-  - format
+  - style
   - test
   - deploy
 
@@ -29,42 +28,28 @@ compile-front:
 compile-back:
   stage: compile
   image: python:3.8.10-slim-buster
-  script: 
+  script:
     - !reference [.setup, back]
     - pipenv run compile
   needs: []
 
-# Lint
-lint-front:
-  stage: lint
+# Style
+style-front:
+  stage: style
   script:
     - !reference [.setup, front]
     - yarn lint
+    - yarn check-format
   needs: [compile-front]
 
-lint-back:
-  stage: lint
+style-back:
+  stage: style
   image: python:3.8.10-slim-buster
   script:
     - !reference [.setup, back]
     - pipenv run lint
-  needs: [compile-back] 
-
-# Format
-format-front:
-  stage: format
-  script:
-    - !reference [.setup, front]
-    - yarn format --check
-  needs: [lint-front]
-
-format-back:
-  stage: format
-  image: python:3.8.10-slim-buster
-  script:
-    - !reference [.setup, back]
     - pipenv run check-format
-  needs: [lint-back]
+  needs: [compile-back]
 
 # Test
 test-front:
@@ -72,7 +57,7 @@ test-front:
   script:
     - !reference [.setup, front]
     - CI=true yarn test --passWithNoTests
-  needs: [format-front]
+  needs: [style-front]
 
 test-back:
   stage: test
@@ -80,7 +65,7 @@ test-back:
   script:
     - !reference [.setup, back]
     - pipenv run test
-  needs: [format-back]
+  needs: [style-back]
 
 # Deploy
 deploy-app:
