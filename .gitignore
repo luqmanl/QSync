@@ -14,7 +14,11 @@ frontend/.yarn/*
 !frontend/.yarn/sdks
 !frontend/.yarn/versions
 yarn-error.log
+.yarnrc.yml
 
 # Python Files
 __pycache__/
 .pytest_cache/
+
+# Backend
+dump.rdb

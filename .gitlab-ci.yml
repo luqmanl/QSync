@@ -20,13 +20,6 @@ stages:
 # Compile
 compile-front:
   stage: compile
-  cache:
-    paths:
-      - frontend/node_modules/
-      - frontend/.yarn
-    key:
-      files:
-        - yarn.lock
   script:
     - !reference [.setup, front]
     - yarn compile
@@ -65,8 +58,8 @@ test-front:
   stage: test
   script:
     - !reference [.setup, front]
-    - CI=true yarn test
-  needs: [style-front]
+    - CI=true yarn test --passWithNoTests
+  needs: [format-front]
 
 test-back:
   stage: test
