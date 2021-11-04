@@ -6,7 +6,6 @@ class QsyncConsumer(AsyncConsumer):
     board_room = "qsync"
 
     async def websocket_connect(self, event):
-        print('connected', event)
         await self.channel_layer.group_add(
             QsyncConsumer.board_room,
             self.channel_name
