@@ -12,5 +12,5 @@ class AppConfig(AppConfig):
 
     def ready(self) -> None:
         super().ready()
-        subprocess.run(["redis-server"])
+        # subprocess.run(["redis-server"])
         ListenerThread().start()
