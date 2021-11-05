@@ -20,30 +20,30 @@ import json
 
 async def book(book_, timestamp):
     print("\n--------\n")
-    print(type(book_.delta))
 
-    if (book_.delta is None):
-        return
+    bid_sizes = []
+    ask_sizes = []
 
-    for (x, y) in book_.delta['bid']:
-        q.sendAsync('.u.upd', np.string_('orderbooktop'), [
-            qlist([np.string_(book_.symbol)], qtype=QSYMBOL_LIST),
-            qlist([qtemp.from_raw_qtemporal(timestamp, QTIMESTAMP)],
-                  qtype=QTIMESTAMP),
-            qlist(['bid'], qtype=QSYMBOL_LIST),
-            qlist([x], qtype=QDOUBLE_LIST),
-            qlist([y], qtype=QDOUBLE_LIST),
-        ])
+    data = [
+        qlist([np.string_(book_.symbol)], qtype=QSYMBOL_LIST),
+        qlist([qtemp.from_raw_qtemporal(timestamp, QTIMESTAMP)],
+              qtype=QTIMESTAMP),
+    ]
 
-    for (x, y) in book_.delta['ask']:
-        q.sendAsync('.u.upd', np.string_('orderbooktop'), [
-            qlist([np.string_(book_.symbol)], qtype=QSYMBOL_LIST),
-            qlist([qtemp.from_raw_qtemporal(timestamp, QTIMESTAMP)],
-                  qtype=QTIMESTAMP),
-            qlist(['ask'], qtype=QSYMBOL_LIST),
-            qlist([x], qtype=QDOUBLE_LIST),
-            qlist([y], qtype=QDOUBLE_LIST),
-        ])
+    for i in range(10):
+        bid, size = book_.book.bids.index(i)
+        data.append(qlist([bid], qtype=QDOUBLE_LIST))
+        bid_sizes.append(qlist([size], qtype=QDOUBLE_LIST))
+
+    for i in range(10):
+        ask, size = book_.book.asks.index(i)
+        data.append(qlist([ask], qtype=QDOUBLE_LIST))
+        bid_sizes.append(qlist([size], qtype=QDOUBLE_LIST))
+
+    data.extend(bid_sizes)
+    data.extend(ask_sizes)
+
+    q.sendAsync('.u.upd', np.string_('orderbooktop'), data)
 
 
 def main():
