@@ -38,7 +38,7 @@ const LatestTrades = () => {
         // eslint-disable-next-line no-magic-numbers
         volume: Math.random() * 3,
         // eslint-disable-next-line no-magic-numbers
-        price: Math.random() * 20000 + 10000,
+        price: (Math.random() * 20000) + 10000,
       };
 
       curTrades.push(newTrade);

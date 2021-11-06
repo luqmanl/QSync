@@ -1,42 +1,23 @@
+/* eslint-disable new-cap */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-magic-numbers */
 import {
   lightningChart,
-  LineSeries,
   OHLCSeriesTypes,
-  OHLCSeriesWithAutomaticPacking,
-  AxisScrollStrategies,
-  AxisTickStrategies,
-  Series2D,
+  // LineSeries,
+  // OHLCSeriesWithAutomaticPacking,
+  // AxisScrollStrategies,
+  // AxisTickStrategies,
+  // Series2D,
 } from "@arction/lcjs";
 import { dataPoint } from "../App";
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  useLayoutEffect,
-  useCallback,
-} from "react";
+import React, { useState, useLayoutEffect } from "react";
 
-type stateType = {
-  series: LineSeries;
-  id: string;
-  ohlcSeriesAutoPacking: OHLCSeriesWithAutomaticPacking;
-  data: dataPoint[];
-};
 type propsType = {
   id: string;
   graphTitle: string;
   xAxis: string;
   yAxis: string;
-};
-
-type responseType = {
-  time: number;
-  sym: string;
-  feedhandlerTime: number;
-  buys: number[];
-  buySizes: number[];
-  askSizes: number[];
 };
 
 const RealTimeCandleSticksChart = (props: propsType) => {
