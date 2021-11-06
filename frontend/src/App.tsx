@@ -43,17 +43,17 @@ const App = () => {
             graphTitle="Price against Time"
           />
         </div>
-        <Form>
-          <Form.Check
-            type="checkbox"
-            id="default-checkbox"
-            label="Toggle latest trade/order book view"
-            onChange={() => {
-              setShowLatest(!showLatest);
-            }}
-          ></Form.Check>
-        </Form>
         <div className="order-book-container">
+          <Form>
+            <Form.Check
+              type="checkbox"
+              id="default-checkbox"
+              label="Toggle latest trade/order book view"
+              onChange={() => {
+                setShowLatest(!showLatest);
+              }}
+            ></Form.Check>
+          </Form>
           {showLatest ? <LatestTrades /> : <OrderBookTable />}
         </div>
       </div>
