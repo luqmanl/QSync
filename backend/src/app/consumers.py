@@ -6,8 +6,12 @@ class QsyncConsumer(AsyncConsumer):
     board_room = "qsync"
 
     async def websocket_connect(self, event):
+        self.exchange_name = self.scope['url_route']['kwargs']['exchange_name']
+        self.pair_name = self.scope['url_route']['kwargs']['pair_name']
+        self.data_type = self.scope['url_route']['kwargs']['data_type']
+
         await self.channel_layer.group_add(
-            QsyncConsumer.board_room,
+            f"{self.exchange_name}_{self.pair_name}_{self.data_type}",
             self.channel_name
         )
         await self.send({

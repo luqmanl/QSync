@@ -1,3 +1,6 @@
+/* eslint-disable no-magic-numbers */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable new-cap */
 import {
   lightningChart,
   emptyLine,
@@ -38,6 +41,7 @@ class VolumeMovingAverageChart extends React.Component<propsType, stateType> {
     // Use DateTime TickStrategy with custom date origin for X Axis.
     chartOHLC
       .getDefaultAxisX()
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .setTickStrategy(AxisTickStrategies.DateTime, (tickStrategy: any) =>
         tickStrategy.setDateOrigin(Date.now())
       );
@@ -79,11 +83,11 @@ class VolumeMovingAverageChart extends React.Component<propsType, stateType> {
       .setThickness(80);
 
     // Add series.
-    const areaRange = chartOHLC
-      .addAreaRangeSeries({ yAxis: stockAxisY })
-      .setName("Bollinger band")
-      .setMouseInteractions(false)
-      .setCursorEnabled(false);
+    // const areaRange = chartOHLC
+    //   .addAreaRangeSeries({ yAxis: stockAxisY })
+    //   .setName("Bollinger band")
+    //   .setMouseInteractions(false)
+    //   .setCursorEnabled(false);
 
     const stockFigureWidth = 5.0;
     const stock = chartOHLC

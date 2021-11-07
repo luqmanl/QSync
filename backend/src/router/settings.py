@@ -74,7 +74,7 @@ TEMPLATE_DIRS = [
 ]
 
 WSGI_APPLICATION = 'router.wsgi.application'
-ASGI_APPLICATION = 'router.routing.application'
+ASGI_APPLICATION = 'router.asgi.application'
 
 
 CHANNEL_LAYERS = {
