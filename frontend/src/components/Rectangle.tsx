@@ -10,7 +10,7 @@ const Rectangle = () => {
                         style={{ background: 'black', borderColor: 'black'  }}
                         variant="primary" />
                 <Dropdown.Menu>
-                    <Dropdown.Item href="#">Hello world!</Dropdown.Item>
+                    <Dropdown.Item href="#">Options...</Dropdown.Item>
                 </Dropdown.Menu>
             </Dropdown>
             </div>
