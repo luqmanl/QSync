@@ -9,9 +9,9 @@ const Rectangle = () => {
                     <Dropdown.Toggle className='dropdown-toggle'
                         style={{ background: 'black', borderColor: 'black'  }}
                         variant="primary" />
-                <Dropdown.Menu>
-                    <Dropdown.Item href="#">Options...</Dropdown.Item>
-                </Dropdown.Menu>
+                     <Dropdown.Menu>
+                            <Dropdown.Item href="#">Options...</Dropdown.Item>
+                    </Dropdown.Menu>
             </Dropdown>
             </div>
         </div>
