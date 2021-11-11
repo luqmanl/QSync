@@ -7,6 +7,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import NavBar from "./components/NvBar";
 import LatestTrades from "./components/LatestTrades";
 import { Form } from "react-bootstrap";
+import Rectangle from "./components/Rectangle";
 
 export type dataPoint = {
   x: number;
@@ -32,9 +33,9 @@ const App = () => {
   const [showLatest, setShowLatest] = useState(false);
 
   return (
-    <div>
-      <NavBar />
-      <div className="flex-container">
+    <div className='page'>
+       <NavBar />
+       <div className="flex-container">
         <div className="graph-container">
           <RealTimeCandleSticksChart
             id="my-chart"
@@ -56,7 +57,8 @@ const App = () => {
           </Form>
           {showLatest ? <LatestTrades /> : <OrderBookTable />}
         </div>
-      </div>
+      </div> 
+      <Rectangle/>
     </div>
   );
 };
