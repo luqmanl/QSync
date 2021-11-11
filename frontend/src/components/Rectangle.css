@@ -8,13 +8,12 @@
   border-radius: 32px;
 }
 
-.dropdown-menu {
-    background-color: rgb(255, 255, 255);
-    
-}
-
 .dropdown {
     display: flex;
-    background-color: rgba(214, 46, 46, 0);
     right:0
+}
+
+.dropdown-button {
+  align-self: right;
+  right: 100%;
 }
