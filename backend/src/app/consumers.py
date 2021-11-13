@@ -24,31 +24,34 @@ class ClientConsumer(AsyncConsumer):
             "type": "websocket.accept"
         })
 
-    async def send_l2_data(self, event):
-        data = event["data"]
-
-        # generate overview statistics if needed
-        if self.data_type == "l2overview":
-            data = json.loads(event["data"])
-            highestBid = data["bids"][0]
-            lowestAsk = data["asks"][0]
-            with qconnection.QConnection(host='localhost', port=5011) as q:
-                volume = q.sendSync('.trades.vol', np.string_(data['sym']))
-            print(volume)
-            imbalance = (highestBid - lowestAsk) / \
-                (highestBid + lowestAsk)
-            pairs = [{
-                "pair_name": data["sym"],
-                "highest_bid": highestBid,
-                "lowest_ask": lowestAsk,
-                "volume": volume,
-                "imbalance": imbalance,
-            }]
-            data = json.dumps({"pairs": pairs})
+    async def send_l2overview_data(self, event):
+        data = json.loads(event["data"])
+        highestBid = data["bids"][0]
+        lowestAsk = data["asks"][0]
+        with qconnection.QConnection(host='localhost', port=5011) as q:
+            volume = q.sendSync('.trades.vol', np.string_(data['sym']))
+        print(volume)
+        imbalance = (highestBid - lowestAsk) / \
+            (highestBid + lowestAsk)
+        pairs = [{
+            "pair_name": data["sym"],
+            "highest_bid": highestBid,
+            "lowest_ask": lowestAsk,
+            "volume": volume,
+            "imbalance": imbalance,
+        }]
+        data = json.dumps({"pairs": pairs})
 
         await self.send({
             "type": 'websocket.send',
             "text": data
+        })
+
+    async def send_l2orderbook_data(self, event):
+
+        await self.send({
+            "type": 'websocket.send',
+            "text": event["data"]
         })
 
     async def websocket_disconnect(self, event):
