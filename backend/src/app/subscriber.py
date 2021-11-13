@@ -72,7 +72,11 @@ class ListenerThread(threading.Thread):
             }
 
             group_name = f"binance_{data['sym']}_orderbook"
+            async_to_sync(
+                channel_layer.group_send)(group_name, {
+                    "type": "send_l2_data", "data": json.dumps(data)})
 
+            group_name = f"binance_{data['sym']}_l2overview"
             async_to_sync(
                 channel_layer.group_send)(group_name, {
                     "type": "send_l2_data", "data": json.dumps(data)})
