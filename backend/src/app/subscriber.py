@@ -13,6 +13,34 @@ from qpython.qcollection import QTable
 from qpython.qconnection import QConnection
 
 
+def send_orderbook(data_table, datatype, channel_layer):
+    for data_row in data_table:
+        data_row = list(data_row)
+        data = {
+            'time': str(data_row[0]),
+            'sym': data_row[1].decode("utf-8"),
+            'feedhandler_time': str(data_row[2]),
+            'bids': [bid for bid in data_row[3: 13]],
+            'asks': [ask for ask in data_row[13: 23]],
+            'buy_sizes': [bid_price for bid_price in data_row[23: 33]],
+            'ask_sizes': [ask_price for ask_price in data_row[33: 43]]
+        }
+
+        group_name = f"binance_{data['sym']}_{datatype}"
+        async_to_sync(
+            channel_layer.group_send)(group_name, {
+                "type": f"send_{datatype}_data", "data": json.dumps(data)})
+
+
+""" Maps kdb table names to channels with data types that are subscribing
+    for the corresponding table updates
+"""
+table_to_channel_datatypes = {
+
+    "orderbooktop": (send_orderbook, ["l2orderbook", "l2overview"])
+}
+
+
 class ListenerThread(threading.Thread):
     def __init__(self):
         super().__init__()
@@ -51,32 +79,12 @@ class ListenerThread(threading.Thread):
                         if message.data[0] == b'upd' and isinstance(
                                 message.data[2], QTable):
 
-                            if message.data[1].decode("utf-8") == "orderbooktop":
-                                self.send_orderbook(
-                                    message.data[2], channel_layer)
+                            table_name = message.data[1].decode("utf-8")
+                            (send_func,
+                             datatypes) = table_to_channel_datatypes[table_name]
+                            for datatype in datatypes:
+                                send_func(
+                                    message.data[2], datatype, channel_layer)
 
                 except QException as e:
                     print(e)
-
-    def send_orderbook(self, data_table, channel_layer):
-        for data_row in data_table:
-            data_row = list(data_row)
-            data = {
-                'time': str(data_row[0]),
-                'sym': data_row[1].decode("utf-8"),
-                'feedhandler_time': str(data_row[2]),
-                'bids': [bid for bid in data_row[3: 13]],
-                'asks': [ask for ask in data_row[13: 23]],
-                'buy_sizes': [bid_price for bid_price in data_row[23: 33]],
-                'ask_sizes': [ask_price for ask_price in data_row[33: 43]]
-            }
-
-            group_name = f"binance_{data['sym']}_orderbook"
-            async_to_sync(
-                channel_layer.group_send)(group_name, {
-                    "type": "send_l2_data", "data": json.dumps(data)})
-
-            group_name = f"binance_{data['sym']}_l2overview"
-            async_to_sync(
-                channel_layer.group_send)(group_name, {
-                    "type": "send_l2_data", "data": json.dumps(data)})
