@@ -1,20 +1,17 @@
-from time import time
 import numpy as np
 from cryptofeed import FeedHandler
-from cryptofeed.defines import L2_BOOK
+from cryptofeed.defines import L2_BOOK, TRADES
 
 from cryptofeed.exchanges import (Binance)
 
-from qpython import qconnection, qtemporal as qtemp
-from qpython.qtype import QSYMBOL_LIST, QDOUBLE_LIST, QTIMESTAMP, QTIMESTAMP_LIST
+from qpython import qconnection
+from qpython.qtype import QSYMBOL_LIST, QDOUBLE_LIST, QTIMESTAMP_LIST
 
 from qpython.qcollection import qlist
-from datetime import datetime
 """ Updates the L2 Orderbook table with the top 10 bids and asks from the latest snapshot.  """
 
 
 async def l2book_callback(book_, timestamp):
-    print(type(timestamp))
     bid_sizes = []
     ask_sizes = []
 
@@ -40,6 +37,17 @@ async def l2book_callback(book_, timestamp):
     print("orderbooktop updated: ")
 
 
+async def trade_callback(trade, timestamp):
+    q.sendAsync('.u.upd', np.string_('trades'), [
+        qlist([np.string_(trade.symbol)], qtype=QSYMBOL_LIST),
+        qlist([timestamp], qtype=QTIMESTAMP_LIST),
+        qlist([trade.price], qtype=QDOUBLE_LIST),
+        qlist([trade.amount], qtype=QDOUBLE_LIST),
+        qlist([np.string_(trade.side)], qtype=QSYMBOL_LIST),
+    ])
+    print("trades updated")
+
+
 def main():
 
     config = {'log': {'filename': 'feedhandler.log',
@@ -49,7 +57,7 @@ def main():
     # pair is ['BTC-USDT']
     pairs = Binance.symbols()[10: 11]
     f.add_feed(Binance(symbols=pairs, channels=[
-               L2_BOOK], callbacks={L2_BOOK: l2book_callback}))
+               L2_BOOK, TRADES], callbacks={L2_BOOK: l2book_callback, TRADES: trade_callback}))
     f.run()
 
 
