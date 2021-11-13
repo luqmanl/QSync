@@ -1,6 +1,9 @@
 import json
 from channels.consumer import AsyncConsumer
 import asyncio
+import numpy as np
+
+from qpython import qconnection
 
 
 class ClientConsumer(AsyncConsumer):
@@ -29,15 +32,17 @@ class ClientConsumer(AsyncConsumer):
             data = json.loads(event["data"])
             highestBid = data["bids"][0]
             lowestAsk = data["asks"][0]
-            volume = 0
-            imbalance = (float(highestBid) - float(lowestAsk)) / \
-                (float(highestBid) + float(lowestAsk))
+            with qconnection.QConnection(host='localhost', port=5011) as q:
+                volume = q.sendSync('.trades.vol', np.string_(data['sym']))
+            print(volume)
+            imbalance = (highestBid - lowestAsk) / \
+                (highestBid + lowestAsk)
             pairs = [{
                 "pair_name": data["sym"],
                 "highest_bid": highestBid,
                 "lowest_ask": lowestAsk,
                 "volume": volume,
-                "imbalance": str(imbalance),
+                "imbalance": imbalance,
             }]
             data = json.dumps({"pairs": pairs})
 
