@@ -17,9 +17,7 @@ def send_orderbook(data_table, datatype, channel_layer):
     for data_row in data_table:
         data_row = list(data_row)
         data = {
-            'time': str(data_row[0]),
             'sym': data_row[1].decode("utf-8"),
-            'feedhandlerTime': str(data_row[2]),
             'bids': [bid for bid in data_row[3: 13]],
             'asks': [ask for ask in data_row[13: 23]],
             'buySizes': [bid_price for bid_price in data_row[23: 33]],
@@ -36,12 +34,10 @@ def send_trade(data_table, datatype, channel_layer):
     for data_row in data_table:
         data_row = list(data_row)
         data = {
-            'time': str(data_row[0]),
             'sym': data_row[1].decode("utf-8"),
-            'feedhandlerTime': str(data_row[2]),
             'price': float(data_row[3]),
             'quantity': float(data_row[4]),
-            'tType': data_row[5].decode("utf-8"),
+            'type': data_row[5].decode("utf-8"),
         }
 
         group_name = f"binance_{data['sym']}_{datatype}"

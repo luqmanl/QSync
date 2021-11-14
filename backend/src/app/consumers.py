@@ -36,7 +36,7 @@ class ClientConsumer(AsyncConsumer):
             (highestBid + lowestAsk)
 
         pairs = [{
-            "pairName": data["sym"],
+            "sym": data["sym"],
             "highestBid": highestBid,
             "lowestAsk": lowestAsk,
             "volume": volume,
