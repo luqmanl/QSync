@@ -1,33 +1,23 @@
 import numpy as np
 from cryptofeed import FeedHandler
-from cryptofeed.defines import L2_BOOK
+from cryptofeed.defines import L2_BOOK, TRADES
 
 from cryptofeed.exchanges import (Binance)
 
-from qpython import qconnection, qtemporal as qtemp
-from qpython.qtype import QSYMBOL_LIST, QDOUBLE_LIST, QTIMESTAMP
+from qpython import qconnection
+from qpython.qtype import QSYMBOL_LIST, QDOUBLE_LIST, QTIMESTAMP_LIST
 
 from qpython.qcollection import qlist
-
-import json
-
-# Examples of some handlers for different updates. These currently don't do much.
-# Handlers should conform to the patterns/signatures in callback.py
-# Handlers can be normal methods/functions or async. The feedhandler is paused
-# while the callbacks are being handled (unless they in turn await other functions or I/O)
-# so they should be as lightweight as possible
+""" Updates the L2 Orderbook table with the top 10 bids and asks from the latest snapshot.  """
 
 
-async def book(book_, timestamp):
-    print("\n--------\n")
-
+async def l2book_callback(book_, timestamp):
     bid_sizes = []
     ask_sizes = []
 
     data = [
         qlist([np.string_(book_.symbol)], qtype=QSYMBOL_LIST),
-        qlist([qtemp.from_raw_qtemporal(timestamp, QTIMESTAMP)],
-              qtype=QTIMESTAMP),
+        qlist([timestamp], qtype=QTIMESTAMP_LIST),
     ]
 
     for i in range(10):
@@ -44,25 +34,33 @@ async def book(book_, timestamp):
     data.extend(ask_sizes)
 
     q.sendAsync('.u.upd', np.string_('orderbooktop'), data)
+    print("orderbooktop updated: ")
+
+
+async def trade_callback(trade, timestamp):
+    q.sendAsync('.u.upd', np.string_('trades'), [
+        qlist([np.string_(trade.symbol)], qtype=QSYMBOL_LIST),
+        qlist([timestamp], qtype=QTIMESTAMP_LIST),
+        qlist([trade.price], qtype=QDOUBLE_LIST),
+        qlist([trade.amount], qtype=QDOUBLE_LIST),
+        qlist([np.string_(trade.side)], qtype=QSYMBOL_LIST),
+    ])
+    print("trades updated")
 
 
 def main():
-    # demo log
-    # config = {'log': {'filename': 'demo.log',
-    #                  'level': 'DEBUG', 'disabled': False}}
-    # The config will be automatically passed into any exchanges set up by string.
-    # Instantiated exchange objects would need to pass the config in manually.
-    # f = FeedHandler(config=config)
 
-    f = FeedHandler()
-    # pair is ['BTC-USDT']
-    pairs = Binance.symbols()[10: 11]
+    config = {'log': {'filename': 'feedhandler.log',
+                      'level': 'DEBUG', 'disabled': True}}
+    f = FeedHandler(config=config)
+
+    # pair is ['ETH-BTC', 'BTC-USDT', 'ETH-USDT']
+    pairs = [Binance.symbols()[i] for i in (0, 10, 11)]
     f.add_feed(Binance(symbols=pairs, channels=[
-               L2_BOOK], callbacks={L2_BOOK: book}))
+               L2_BOOK, TRADES], callbacks={L2_BOOK: l2book_callback, TRADES: trade_callback}))
     f.run()
 
 
 if __name__ == '__main__':
     with qconnection.QConnection(host='localhost', port=5010) as q:
-
         main()
