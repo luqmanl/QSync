@@ -56,5 +56,12 @@ class ClientConsumer(AsyncConsumer):
             "text": event["data"]
         })
 
+    async def send_trade_data(self, event):
+
+        await self.send({
+            'type': 'websocket.send',
+            'text': event['data']
+        })
+
     async def websocket_disconnect(self, event):
         print('disconnected', event)

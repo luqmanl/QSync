@@ -32,12 +32,31 @@ def send_orderbook(data_table, datatype, channel_layer):
                 "type": f"send_{datatype}_data", "data": json.dumps(data)})
 
 
+def send_trade(data_table, datatype, channel_layer):
+    for data_row in data_table:
+        data_row = list(data_row)
+        data = {
+            'time': str(data_row[0]),
+            'sym': data_row[1].decode("utf-8"),
+            'feedhandlerTime': str(data_row[2]),
+            'price': float(data_row[3]),
+            'quantity': float(data_row[4]),
+            'tType': data_row[5].decode("utf-8"),
+        }
+
+        group_name = f"binance_{data['sym']}_{datatype}"
+        async_to_sync(
+            channel_layer.group_send)(group_name, {
+                "type": f"send_{datatype}_data", "data": json.dumps(data)})
+
+
 """ Maps kdb table names to channels with data types that are subscribing
     for the corresponding table updates
 """
 table_to_channel_datatypes = {
 
-    "orderbooktop": (send_orderbook, ["l2orderbook", "l2overview"])
+    "orderbooktop": (send_orderbook, ["l2orderbook", "l2overview"]),
+    "trades": (send_trade, ["trade"]),
 }
 
 
@@ -58,7 +77,7 @@ class ListenerThread(threading.Thread):
         with QConnection(host='localhost', port=5010) as Q:
 
             response = Q.sendSync(
-                '.u.sub', np.string_('orderbooktop'), np.string_(''))
+                '.u.sub', np.string_(''), np.string_(''))
             if isinstance(response[1], QTable):
                 print(f'{response[0]} table data model: {response[1].dtype}')
 
