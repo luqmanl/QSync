@@ -11,7 +11,7 @@ interface Trade {
 const LatestTrades = () => {
   const [trades, setTrades] = useState<Trade[]>([]);
   const DECIMAL_PLACES = 2;
-  const EXTEND_LIST_BY = 5;
+  // const EXTEND_LIST_BY = 5;
 
   const generateRow = (trade: Trade) => {
     const pricePerVol = trade.price / trade.volume;
