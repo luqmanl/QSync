@@ -19,11 +19,11 @@ def send_orderbook(data_table, datatype, channel_layer):
         data = {
             'time': str(data_row[0]),
             'sym': data_row[1].decode("utf-8"),
-            'feedhandler_time': str(data_row[2]),
+            'feedhandlerTime': str(data_row[2]),
             'bids': [bid for bid in data_row[3: 13]],
             'asks': [ask for ask in data_row[13: 23]],
-            'buy_sizes': [bid_price for bid_price in data_row[23: 33]],
-            'ask_sizes': [ask_price for ask_price in data_row[33: 43]]
+            'buySizes': [bid_price for bid_price in data_row[23: 33]],
+            'askSizes': [ask_price for ask_price in data_row[33: 43]]
         }
 
         group_name = f"binance_{data['sym']}_{datatype}"
