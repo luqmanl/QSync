@@ -1,9 +1,9 @@
 /* eslint-disable no-magic-numbers */
-import React, { useState, useEffect } from "react";
-import { Item } from "../App";
+import React, { useState, useLayoutEffect } from "react";
+import { Item, bookData } from "../App";
 import { Table } from "react-bootstrap";
 import "./OrderBookTable.css";
-import axios from "axios";
+
 
 // time     tickersymbol     bid/ask     price      quantity
 
@@ -15,6 +15,8 @@ type rowPropType = {
   data: Item;
   index: number;
 };
+
+
 
 const deafult: Item = {
   id: 1,
@@ -78,24 +80,23 @@ const OrderBookTableRow = (props: rowPropType) => {
 const OrderBookTable = () => {
   const [data, setData] = useState<Item>(deafult);
 
-  const refreshList = () => {
-    axios
-      .get<Item[]>("http://localhost:8000/api/book/")
-      .then((res) => {
-        setData(res.data[res.data.length - 1]);
-        console.log(res.data.length - 1);
-      })
-      .catch((err) => console.log(err));
-  };
+  
+  const ws = new WebSocket("ws://localhost:8000/ws/data/binance/BTC-USDT/orderbook/");
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      refreshList();
-    }, 1000);
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
+  useLayoutEffect(() => {
+    ws.onopen = () => {
+      console.log("OPENED")
+    }
+    ws.onmessage = (ev) => {
+      const res : bookData = JSON.parse(ev.data)
+      const newData : Item = {
+        id : 2,
+        bookData : res
+      }
+      console.log(JSON.parse(ev.data))
+      setData(newData)
+    }
+  }, [])
 
   return (
     <div>
