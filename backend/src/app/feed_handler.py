@@ -54,8 +54,8 @@ def main():
                       'level': 'DEBUG', 'disabled': True}}
     f = FeedHandler(config=config)
 
-    # pair is ['BTC-USDT']
-    pairs = Binance.symbols()[10: 11]
+    # pair is ['ETH-BTC', 'BTC-USDT', 'ETH-USDT']
+    pairs = [Binance.symbols()[i] for i in (0, 10, 11)]
     f.add_feed(Binance(symbols=pairs, channels=[
                L2_BOOK, TRADES], callbacks={L2_BOOK: l2book_callback, TRADES: trade_callback}))
     f.run()
@@ -63,5 +63,4 @@ def main():
 
 if __name__ == '__main__':
     with qconnection.QConnection(host='localhost', port=5010) as q:
-
         main()
