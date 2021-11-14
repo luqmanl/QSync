@@ -15,5 +15,7 @@ upd:insert;
 .u.rep:{(.[;();:;].)each x;if[null first y;:()];-11!y;system "cd ",1_-10_string first reverse y};
 / HARDCODE \cd if other than logdir/db
 
+.trades.vol: {[x] vols:select vol:sum quantity from trades where sym=x,time > .z.t - 01:00; vols[0;`vol]}
+
 / connect to ticker plant for (schema;(logcount;log))
 .u.rep .(hopen `$":",.u.x 0)"(.u.sub[`;`];`.u `i`L)";
