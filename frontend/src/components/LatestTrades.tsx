@@ -9,6 +9,7 @@ interface Trade {
 }
 
 const LatestTrades = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [trades, setTrades] = useState<Trade[]>([]);
   const DECIMAL_PLACES = 2;
   // const EXTEND_LIST_BY = 5;

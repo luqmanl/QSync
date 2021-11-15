@@ -10,17 +10,16 @@
   text-transform: capitalize;
 }
 
-.order-book-holder{
+.order-book-holder {
   background-color: black;
   padding: 10px 10px 10px 10px;
   border: white;
   border-radius: 20px;
 }
 
-.component-title{
+.component-title {
   margin: 0 auto;
   color: white;
   width: 100%;
   text-align: center;
-
 }

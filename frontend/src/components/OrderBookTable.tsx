@@ -83,18 +83,17 @@ const OrderBookTable = () => {
     );
 
     socket.addEventListener("message", (ev) => {
-      const res  = JSON.parse(ev.data)
-      const newBookData : bookData = {
+      const res = JSON.parse(ev.data);
+      const newBookData: bookData = {
         ...res,
-        bidSizes:res.buySizes
-      }
-      const newData : Item = {
-        id : 2,
-        bookData : newBookData
-      }
-      console.log(JSON.parse(ev.data))
-      setData(newData)
-
+        bidSizes: res.buySizes,
+      };
+      const newData: Item = {
+        id: 2,
+        bookData: newBookData,
+      };
+      console.log(JSON.parse(ev.data));
+      setData(newData);
     });
   }, []);
 
