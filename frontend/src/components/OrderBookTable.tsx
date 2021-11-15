@@ -1,9 +1,8 @@
 /* eslint-disable no-magic-numbers */
-import React, { useState, useLayoutEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Item, bookData } from "../App";
 import { Table } from "react-bootstrap";
 import "./OrderBookTable.css";
-
 
 // time     tickersymbol     bid/ask     price      quantity
 
@@ -15,8 +14,6 @@ type rowPropType = {
   data: Item;
   index: number;
 };
-
-
 
 const deafult: Item = {
   id: 1,
@@ -80,27 +77,31 @@ const OrderBookTableRow = (props: rowPropType) => {
 const OrderBookTable = () => {
   const [data, setData] = useState<Item>(deafult);
 
-  
-  const ws = new WebSocket("ws://localhost:8000/ws/data/binance/BTC-USDT/orderbook/");
+  useEffect(() => {
+    const socket = new WebSocket(
+      "ws://localhost:8000/ws/data/binance/BTC-USDT/l2orderbook/"
+    );
 
-  useLayoutEffect(() => {
-    ws.onopen = () => {
-      console.log("OPENED")
-    }
-    ws.onmessage = (ev) => {
-      const res : bookData = JSON.parse(ev.data)
+    socket.addEventListener("message", (ev) => {
+      const res  = JSON.parse(ev.data)
+      const newBookData : bookData = {
+        ...res,
+        bidSizes:res.buySizes
+      }
       const newData : Item = {
         id : 2,
-        bookData : res
+        bookData : newBookData
       }
       console.log(JSON.parse(ev.data))
       setData(newData)
-    }
-  }, [])
+
+    });
+  }, []);
 
   return (
-    <div>
-      <Table striped bordered hover variant="dark">
+    <div className="order-book-holder">
+      <h2 className="component-title">Order Book</h2>
+      <Table>
         <thead>
           <tr>
             <th className="table-header" colSpan={4}>
