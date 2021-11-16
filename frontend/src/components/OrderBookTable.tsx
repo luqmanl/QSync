@@ -1,9 +1,8 @@
 /* eslint-disable no-magic-numbers */
 import React, { useState, useEffect } from "react";
-import { Item } from "../App";
+import { Item, bookData } from "../App";
 import { Table } from "react-bootstrap";
 import "./OrderBookTable.css";
-import axios from "axios";
 
 // time     tickersymbol     bid/ask     price      quantity
 
@@ -78,28 +77,30 @@ const OrderBookTableRow = (props: rowPropType) => {
 const OrderBookTable = () => {
   const [data, setData] = useState<Item>(deafult);
 
-  const refreshList = () => {
-    axios
-      .get<Item[]>("http://localhost:8000/api/book/")
-      .then((res) => {
-        setData(res.data[res.data.length - 1]);
-        console.log(res.data.length - 1);
-      })
-      .catch((err) => console.log(err));
-  };
-
   useEffect(() => {
-    const interval = setInterval(() => {
-      refreshList();
-    }, 1000);
-    return () => {
-      clearInterval(interval);
-    };
+    const socket = new WebSocket(
+      "ws://localhost:8000/ws/data/binance/BTC-USDT/l2orderbook/"
+    );
+
+    socket.addEventListener("message", (ev) => {
+      const res = JSON.parse(ev.data);
+      const newBookData: bookData = {
+        ...res,
+        bidSizes: res.buySizes,
+      };
+      const newData: Item = {
+        id: 2,
+        bookData: newBookData,
+      };
+      console.log(JSON.parse(ev.data));
+      setData(newData);
+    });
   }, []);
 
   return (
-    <div>
-      <Table striped bordered hover variant="dark">
+    <div className="order-book-holder">
+      <h2 className="component-title">Order Book</h2>
+      <Table>
         <thead>
           <tr>
             <th className="table-header" colSpan={4}>
