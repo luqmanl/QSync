@@ -1,0 +1,11 @@
+.search-bar {
+  outline: 30px;
+  outline-color: black;
+  padding-bottom: 0cm;
+  text-align: center;
+}
+
+.list_element {
+  list-style-type: none;
+  color: white;
+}

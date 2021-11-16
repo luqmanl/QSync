@@ -7,6 +7,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import NavBar from "./components/NvBar";
 import LatestTrades from "./components/LatestTrades";
 import { Form } from "react-bootstrap";
+import Rectangle from "./components/Rectangle";
 
 export type dataPoint = {
   x: number;
@@ -32,7 +33,7 @@ const App = () => {
   const [showLatest, setShowLatest] = useState(false);
 
   return (
-    <div>
+    <div className="page">
       <NavBar />
       <div className="flex-container">
         <div className="graph-container">
@@ -57,6 +58,7 @@ const App = () => {
           {showLatest ? <LatestTrades /> : <OrderBookTable />}
         </div>
       </div>
+      <Rectangle />
     </div>
   );
 };

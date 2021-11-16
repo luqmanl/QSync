@@ -12,6 +12,7 @@ import {
 } from "@arction/lcjs";
 import { dataPoint } from "../App";
 import React, { useState, useLayoutEffect } from "react";
+import SearchBar from "./SearchBar";
 
 type propsType = {
   id: string;
@@ -52,13 +53,15 @@ const RealTimeCandleSticksChart = (props: propsType) => {
   }, []);
 
   return (
-    <div
-      style={{
-        height: "100vh",
-      }}
-      id={props.id}
-      className={props.id}
-    ></div>
+    <>
+      <div
+        style={{
+          height: "100vh",
+        }}
+        id={props.id}
+        className={props.id}
+      ></div>
+    </>
   );
 };
 
