@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import "./SearchBar.css";
 
 type queryType = {
-  id: number,
-  name: string
-}
+  id: number;
+  name: string;
+};
 const SearchBar = () => {
   const [query, setQuery] = useState("");
   const exchanges: queryType[] = [

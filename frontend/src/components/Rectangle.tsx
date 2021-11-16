@@ -17,9 +17,7 @@ const Rectangle = (props: any) => {
           </Dropdown.Menu>
         </Dropdown>
       </div>
-      <div className="rectangle-content">
-        {props.innerComponents}
-      </div>
+      <div className="rectangle-content">{props.innerComponents}</div>
     </div>
   );
 };

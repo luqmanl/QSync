@@ -33,9 +33,9 @@ const App = () => {
   const [showLatest, setShowLatest] = useState(false);
 
   return (
-    <div className='page'>
-       <NavBar />
-       <div className="flex-container">
+    <div className="page">
+      <NavBar />
+      <div className="flex-container">
         <div className="graph-container">
           <RealTimeCandleSticksChart
             id="my-chart"
@@ -57,8 +57,8 @@ const App = () => {
           </Form>
           {showLatest ? <LatestTrades /> : <OrderBookTable />}
         </div>
-      </div> 
-      <Rectangle innerComponents={<OrderBookTable/>}/>
+      </div>
+      <Rectangle/>
     </div>
   );
 };

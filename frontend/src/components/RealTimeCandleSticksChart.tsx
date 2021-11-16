@@ -54,15 +54,14 @@ const RealTimeCandleSticksChart = (props: propsType) => {
 
   return (
     <>
-    <div
-      style={{
-        height: "100vh",
-      }}
-      id={props.id}
-      className={props.id}
-    >
-      </div>
-      </>
+      <div
+        style={{
+          height: "100vh",
+        }}
+        id={props.id}
+        className={props.id}
+      ></div>
+    </>
   );
 };
 
