@@ -1,7 +1,8 @@
 import React from "react";
 import "./Rectangle.css";
 import Dropdown from "react-bootstrap/Dropdown";
-const Rectangle = () => {
+// eslint-disable-next-line
+const Rectangle = (props: any) => {
   return (
     <div className="rectangle-container">
       <div className="dropdown-button">
@@ -15,6 +16,9 @@ const Rectangle = () => {
             <Dropdown.Item href="#">Options</Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
+      </div>
+      <div className="rectangle-content">
+        {props.innerComponents}
       </div>
     </div>
   );

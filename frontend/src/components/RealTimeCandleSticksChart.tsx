@@ -54,7 +54,6 @@ const RealTimeCandleSticksChart = (props: propsType) => {
 
   return (
     <>
-      <SearchBar/>
     <div
       style={{
         height: "100vh",
