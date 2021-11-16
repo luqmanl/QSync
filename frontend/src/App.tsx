@@ -58,7 +58,7 @@ const App = () => {
           {showLatest ? <LatestTrades /> : <OrderBookTable />}
         </div>
       </div>
-      <Rectangle/>
+      <Rectangle />
     </div>
   );
 };
