@@ -2,8 +2,8 @@
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  width: 40vw;
-  height: 40vh;
+  width: 50vw;
+  height: 50vh;
   border: 2px solid;
   padding: 10px;
   background: rgb(0, 0, 0);
@@ -19,4 +19,9 @@
 .dropdown-button {
   align-items: right;
   right: 100%;
+}
+
+.rectangle-content{
+  align-self: center;
+  overflow: scroll;
 }
