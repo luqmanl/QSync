@@ -19,7 +19,7 @@ export interface Item {
   bookData: bookData;
 }
 
-interface bookData {
+export interface bookData {
   time: string;
   sym: string;
   feedhandlerTime: string;
