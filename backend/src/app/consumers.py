@@ -35,18 +35,17 @@ class ClientConsumer(AsyncConsumer):
         imbalance = (highestBid - lowestAsk) / \
             (highestBid + lowestAsk)
 
-        pairs = [{
+        data = {
             "sym": data["sym"],
             "highestBid": highestBid,
             "lowestAsk": lowestAsk,
             "volume": volume,
             "imbalance": imbalance,
-        }]
-        data = json.dumps({"pairs": pairs})
+        }
 
         await self.send({
             "type": 'websocket.send',
-            "text": data
+            "text": json.dumps(data)
         })
 
     async def send_l2orderbook_data(self, event):
