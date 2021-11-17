@@ -17,13 +17,27 @@ def send_orderbook(data_table, datatype, channel_layer):
     for data_row in data_table:
         data_row = list(data_row)
         data = {
-            'time': str(data_row[0]),
             'sym': data_row[1].decode("utf-8"),
-            'feedhandlerTime': str(data_row[2]),
             'bids': [bid for bid in data_row[3: 13]],
             'asks': [ask for ask in data_row[13: 23]],
             'buySizes': [bid_price for bid_price in data_row[23: 33]],
             'askSizes': [ask_price for ask_price in data_row[33: 43]]
+        }
+
+        group_name = f"binance_{data['sym']}_{datatype}"
+        async_to_sync(
+            channel_layer.group_send)(group_name, {
+                "type": f"send_{datatype}_data", "data": json.dumps(data)})
+
+
+def send_trade(data_table, datatype, channel_layer):
+    for data_row in data_table:
+        data_row = list(data_row)
+        data = {
+            'sym': data_row[1].decode("utf-8"),
+            'price': float(data_row[3]),
+            'quantity': float(data_row[4]),
+            'type': data_row[5].decode("utf-8"),
         }
 
         group_name = f"binance_{data['sym']}_{datatype}"
@@ -37,7 +51,8 @@ def send_orderbook(data_table, datatype, channel_layer):
 """
 table_to_channel_datatypes = {
 
-    "orderbooktop": (send_orderbook, ["l2orderbook", "l2overview"])
+    "orderbooktop": (send_orderbook, ["l2orderbook", "l2overview"]),
+    "trades": (send_trade, ["trade"]),
 }
 
 
@@ -58,7 +73,7 @@ class ListenerThread(threading.Thread):
         with QConnection(host='localhost', port=5010) as Q:
 
             response = Q.sendSync(
-                '.u.sub', np.string_('orderbooktop'), np.string_(''))
+                '.u.sub', np.string_(''), np.string_(''))
             if isinstance(response[1], QTable):
                 print(f'{response[0]} table data model: {response[1].dtype}')
 
