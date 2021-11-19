@@ -21,6 +21,7 @@ async def l2book_callback(book_, timestamp):
 
     data = [
         qlist([np.string_(book_.symbol)], qtype=QSYMBOL_LIST),
+        qlist([np.string_(book_.exchange)], qtype=QSYMBOL_LIST),
         qlist([np.datetime64(datetime.fromtimestamp(timestamp), 'ns')],
               qtype=QTIMESTAMP_LIST),
     ]
@@ -45,6 +46,7 @@ async def l2book_callback(book_, timestamp):
 async def trade_callback(trade, timestamp):
     q.sendAsync('.u.upd', np.string_('trades'), [
         qlist([np.string_(trade.symbol)], qtype=QSYMBOL_LIST),
+        qlist([np.string_(trade.exchange)], qtype=QSYMBOL_LIST),
         qlist([np.datetime64(datetime.fromtimestamp(timestamp), 'ns')],
               qtype=QTIMESTAMP_LIST),
         qlist([trade.price], qtype=QDOUBLE_LIST),

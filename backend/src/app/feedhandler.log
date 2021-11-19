@@ -1,0 +1,49 @@
+2021-11-19 16:46:48,400 : INFO : Config: use dict containing the following main keys: log
+2021-11-19 16:46:48,400 : DEBUG : BINANCE: reading symbol information from https://api.binance.com/api/v3/exchangeInfo
+2021-11-19 16:46:48,400 : DEBUG : HTTPSync: requesting data from https://api.binance.com/api/v3/exchangeInfo
+2021-11-19 16:46:49,031 : DEBUG : BINANCE.ws.1: connecting to wss://stream.binance.com:9443/stream?streams=ethbtc@aggTrade/btcusdt@aggTrade/ethusdt@aggTrade/ethbtc@depth@100ms/btcusdt@depth@100ms/ethusdt@depth@100ms
+2021-11-19 16:46:50,142 : DEBUG : BINANCE.http.0: create HTTP session
+2021-11-19 16:46:50,145 : DEBUG : BINANCE.http.0: requesting data from https://www.binance.com/api/v3/depth?symbol=BTCUSDT&limit=5000
+2021-11-19 16:46:50,559 : DEBUG : BINANCE.http.0: requesting data from https://www.binance.com/api/v3/depth?symbol=ETHBTC&limit=5000
+2021-11-19 16:46:50,888 : DEBUG : BINANCE.http.0: requesting data from https://www.binance.com/api/v3/depth?symbol=ETHUSDT&limit=5000
+2021-11-19 16:47:37,581 : INFO : FH: System Exit received - shutting down
+2021-11-19 16:47:37,582 : INFO : FH: shutdown connections handlers in feeds
+2021-11-19 16:47:37,583 : INFO : FH: create the tasks to properly shutdown the backends (to flush the local cache)
+2021-11-19 16:47:37,584 : INFO : FH: wait 1 backend tasks until termination
+2021-11-19 16:47:37,585 : INFO : BINANCE: feed shutdown starting...
+2021-11-19 16:47:37,586 : INFO : BINANCE.http.0: closed connection 'ClientSession'
+2021-11-19 16:47:37,663 : INFO : BINANCE.ws.1: terminate the connection handler because not running
+2021-11-19 16:47:46,804 : INFO : Config: use dict containing the following main keys: log
+2021-11-19 16:47:46,805 : DEBUG : BINANCE: reading symbol information from https://api.binance.com/api/v3/exchangeInfo
+2021-11-19 16:47:46,805 : DEBUG : HTTPSync: requesting data from https://api.binance.com/api/v3/exchangeInfo
+2021-11-19 16:47:47,395 : DEBUG : BINANCE.ws.1: connecting to wss://stream.binance.com:9443/stream?streams=ethbtc@aggTrade/btcusdt@aggTrade/ethusdt@aggTrade/ethbtc@depth@100ms/btcusdt@depth@100ms/ethusdt@depth@100ms
+2021-11-19 16:47:48,473 : DEBUG : BINANCE.http.0: create HTTP session
+2021-11-19 16:47:48,474 : DEBUG : BINANCE.http.0: requesting data from https://www.binance.com/api/v3/depth?symbol=ETHBTC&limit=5000
+2021-11-19 16:47:49,023 : DEBUG : BINANCE.http.0: requesting data from https://www.binance.com/api/v3/depth?symbol=BTCUSDT&limit=5000
+2021-11-19 16:47:49,316 : DEBUG : BINANCE.http.0: requesting data from https://www.binance.com/api/v3/depth?symbol=ETHUSDT&limit=5000
+2021-11-19 16:48:03,532 : INFO : FH: System Exit received - shutting down
+2021-11-19 16:48:03,533 : INFO : FH: shutdown connections handlers in feeds
+2021-11-19 16:48:03,533 : INFO : FH: create the tasks to properly shutdown the backends (to flush the local cache)
+2021-11-19 16:48:03,533 : INFO : FH: wait 1 backend tasks until termination
+2021-11-19 16:48:03,534 : INFO : BINANCE: feed shutdown starting...
+2021-11-19 16:48:03,536 : INFO : BINANCE.http.0: closed connection 'ClientSession'
+2021-11-19 16:48:03,536 : INFO : BINANCE: feed shutdown completed
+2021-11-19 16:48:03,536 : INFO : FH: stop the AsyncIO loop
+2021-11-19 16:48:03,537 : INFO : FH: run the AsyncIO event loop one last time
+2021-11-19 16:48:03,537 : INFO : FH: cancel the 5 pending tasks
+2021-11-19 16:48:03,537 : INFO : FH: run the pending tasks until complete
+2021-11-19 16:54:07,364 : INFO : Config: use dict containing the following main keys: log
+2021-11-19 16:54:07,364 : DEBUG : BINANCE: reading symbol information from https://api.binance.com/api/v3/exchangeInfo
+2021-11-19 16:54:07,364 : DEBUG : HTTPSync: requesting data from https://api.binance.com/api/v3/exchangeInfo
+2021-11-19 16:54:07,760 : DEBUG : BINANCE.ws.1: connecting to wss://stream.binance.com:9443/stream?streams=ethbtc@depth@100ms/btcusdt@depth@100ms/ethusdt@depth@100ms/ethbtc@aggTrade/btcusdt@aggTrade/ethusdt@aggTrade
+2021-11-19 16:54:08,745 : DEBUG : BINANCE.http.0: create HTTP session
+2021-11-19 16:54:08,745 : DEBUG : BINANCE.http.0: requesting data from https://www.binance.com/api/v3/depth?symbol=ETHUSDT&limit=5000
+2021-11-19 16:54:09,297 : DEBUG : BINANCE.http.0: requesting data from https://www.binance.com/api/v3/depth?symbol=ETHBTC&limit=5000
+2021-11-19 16:54:10,855 : DEBUG : BINANCE.http.0: requesting data from https://www.binance.com/api/v3/depth?symbol=BTCUSDT&limit=5000
+2021-11-19 16:59:06,160 : INFO : FH: System Exit received - shutting down
+2021-11-19 16:59:06,161 : INFO : FH: shutdown connections handlers in feeds
+2021-11-19 16:59:06,166 : INFO : FH: create the tasks to properly shutdown the backends (to flush the local cache)
+2021-11-19 16:59:06,167 : INFO : FH: wait 1 backend tasks until termination
+2021-11-19 16:59:06,170 : INFO : BINANCE: feed shutdown starting...
+2021-11-19 16:59:06,174 : INFO : BINANCE.http.0: closed connection 'ClientSession'
+2021-11-19 16:59:06,185 : INFO : BINANCE.ws.1: terminate the connection handler because not running
