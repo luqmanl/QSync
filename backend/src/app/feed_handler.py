@@ -1,8 +1,8 @@
 import numpy as np
 from cryptofeed import FeedHandler
-from cryptofeed.defines import L2_BOOK, TRADES
+from cryptofeed.defines import COINBASE, L2_BOOK, TRADES
 
-from cryptofeed.exchanges import (Binance)
+from cryptofeed.exchanges import (Binance, Coinbase, FTX, Gateio, dYdX)
 
 from qpython import qconnection
 from qpython.qtype import QSYMBOL_LIST, QDOUBLE_LIST, QTIMESTAMP_LIST
@@ -66,6 +66,15 @@ def main():
     pairs = [Binance.symbols()[i] for i in (0, 10, 11)]
     f.add_feed(Binance(symbols=pairs, channels=[
                L2_BOOK, TRADES], callbacks={L2_BOOK: l2book_callback, TRADES: trade_callback}))
+    f.add_feed(Coinbase(symbols=pairs, channels=[
+               L2_BOOK, TRADES], callbacks={L2_BOOK: l2book_callback, TRADES: trade_callback}))
+    f.add_feed(dYdX(symbols=pairs, channels=[
+               L2_BOOK, TRADES], callbacks={L2_BOOK: l2book_callback, TRADES: trade_callback}))
+    f.add_feed(Gateio(symbols=pairs, channels=[
+               L2_BOOK, TRADES], callbacks={L2_BOOK: l2book_callback, TRADES: trade_callback}))
+    f.add_feed(FTX(symbols=pairs, channels=[
+               L2_BOOK, TRADES], callbacks={L2_BOOK: l2book_callback, TRADES: trade_callback}))
+    
     f.run()
 
 
