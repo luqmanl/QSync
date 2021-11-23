@@ -74,7 +74,7 @@ def main():
                L2_BOOK, TRADES], callbacks={L2_BOOK: l2book_callback, TRADES: trade_callback}))
     f.add_feed(FTX(symbols=pairs, channels=[
                L2_BOOK, TRADES], callbacks={L2_BOOK: l2book_callback, TRADES: trade_callback}))
-    
+
     f.run()
 
 
