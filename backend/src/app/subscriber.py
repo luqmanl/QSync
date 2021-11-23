@@ -56,7 +56,7 @@ def send_trade(data_table, datatype, channel_layer):
 """
 table_to_channel_datatypes = {
 
-    "orderbooktop": (send_orderbook, ["l2orderbook", "l2overview"]),
+    "orderbooktop": (send_orderbook, ["l2orderbook", "l2overview", "basis"]),
     "trades": (send_trade, ["trade"]),
 }
 

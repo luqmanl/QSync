@@ -2,6 +2,7 @@ import json
 from channels.consumer import AsyncConsumer
 import asyncio
 import numpy as np
+import re
 
 from qpython import qconnection
 
@@ -11,16 +12,32 @@ from qpython import qconnection
 class ClientConsumer(AsyncConsumer):
 
     async def websocket_connect(self, event):
-        self.exchange_name = self.scope['url_route']['kwargs']['exchange_name']
+        self.spot_prices = {"BINANCE": 66000,
+                            "BITFINEX": 65000, "COINBASE": 50000}
+        self.future_prices = {}
+        exchanges = self.scope['url_route']['kwargs']['exchange_name'].split(
+            "-")
+        self.spot_exchanges = exchanges[0].split("_")
+        self.future_exchanges = []
+        if len(exchanges) == 2:
+            self.future_exchanges = exchanges[1].split("_")
+
         self.pair_names = self.scope['url_route']['kwargs']['pair_names'].split(
             "_")
         self.data_type = self.scope['url_route']['kwargs']['data_type']
 
-        for pair in self.pair_names:
-            await self.channel_layer.group_add(
-                f"{self.exchange_name}_{pair}_{self.data_type}",
-                self.channel_name
-            )
+        # <spot>-<future>/<spot_prices>-<future_prices>
+
+        for spot in spot_exchanges:
+            for pair in self.pair_names
+
+        for exchange in exchange_names:
+            for pair in self.pair_names:
+                print(f"{exchange}_{pair}_{self.data_type}")
+                await self.channel_layer.group_add(
+                    f"{exchange}_{pair}_{self.data_type}",
+                    self.channel_name
+                )
 
         await self.send({
             "type": "websocket.accept"
@@ -60,6 +77,45 @@ class ClientConsumer(AsyncConsumer):
         await self.send({
             'type': 'websocket.send',
             'text': event['data']
+        })
+
+    async def send_basis_data(self, event):
+        print("entry")
+        data = json.loads(event["data"])
+        highestBid = data["bids"][0]
+        lowestAsk = data["asks"][0]
+
+        basis_prices = []
+
+        if re.search("[0-9][0-9].[0-9][0-9]", data["sym"]):
+            self.future_prices[data["exchange"]] = (highestBid + lowestAsk) / 2
+            for (exchange, spot) in self.spot_prices.items():
+                basisAddition = {
+                    "spotExchange": exchange,
+                    "futureExchange": data["exchange"],
+                    "sym": data["sym"],
+                    "basisValue": spot - self.future_prices[data["exchange"]]
+                }
+                basis_prices.append(basisAddition)
+        else:
+            self.spot_prices[data["exchange"]] = (highestBid + lowestAsk) / 2
+            for (exchange, future) in self.future_prices.items():
+                basisAddition = {
+                    "spotExchange": data["exchange"],
+                    "futureExchange": exchange,
+                    "sym": data["sym"],
+                    "basisValue": future - self.spot_prices[data["exchange"]]
+                }
+                basis_prices.append(basisAddition)
+
+        data = {"basisAdditions": basis_prices}
+
+        print(data)
+        print("should've printed data")
+
+        await self.send({
+            'type': 'websocket.send',
+            'text': json.dumps(data)
         })
 
     async def websocket_disconnect(self, event):
