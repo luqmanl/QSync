@@ -10,7 +10,7 @@ const NavBar = () => {
     <div className="navbar">
       <Navbar sticky="top">
         <Navbar.Brand>
-          <img src="qsync_logo.png" width="180" height="150"></img>
+          <img className="logo" src="qsync_logo.png"></img>
         </Navbar.Brand>
       </Navbar>
       <FontAwesomeIcon className="bars" icon={faBars}/>

@@ -36,12 +36,11 @@ const App = () => {
     <div className="page">
       <NavBar />
       <div className="flex-container">
-      </div>
-      <div style={{
-        height: "50vh",
-        width: "50vw",
-      }}>
-       <Rectangle innerComponents={<OrderBookTable />}/>
+        <Rectangle innerComponents={<OrderBookTable />}/>
+        <Rectangle innerComponents={<OrderBookTable />}/>
+        <Rectangle innerComponents={<OrderBookTable />}/>
+        <Rectangle innerComponents={<OrderBookTable />}/>
+
       </div>
     </div>
   );
