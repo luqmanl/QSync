@@ -66,21 +66,22 @@ def main():
     # Add spot exchange feeds
 
     # pair is ['ETH-BTC', 'BTC-USDT', 'ETH-USDT']
-    pairs = [Binance.symbols()[i] for i in (0, 10, 11)]
-    f.add_feed(Binance(symbols=pairs, channels=[L2_BOOK, TRADES], callbacks={
+    spot_pairs = [Binance.symbols()[i] for i in (0, 10, 11)]
+
+    f.add_feed(Binance(symbols=spot_pairs, channels=[L2_BOOK, TRADES], callbacks={
         L2_BOOK: l2book_callback, TRADES: trade_callback}))
-    f.add_feed(Coinbase(symbols=pairs, channels=[
+    f.add_feed(Coinbase(symbols=spot_pairs, channels=[
                L2_BOOK, TRADES], callbacks={L2_BOOK: l2book_callback, TRADES: trade_callback}))
-    f.add_feed(Bitfinex(symbols=pairs, channels=[
+    f.add_feed(Bitfinex(symbols=spot_pairs, channels=[
                L2_BOOK, TRADES], callbacks={L2_BOOK: l2book_callback, TRADES: trade_callback}))
 
     # Add Future Exchange feeds
-    pairs = ['BTC-USD-21X26']
-    f.add_feed(Deribit(symbols=pairs, channels=[
+    future_pairs = ["BTC-USD-21X26"]
+    f.add_feed(Deribit(symbols=future_pairs, channels=[
                L2_BOOK, TRADES], callbacks={L2_BOOK: l2book_callback, TRADES: trade_callback}))
-    f.add_feed(HuobiDM(symbols=pairs, channels=[
+    f.add_feed(HuobiDM(symbols=future_pairs, channels=[
                L2_BOOK, TRADES], callbacks={L2_BOOK: l2book_callback, TRADES: trade_callback}))
-    f.add_feed(OKEx(symbols=pairs, channels=[
+    f.add_feed(OKEx(symbols=future_pairs, channels=[
                L2_BOOK, TRADES], callbacks={L2_BOOK: l2book_callback, TRADES: trade_callback}))
 
     f.run()

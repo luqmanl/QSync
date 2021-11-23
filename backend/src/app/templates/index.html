@@ -12,7 +12,7 @@
 <body>
 
     <script>
-        var socket = new WebSocket('ws://localhost:8000/ws/data/binance/BTC-USDT/orderbook/')
+        var socket = new WebSocket('ws://localhost:8000/ws/data/BINANCE+BITFINEX&DERIBIT+OKEX/BTC-USDT&BTC-USD-21X26/basis/')
 
         socket.addEventListener('message', (e) => {
             console.log(e.data)

@@ -15,24 +15,38 @@ class ClientConsumer(AsyncConsumer):
         self.spot_prices = {"BINANCE": 66000,
                             "BITFINEX": 65000, "COINBASE": 50000}
         self.future_prices = {}
+
         exchanges = self.scope['url_route']['kwargs']['exchange_name'].split(
-            "-")
-        self.spot_exchanges = exchanges[0].split("_")
+            "&")
+        self.spot_exchanges = exchanges[0].split("+")
         self.future_exchanges = []
         if len(exchanges) == 2:
-            self.future_exchanges = exchanges[1].split("_")
+            self.future_exchanges = exchanges[1].split("+")
 
-        self.pair_names = self.scope['url_route']['kwargs']['pair_names'].split(
-            "_")
+        pair_names = self.scope['url_route']['kwargs']['pair_names'].split(
+            "&")
+        self.spot_pairs = pair_names[0].split("+")
+        self.future_pairs = []
+        if len(exchanges) == 2:
+            self.future_pairs = pair_names[1].split("+")
+
+        print(f"Spot exchanges: {self.spot_exchanges}")
+        print(f"Future exchanges: {self.future_exchanges}")
+        print(f"Spot pairs: {self.spot_pairs}")
+        print(f"Future pairs: {self.future_pairs}")
+
         self.data_type = self.scope['url_route']['kwargs']['data_type']
 
-        # <spot>-<future>/<spot_prices>-<future_prices>
+        for exchange in self.spot_exchanges:
+            for pair in self.spot_pairs:
+                print(f"{exchange}_{pair}_{self.data_type}")
+                await self.channel_layer.group_add(
+                    f"{exchange}_{pair}_{self.data_type}",
+                    self.channel_name
+                )
 
-        for spot in spot_exchanges:
-            for pair in self.pair_names
-
-        for exchange in exchange_names:
-            for pair in self.pair_names:
+        for exchange in self.future_exchanges:
+            for pair in self.future_pairs:
                 print(f"{exchange}_{pair}_{self.data_type}")
                 await self.channel_layer.group_add(
                     f"{exchange}_{pair}_{self.data_type}",
@@ -45,6 +59,7 @@ class ClientConsumer(AsyncConsumer):
 
     async def send_l2overview_data(self, event):
         data = json.loads(event["data"])
+        print(data)
         highestBid = data["bids"][0]
         lowestAsk = data["asks"][0]
         with qconnection.QConnection(host='localhost', port=5011) as q:
@@ -80,14 +95,13 @@ class ClientConsumer(AsyncConsumer):
         })
 
     async def send_basis_data(self, event):
-        print("entry")
         data = json.loads(event["data"])
         highestBid = data["bids"][0]
         lowestAsk = data["asks"][0]
 
         basis_prices = []
 
-        if re.search("[0-9][0-9].[0-9][0-9]", data["sym"]):
+        if re.search("[0-9][0-9].[0-9][0-9]", data["sym"]):  # if symbol has future form
             self.future_prices[data["exchange"]] = (highestBid + lowestAsk) / 2
             for (exchange, spot) in self.spot_prices.items():
                 basisAddition = {
@@ -109,9 +123,6 @@ class ClientConsumer(AsyncConsumer):
                 basis_prices.append(basisAddition)
 
         data = {"basisAdditions": basis_prices}
-
-        print(data)
-        print("should've printed data")
 
         await self.send({
             'type': 'websocket.send',
