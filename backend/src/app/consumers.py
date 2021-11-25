@@ -12,34 +12,25 @@ from qpython import qconnection
 class ClientConsumer(AsyncConsumer):
 
     async def websocket_connect(self, event):
-        self.spot_prices = {"BINANCE": 66000,
-                            "BITFINEX": 65000, "COINBASE": 50000}
+        self.spot_prices = {}
         self.future_prices = {}
 
-        exchanges = self.scope['url_route']['kwargs']['exchange_name'].split(
-            "&")
+        exchanges = self.scope['url_route']['kwargs']['exchange_name'].split("&")
         self.spot_exchanges = exchanges[0].split("+")
         self.future_exchanges = []
         if len(exchanges) == 2:
             self.future_exchanges = exchanges[1].split("+")
 
-        pair_names = self.scope['url_route']['kwargs']['pair_names'].split(
-            "&")
+        pair_names = self.scope['url_route']['kwargs']['pair_names'].split("&")
         self.spot_pairs = pair_names[0].split("+")
         self.future_pairs = []
         if len(exchanges) == 2:
             self.future_pairs = pair_names[1].split("+")
 
-        print(f"Spot exchanges: {self.spot_exchanges}")
-        print(f"Future exchanges: {self.future_exchanges}")
-        print(f"Spot pairs: {self.spot_pairs}")
-        print(f"Future pairs: {self.future_pairs}")
-
         self.data_type = self.scope['url_route']['kwargs']['data_type']
 
         for exchange in self.spot_exchanges:
             for pair in self.spot_pairs:
-                print(f"{exchange}_{pair}_{self.data_type}")
                 await self.channel_layer.group_add(
                     f"{exchange}_{pair}_{self.data_type}",
                     self.channel_name
@@ -47,7 +38,6 @@ class ClientConsumer(AsyncConsumer):
 
         for exchange in self.future_exchanges:
             for pair in self.future_pairs:
-                print(f"{exchange}_{pair}_{self.data_type}")
                 await self.channel_layer.group_add(
                     f"{exchange}_{pair}_{self.data_type}",
                     self.channel_name
@@ -59,7 +49,6 @@ class ClientConsumer(AsyncConsumer):
 
     async def send_l2overview_data(self, event):
         data = json.loads(event["data"])
-        print(data)
         highestBid = data["bids"][0]
         lowestAsk = data["asks"][0]
         with qconnection.QConnection(host='localhost', port=5011) as q:
