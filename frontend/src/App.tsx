@@ -40,6 +40,11 @@ const App = () => {
         <Rectangle innerComponents={<OrderBookTable />}/>
         <Rectangle innerComponents={<OrderBookTable />}/>
         <Rectangle innerComponents={<OrderBookTable />}/>
+        <Rectangle innerComponents={<OrderBookTable />}/>
+        <Rectangle innerComponents={<OrderBookTable />}/>
+        <Rectangle innerComponents={<OrderBookTable />}/>
+        <Rectangle innerComponents={<OrderBookTable />}/>
+
 
       </div>
     </div>
