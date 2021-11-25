@@ -1,0 +1,21 @@
+.navbar {
+  background-color: transparent;
+  position: sticky;
+  top: 0;
+  left: 0%;
+  height: 3vh;
+}
+
+.bars {
+  right: 0%;
+  margin-right: 1vw;
+  color: white;
+}
+
+.logo {
+  left: 0%;
+  margin-top: 1vh;
+  margin-left: 1vw;
+  width: 120px;
+  height: 30px;
+}
