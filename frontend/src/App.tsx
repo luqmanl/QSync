@@ -6,6 +6,7 @@ import RealTimeCandleSticksChart from "./components/RealTimeCandleSticksChart";
 import "bootstrap/dist/css/bootstrap.min.css";
 import NavBar from "./components/NvBar";
 import LatestTrades from "./components/LatestTrades";
+import CurrencyPair from "./components/CurrencyPair";
 import { Form } from "react-bootstrap";
 import Rectangle from "./components/Rectangle";
 
@@ -58,7 +59,7 @@ const App = () => {
           {showLatest ? <LatestTrades /> : <OrderBookTable />}
         </div>
       </div>
-      <Rectangle />
+      <CurrencyPair/>
     </div>
   );
 };
