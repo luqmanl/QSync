@@ -37,6 +37,7 @@ const CurrencyPair = () => {
           data = cp;
         }
       });
+      setData(newData)
     });
   }, []);
 

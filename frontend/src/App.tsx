@@ -4,7 +4,7 @@ import "./App.css";
 import OrderBookTable from "./components/OrderBookTable";
 import RealTimeCandleSticksChart from "./components/RealTimeCandleSticksChart";
 import "bootstrap/dist/css/bootstrap.min.css";
-import NavBar from "./components/NvBar";
+import NavBar from "./components/NavBar";
 import LatestTrades from "./components/LatestTrades";
 import CurrencyPair from "./components/CurrencyPair";
 import { Form } from "react-bootstrap";
@@ -37,29 +37,15 @@ const App = () => {
     <div className="page">
       <NavBar />
       <div className="flex-container">
-        <div className="graph-container">
-          <RealTimeCandleSticksChart
-            id="my-chart"
-            yAxis="Price (USD)"
-            xAxis="Time (UTC)"
-            graphTitle="Price against Time"
-          />
-        </div>
-        <div className="order-book-container">
-          <Form>
-            <Form.Check
-              type="checkbox"
-              id="default-checkbox"
-              label="Toggle latest trade/order book view"
-              onChange={() => {
-                setShowLatest(!showLatest);
-              }}
-            ></Form.Check>
-          </Form>
-          {showLatest ? <LatestTrades /> : <OrderBookTable />}
-        </div>
+        <Rectangle innerComponents={<OrderBookTable />} />
+        <Rectangle innerComponents={<OrderBookTable />} />
+        <Rectangle innerComponents={<OrderBookTable />} />
+        <Rectangle innerComponents={<OrderBookTable />} />
+        <Rectangle innerComponents={<OrderBookTable />} />
+        <Rectangle innerComponents={<OrderBookTable />} />
+        <Rectangle innerComponents={<OrderBookTable />} />
+        <Rectangle innerComponents={<OrderBookTable />} />
       </div>
-      <CurrencyPair/>
     </div>
   );
 };
