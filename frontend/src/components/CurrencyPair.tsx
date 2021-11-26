@@ -16,9 +16,9 @@ export interface CurrencyPairType {
 
 const CurrencyPair = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [data, setData] = useState<CurrencyPairType[]>([]);
+  const [data, setData] = useState<{ [name: string]: CurrencyPairType }>({});
 
-  const wsAddr = `ws://localhost:8000/ws/data/BINANCE/ETH-BTC_BTC-USDT_ETH-USDT/l2overview/`;
+  const wsAddr = `ws://localhost:8000/ws/data/BINANCE/ETH-BTC+BTC-USDT+ETH-USDT/l2overview/`;
 
   useEffect(() => {
     const socket = new WebSocket(wsAddr);
@@ -30,14 +30,13 @@ const CurrencyPair = () => {
         highestBid: res.highestBid,
         lowestAsk: res.lowestAsk,
         volumeLhr: res.volume,
-        orderImbalance: res.imbalance,
+        orderImbalance: parseFloat(res.imbalance).toFixed(4),
       };
-      const newData = data;
-      newData.map((data) => {
-        if (data.pairName === cp.pairName) {
-          data = cp;
-        }
-      });
+      const imbalanceString = cp.orderImbalance;
+      cp.orderImbalance = imbalanceString.substring(0, 5);
+      const newData: { [name: string]: CurrencyPairType } = { ...data };
+      data[cp.pairName] = cp;
+      console.log(data, newData);
       setData(newData);
     });
   }, []);
@@ -53,10 +52,10 @@ const CurrencyPair = () => {
     };
   };
 
-  const rowGenerator = (item: CurrencyPairType, index: number) => {
+  const rowGenerator = (item: CurrencyPairType, key: number) => {
     const colour = colourGenerator(parseFloat(item.orderImbalance));
     return (
-      <tr key={index}>
+      <tr key={key}>
         <td>{item.pairName}</td>
         <td>{item.highestBid}</td>
         <td>{item.lowestAsk}</td>
@@ -85,7 +84,11 @@ const CurrencyPair = () => {
             <th className="row-title">Order Imbalance</th>
           </tr>
         </thead>
-        <tbody>{data.map((item, i) => rowGenerator(item, i))}</tbody>
+        <tbody>
+          {Object.values(data).map((item, index) => {
+            return rowGenerator(item, index);
+          })}
+        </tbody>
       </Table>
     </div>
   );

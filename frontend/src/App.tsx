@@ -38,14 +38,7 @@ const App = () => {
     <div className="page">
       <NavBar />
       <div className="flex-container">
-        <Rectangle innerComponents={<OrderBookTable />} />
-        <Rectangle innerComponents={<OrderBookTable />} />
-        <Rectangle innerComponents={<OrderBookTable />} />
-        <Rectangle innerComponents={<OrderBookTable />} />
-        <Rectangle innerComponents={<OrderBookTable />} />
-        <Rectangle innerComponents={<OrderBookTable />} />
-        <Rectangle innerComponents={<OrderBookTable />} />
-        <Rectangle innerComponents={<OrderBookTable />} />
+        <CurrencyPair />
       </div>
     </div>
   );
