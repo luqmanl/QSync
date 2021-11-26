@@ -1,7 +1,7 @@
 /* eslint-disable no-magic-numbers */
 import React, { useState } from "react";
 import "./App.css";
-import OrderBookTable from "./components/OrderBookTable";
+import BasisTable from "./components/BasisTable";
 import RealTimeCandleSticksChart from "./components/RealTimeCandleSticksChart";
 import "bootstrap/dist/css/bootstrap.min.css";
 import NavBar from "./components/NavBar";
@@ -35,16 +35,17 @@ const App = () => {
   return (
     <div className="page">
       <NavBar />
-      <div className="flex-container">
-      </div>
-      <div style={{
-        height: "50vh",
-        width: "50vw",
-      }}>
-       <Rectangle innerComponents={<OrderBookTable />}/>
+      <div className="flex-container"></div>
+      <div
+        style={{
+          height: "50vh",
+          width: "50vw",
+        }}
+      >
+        <Rectangle innerComponents={<BasisTable />} />
       </div>
     </div>
   );
 };
 
-export default App; 
+export default App;
