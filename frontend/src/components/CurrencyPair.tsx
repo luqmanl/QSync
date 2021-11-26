@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-mixed-operators */
 /* eslint-disable no-magic-numbers */
 import React, { useState, useEffect } from "react";
@@ -37,7 +38,7 @@ const CurrencyPair = () => {
           data = cp;
         }
       });
-      setData(newData)
+      setData(newData);
     });
   }, []);
 
