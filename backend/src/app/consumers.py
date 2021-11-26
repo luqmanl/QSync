@@ -15,7 +15,8 @@ class ClientConsumer(AsyncConsumer):
         self.spot_prices = {}
         self.future_prices = {}
 
-        exchanges = self.scope['url_route']['kwargs']['exchange_name'].split("&")
+        exchanges = self.scope['url_route']['kwargs']['exchange_name'].split(
+            "&")
         self.spot_exchanges = exchanges[0].split("+")
         self.future_exchanges = []
         if len(exchanges) == 2:
