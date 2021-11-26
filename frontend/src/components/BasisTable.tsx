@@ -11,6 +11,7 @@ type basisTableData = {
 type basisAddition = {
   spotExchange: string;
   futureExchange: string;
+  sym: string;
   basisValue: number;
 };
 
@@ -22,8 +23,8 @@ type futureMap = {
   [futureKey: string]: spotMap;
 };
 
-const supportedSpot = ["Binance", "Bitfenix", "Coinbase"];
-const supportedFutures = ["Deribit", "HuobiDM", "OKEx"];
+const supportedSpot = ["BINANCE", "BITFINEX", "COINBASE"];
+const supportedFutures = ["DERIBIT", "HUOBIDM", "OKEX"];
 
 const BasisTable = () => {
   const initialTable: any = {};
@@ -39,31 +40,38 @@ const BasisTable = () => {
     initialTable[x] = allSpots;
   });
 
-  const [basisTableData, setBasisTableData] = useState<futureMap>(initialTable);
+  const [basisTable, setBasisTable] = useState<futureMap>(initialTable);
 
   // TODO change this
-  const wsAddr = `ws://${location.hostname}/ws/data/<spot>-<future>/BTC-USDT/basis`;
+  const wsAddr = `ws://localhost:8000/ws/data/BINANCE+BITFINEX&DERIBIT+OKEX/BTC-USDT&BTC-USD-21Z31/basis/`;
 
   useEffect(() => {
     const socket = new WebSocket(wsAddr);
 
     socket.addEventListener("message", (ev) => {
       const res: basisTableData = JSON.parse(ev.data);
+      console.log(res);
 
-      res.basisAdditions.forEach((x: basisAddition) => {
-        const toSet: futureMap = basisTableData;
+      const update = {...basisTable}
 
-        toSet[x.futureExchange][x.spotExchange] = x.basisValue;
-
-        setBasisTableData(toSet);
+      res.basisAdditions?.forEach((mapping : basisAddition) => {
+        update[mapping.futureExchange][mapping.spotExchange] = mapping.basisValue.toFixed(3)
       });
+
+      setBasisTable(update);
+
+      supportedFutures.forEach(x => {
+        supportedSpot.forEach(y => {
+          console.log(`future: ${x}, spot: ${y}, basis: ${basisTable[x][y]}`)
+        }) 
+      })
     });
   }, []);
 
   const rowGenerator = (map: spotMap, index: number) => {
     return (
       <tr key={index}>
-        <td className="table-cell">{supportedSpot[index]}</td>
+        <td className="table-cell">{supportedFutures[index]}</td>
         {supportedSpot.map((x, i) => (
           <td key={i} className="table-cell">
             {map[x]}
@@ -76,23 +84,23 @@ const BasisTable = () => {
   return (
     <div className="basis-component">
       <h2 className="table-title">Basis Table</h2>
-      <p className="table-title">Futures</p>
+      <p className="table-title">Spot</p>
       <div className="table-horizontal-elems">
-        <p className="table-title">Spot</p>
+        <p className="table-title">Futures</p>
         <Table className="basis-table">
           <thead>
             <tr>
               <th className="table-cell"></th>
               {supportedSpot.map((x, i) => (
-                <th key={i} className="table-cell">
+                <td key={i} className="table-cell">
                   {x}
-                </th>
+                </td>
               ))}
             </tr>
           </thead>
           <tbody>
             {supportedFutures.map((item, i) =>
-              rowGenerator(basisTableData[item], i)
+              rowGenerator(basisTable[item], i)
             )}
           </tbody>
         </Table>
