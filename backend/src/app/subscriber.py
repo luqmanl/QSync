@@ -1,3 +1,4 @@
+from datetime import datetime
 import threading
 from qpython.qtype import QException
 from qpython.qconnection import MessageType
@@ -16,21 +17,27 @@ from qpython.qconnection import QConnection
 
 
 def send_orderbook(data_table, datatype, channel_layer):
+    seen_exchanges = set()
+    print(data_table)
     for data_row in data_table:
         data_row = list(data_row)
-        data = {
-            'sym': data_row[1].decode("utf-8"),
-            'exchange': data_row[2].decode("utf-8"),
-            'bids': [bid for bid in data_row[4: 14]],
-            'asks': [ask for ask in data_row[14: 24]],
-            'bidSizes': [bid_price for bid_price in data_row[24: 34]],
-            'askSizes': [ask_price for ask_price in data_row[34: 44]]
-        }
+        exchange = data_row[2].decode("utf-8")
+        if exchange not in seen_exchanges:
+            print("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
+            seen_exchanges.add(exchange)
+            data = {
+                'sym': data_row[1].decode("utf-8"),
+                'exchange': exchange,
+                'bids': data_row[4: 14],
+                'asks': data_row[14: 24],
+                'bidSizes': data_row[24: 34],
+                'askSizes': data_row[34: 44]
+            }
 
-        group_name = f"{data['exchange']}_{data['sym']}_{datatype}"
-        async_to_sync(
-            channel_layer.group_send)(group_name, {
-                "type": f"send_{datatype}_data", "data": json.dumps(data)})
+            group_name = f"{data['exchange']}_{data['sym']}_{datatype}"
+            async_to_sync(
+                channel_layer.group_send)(group_name, {
+                    "type": f"send_{datatype}_data", "data": json.dumps(data)})
 
 
 # submits trade data to socket
@@ -92,12 +99,14 @@ class ListenerThread(threading.Thread):
                         f'type: {type(message)}, message type: {message.type},')
                     data_str += (
                         f'data size: {message.size}, is_compressed: {message.is_compressed}')
-                    print(data_str)
+                    # print(data_str)
 
                     if isinstance(message.data, list) and len(message.data) == 3:
                         if message.data[0] == b'upd' and isinstance(
                                 message.data[2], QTable):
-
+                            print(
+                                f"{datetime.now()} - Recieved table: {message.data[1].decode('utf-8')} of length {len(message.data[2])}")
+                            print()
                             table_name = message.data[1].decode("utf-8")
                             (send_func,
                              datatypes) = table_to_channel_datatypes[table_name]
