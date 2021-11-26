@@ -41,7 +41,7 @@ async def l2book_callback(book_, timestamp):
     data.extend(ask_sizes)
 
     q.sendAsync('.u.upd', np.string_('orderbooktop'), data)
-    print("orderbooktop updated: ")
+    print("orderbooktop updated: " + book_.exchange)
 
 
 async def trade_callback(trade, timestamp):
@@ -54,7 +54,7 @@ async def trade_callback(trade, timestamp):
         qlist([trade.amount], qtype=QDOUBLE_LIST),
         qlist([np.string_(trade.side)], qtype=QSYMBOL_LIST),
     ])
-    print("trades updated")
+    print("trades updated: " + trade.exchange)
 
 
 def main():
