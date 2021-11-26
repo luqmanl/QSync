@@ -23,7 +23,7 @@ def send_orderbook(data_table, datatype, channel_layer):
             'exchange': data_row[2].decode("utf-8"),
             'bids': [bid for bid in data_row[4: 14]],
             'asks': [ask for ask in data_row[14: 24]],
-            'buySizes': [bid_price for bid_price in data_row[24: 34]],
+            'bidSizes': [bid_price for bid_price in data_row[24: 34]],
             'askSizes': [ask_price for ask_price in data_row[34: 44]]
         }
 

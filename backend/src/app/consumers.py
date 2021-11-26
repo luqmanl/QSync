@@ -54,8 +54,10 @@ class ClientConsumer(AsyncConsumer):
         lowestAsk = data["asks"][0]
         with qconnection.QConnection(host='localhost', port=5011) as q:
             volume = q.sendSync('.trades.vol', np.string_(data['sym']))
-        imbalance = (highestBid - lowestAsk) / \
-            (highestBid + lowestAsk)
+        highestBidSize = data["bidSizes"][0]
+        lowestAskSize = data["askSizes"][0]
+        imbalance = (highestBidSize - lowestAskSize) / \
+            (highestBidSize + lowestAskSize)
 
         data = {
             "sym": data["sym"],
