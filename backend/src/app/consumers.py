@@ -2,6 +2,7 @@ import json
 from channels.consumer import AsyncConsumer
 import asyncio
 import numpy as np
+import re
 
 from qpython import qconnection
 
@@ -11,16 +12,37 @@ from qpython import qconnection
 class ClientConsumer(AsyncConsumer):
 
     async def websocket_connect(self, event):
-        self.exchange_name = self.scope['url_route']['kwargs']['exchange_name']
-        self.pair_names = self.scope['url_route']['kwargs']['pair_names'].split(
-            "_")
+        self.spot_prices = {}
+        self.future_prices = {}
+
+        exchanges = self.scope['url_route']['kwargs']['exchange_name'].split(
+            "&")
+        self.spot_exchanges = exchanges[0].split("+")
+        self.future_exchanges = []
+        if len(exchanges) == 2:
+            self.future_exchanges = exchanges[1].split("+")
+
+        pair_names = self.scope['url_route']['kwargs']['pair_names'].split("&")
+        self.spot_pairs = pair_names[0].split("+")
+        self.future_pairs = []
+        if len(exchanges) == 2:
+            self.future_pairs = pair_names[1].split("+")
+
         self.data_type = self.scope['url_route']['kwargs']['data_type']
 
-        for pair in self.pair_names:
-            await self.channel_layer.group_add(
-                f"{self.exchange_name}_{pair}_{self.data_type}",
-                self.channel_name
-            )
+        for exchange in self.spot_exchanges:
+            for pair in self.spot_pairs:
+                await self.channel_layer.group_add(
+                    f"{exchange}_{pair}_{self.data_type}",
+                    self.channel_name
+                )
+
+        for exchange in self.future_exchanges:
+            for pair in self.future_pairs:
+                await self.channel_layer.group_add(
+                    f"{exchange}_{pair}_{self.data_type}",
+                    self.channel_name
+                )
 
         await self.send({
             "type": "websocket.accept"
@@ -32,8 +54,10 @@ class ClientConsumer(AsyncConsumer):
         lowestAsk = data["asks"][0]
         with qconnection.QConnection(host='localhost', port=5011) as q:
             volume = q.sendSync('.trades.vol', np.string_(data['sym']))
-        imbalance = (highestBid - lowestAsk) / \
-            (highestBid + lowestAsk)
+        highestBidSize = data["bidSizes"][0]
+        lowestAskSize = data["askSizes"][0]
+        imbalance = (highestBidSize - lowestAskSize) / \
+            (highestBidSize + lowestAskSize)
 
         data = {
             "sym": data["sym"],
@@ -60,6 +84,41 @@ class ClientConsumer(AsyncConsumer):
         await self.send({
             'type': 'websocket.send',
             'text': event['data']
+        })
+
+    async def send_basis_data(self, event):
+        data = json.loads(event["data"])
+        highestBid = data["bids"][0]
+        lowestAsk = data["asks"][0]
+
+        basis_prices = []
+
+        if re.search("[0-9][0-9].[0-9][0-9]", data["sym"]):  # if symbol has future form
+            self.future_prices[data["exchange"]] = (highestBid + lowestAsk) / 2
+            for (exchange, spot) in self.spot_prices.items():
+                basisAddition = {
+                    "spotExchange": exchange,
+                    "futureExchange": data["exchange"],
+                    "sym": data["sym"],
+                    "basisValue": spot - self.future_prices[data["exchange"]]
+                }
+                basis_prices.append(basisAddition)
+        else:
+            self.spot_prices[data["exchange"]] = (highestBid + lowestAsk) / 2
+            for (exchange, future) in self.future_prices.items():
+                basisAddition = {
+                    "spotExchange": data["exchange"],
+                    "futureExchange": exchange,
+                    "sym": data["sym"],
+                    "basisValue": future - self.spot_prices[data["exchange"]]
+                }
+                basis_prices.append(basisAddition)
+
+        data = {"basisAdditions": basis_prices}
+
+        await self.send({
+            'type': 'websocket.send',
+            'text': json.dumps(data)
         })
 
     async def websocket_disconnect(self, event):

@@ -23,7 +23,7 @@ def send_orderbook(data_table, datatype, channel_layer):
             'exchange': data_row[2].decode("utf-8"),
             'bids': [bid for bid in data_row[4: 14]],
             'asks': [ask for ask in data_row[14: 24]],
-            'buySizes': [bid_price for bid_price in data_row[24: 34]],
+            'bidSizes': [bid_price for bid_price in data_row[24: 34]],
             'askSizes': [ask_price for ask_price in data_row[34: 44]]
         }
 
@@ -56,7 +56,7 @@ def send_trade(data_table, datatype, channel_layer):
 """
 table_to_channel_datatypes = {
 
-    "orderbooktop": (send_orderbook, ["l2orderbook", "l2overview"]),
+    "orderbooktop": (send_orderbook, ["l2orderbook", "l2overview", "basis"]),
     "trades": (send_trade, ["trade"]),
 }
 
@@ -83,7 +83,6 @@ class ListenerThread(threading.Thread):
                 print(f'{response[0]} table data model: {response[1].dtype}')
 
             while not self.stopped():
-                sleep(1)
                 try:
                     message = Q.receive(data_only=False, numpy_temporals=True)
 

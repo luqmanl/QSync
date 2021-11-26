@@ -6,8 +6,10 @@
 
 .flex-container {
   display: flex;
-  width: 100vw;
-  padding: 10px 0 10px 0;
+  width: 90vw;
+  height: 90vh;
+  overflow: scroll;
+  padding: 40px;
 }
 
 .graph-container {
@@ -19,4 +21,23 @@
   width: 34vw;
   overflow: auto;
   height: 100vh;
+}
+
+*::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background-color: black;
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+  background-color: black;
+}
+
+*::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #1a1a1a;
+}
+
+*::-webkit-scrollbar-corner {
+  background-color: black;
 }

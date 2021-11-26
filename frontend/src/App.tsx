@@ -35,13 +35,7 @@ const App = () => {
   return (
     <div className="page">
       <NavBar />
-      <div className="flex-container"></div>
-      <div
-        style={{
-          height: "50vh",
-          width: "50vw",
-        }}
-      >
+      <div className="flex-container">
         <Rectangle innerComponents={<BasisTable />} />
       </div>
     </div>
