@@ -1,23 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
-<h1>hellow</h1>
+  </head>
+  <h1>hellow</h1>
 
-<body>
-
+  <body>
     <script>
-        var socket = new WebSocket('ws://localhost:8000/ws/data/BINANCE+BITFINEX&DERIBIT+OKEX/BTC-USDT&BTC-USD-21X26/basis/')
+      var socket = new WebSocket('ws://localhost:8000/ws/data/BINANCE+BITFINEX&DERIBIT+OKEX/BTC-USDT&BTC-USD-21Z31/basis/')
 
-        socket.addEventListener('message', (e) => {
-            console.log(e.data)
-        })
+       var table = {BINANCE: {DERIBIT: 0.0, OKEX: 0.0},
+                      BITFINEX: {DERIBIT: 0.0, OKEX: 0.0}}
+
+      socket.addEventListener('message', (e) => {
+          const res = JSON.parse(e.data)
+          const updates = res.basisAdditions.map((output)=>{
+              const res = {
+              spotExchange: output.spotExchange,
+              futureExchange: output.futureExchange,
+              sym: output.symbol,
+              basisValue: output.basisValue
+              }
+              return res;
+          })
+
+          const updated = table
+          updates.forEach(element => {
+              const row = table[element.spotExchange]
+              row[element.futureExchange] = element.basisValue;
+          });
+
+          console.log(table, res)
+      })
     </script>
-</body>
-
+  </body>
 </html>

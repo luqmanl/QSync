@@ -76,7 +76,7 @@ def main():
                L2_BOOK, TRADES], callbacks={L2_BOOK: l2book_callback, TRADES: trade_callback}))
 
     # Add Future Exchange feeds
-    future_pairs = ["BTC-USD-21X26"]
+    future_pairs = ["BTC-USD-21Z31"]
     f.add_feed(Deribit(symbols=future_pairs, channels=[
                L2_BOOK, TRADES], callbacks={L2_BOOK: l2book_callback, TRADES: trade_callback}))
     f.add_feed(HuobiDM(symbols=future_pairs, channels=[

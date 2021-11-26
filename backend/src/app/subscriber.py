@@ -83,7 +83,6 @@ class ListenerThread(threading.Thread):
                 print(f'{response[0]} table data model: {response[1].dtype}')
 
             while not self.stopped():
-                sleep(1)
                 try:
                     message = Q.receive(data_only=False, numpy_temporals=True)
 
