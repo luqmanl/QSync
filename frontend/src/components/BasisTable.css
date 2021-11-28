@@ -1,0 +1,27 @@
+.basis-component {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+  background-color: black;
+}
+/* 
+.basis-table {
+    background-color: black;
+    color: white;
+} */
+
+.table-horizontal-elems {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 10px;
+}
+
+.table-title {
+  padding: 10px 10px 0px 10px;
+}
+
+.table-cell {
+  color: white;
+}
