@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 /* eslint-disable no-mixed-operators */
 /* eslint-disable no-magic-numbers */
 import React, { useState, useEffect } from "react";
@@ -43,7 +44,7 @@ const BasisTable = () => {
   const [basisTable, setBasisTable] = useState<futureMap>(initialTable);
 
   // TODO change this
-  const wsAddr = `ws://localhost:8000/ws/data/BINANCE+BITFINEX&DERIBIT+OKEX/BTC-USDT&BTC-USD-21Z31/basis/`;
+  const wsAddr = `ws://localhost:8000/ws/data/basis/`;
 
   useEffect(() => {
     const socket = new WebSocket(wsAddr);
@@ -51,10 +52,10 @@ const BasisTable = () => {
     socket.onopen = () =>
         socket.send(
         JSON.stringify({
-          futureExchanges: ["BINANCE", "BITFINEX"],
-          spotExchanges: ["DERIBIT", "OKEX"],
-          futurePairs: ["BTC-USD-21Z31"],
-          spotPairs: ["BTC-USDT"],
+          futures_exchanges: ["BINANCE", "BITFINEX"],
+          spot_exchanges: ["DERIBIT", "OKEX"],
+          futures_pairs: ["BTC-USD-21Z31"],
+          spot_pairs: ["BTC-USDT"],
         })
       );
 

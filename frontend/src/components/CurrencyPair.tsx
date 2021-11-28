@@ -23,13 +23,15 @@ const CurrencyPair = () => {
   useEffect(() => {
     const socket = new WebSocket(wsAddr);
 
-    socket.onopen = () =>
+    socket.onopen = () => {
       socket.send(
         JSON.stringify({
-          exchange: "BINANCE",
+          exchanges: ["BINANCE"],
           pairs: ["ETH-BTC", "BTC-USDT", "ETH-USDT"],
         })
       );
+      console.log("HELLO");
+    };
 
     socket.addEventListener("message", (ev) => {
       const res = JSON.parse(ev.data);
