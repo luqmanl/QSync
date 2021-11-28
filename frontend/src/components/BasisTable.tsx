@@ -48,23 +48,34 @@ const BasisTable = () => {
   useEffect(() => {
     const socket = new WebSocket(wsAddr);
 
+    socket.onopen = () =>
+        socket.send(
+        JSON.stringify({
+          futureExchanges: ["BINANCE", "BITFINEX"],
+          spotExchanges: ["DERIBIT", "OKEX"],
+          futurePairs: ["BTC-USD-21Z31"],
+          spotPairs: ["BTC-USDT"],
+        })
+      );
+
     socket.addEventListener("message", (ev) => {
       const res: basisTableData = JSON.parse(ev.data);
       console.log(res);
 
-      const update = {...basisTable}
+      const update = { ...basisTable };
 
-      res.basisAdditions?.forEach((mapping : basisAddition) => {
-        update[mapping.futureExchange][mapping.spotExchange] = mapping.basisValue.toFixed(3)
+      res.basisAdditions?.forEach((mapping: basisAddition) => {
+        update[mapping.futureExchange][mapping.spotExchange] =
+          mapping.basisValue.toFixed(3);
       });
 
       setBasisTable(update);
 
-      supportedFutures.forEach(x => {
-        supportedSpot.forEach(y => {
-          console.log(`future: ${x}, spot: ${y}, basis: ${basisTable[x][y]}`)
-        }) 
-      })
+      supportedFutures.forEach((x) => {
+        supportedSpot.forEach((y) => {
+          console.log(`future: ${x}, spot: ${y}, basis: ${basisTable[x][y]}`);
+        });
+      });
     });
   }, []);
 

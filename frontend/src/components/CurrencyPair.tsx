@@ -18,10 +18,18 @@ const CurrencyPair = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [data, setData] = useState<{ [name: string]: CurrencyPairType }>({});
 
-  const wsAddr = `ws://localhost:8000/ws/data/BINANCE/ETH-BTC+BTC-USDT+ETH-USDT/l2overview/`;
+  const wsAddr = `ws://localhost:8000/ws/data/l2overview/`;
 
   useEffect(() => {
     const socket = new WebSocket(wsAddr);
+
+    socket.onopen = () =>
+      socket.send(
+        JSON.stringify({
+          exchange: "BINANCE",
+          pairs: ["ETH-BTC", "BTC-USDT", "ETH-USDT"],
+        })
+      );
 
     socket.addEventListener("message", (ev) => {
       const res = JSON.parse(ev.data);
