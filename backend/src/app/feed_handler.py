@@ -43,6 +43,8 @@ table_to_channel_datatypes = {
 }
 
 # function to send trade and l2orderbook data to frontend
+
+
 async def send_data_to_frontend(datatypes, data, channel_layer, last_send):
     last_send = {}
     for datatype in datatypes:
@@ -87,7 +89,7 @@ async def l2book_callback(book_, timestamp):
         qlist([np.string_(book_.symbol)], qtype=QSYMBOL_LIST),
         qlist([np.string_(book_.exchange)], qtype=QSYMBOL_LIST),
         qlist([np.datetime64(datetime.fromtimestamp(timestamp), 'ns')],
-                qtype=QTIMESTAMP_LIST),
+              qtype=QTIMESTAMP_LIST),
     ]
 
     bid_sizes = []
@@ -99,7 +101,7 @@ async def l2book_callback(book_, timestamp):
         bid_sizes.append(qlist([size], qtype=QDOUBLE_LIST))
         ask, size = book_.book.asks.index(i)
         dataBackend.append(qlist([ask], qtype=QDOUBLE_LIST))
-        bid_sizes.append(qlist([size], qtype=QDOUBLE_LIST))           
+        bid_sizes.append(qlist([size], qtype=QDOUBLE_LIST))
 
     dataBackend.extend(bid_sizes)
     dataBackend.extend(ask_sizes)
@@ -116,20 +118,19 @@ async def trade_callback(trade, timestamp):
         'amount': float(trade.amount),
         'side': trade.side
     }
-    
+
     datatypes = table_to_channel_datatypes["trades"]
     await send_data_to_frontend(datatypes, data, channel_layer, last_send)
-    
+
     q.sendAsync('.u.upd', np.string_('trades'), [
         qlist([np.string_(trade.symbol)], qtype=QSYMBOL_LIST),
         qlist([np.string_(trade.exchange)], qtype=QSYMBOL_LIST),
         qlist([np.datetime64(datetime.fromtimestamp(timestamp), 'ns')],
-                qtype=QTIMESTAMP_LIST),
+              qtype=QTIMESTAMP_LIST),
         qlist([trade.price], qtype=QDOUBLE_LIST),
         qlist([trade.amount], qtype=QDOUBLE_LIST),
         qlist([np.string_(trade.side)], qtype=QSYMBOL_LIST),
     ])
-
 
 
 def run():
@@ -146,12 +147,12 @@ def run():
         spot_exchanges = [Binance, Coinbase, Bitfinex]
         future_exchanges = [Deribit, HuobiDM, OKEx]
 
-        args = {"channels":[L2_BOOK, TRADES], "callbacks":{
+        args = {"channels": [L2_BOOK, TRADES], "callbacks": {
             L2_BOOK: l2book_callback, TRADES: trade_callback}}
-        
+
         for x in spot_exchanges:
             f.add_feed(x(symbols=spot_pairs, **args))
-        
+
         for x in future_exchanges:
             f.add_feed(x(symbols=future_pairs, **args))
         f.run()
