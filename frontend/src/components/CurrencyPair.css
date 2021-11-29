@@ -1,8 +1,12 @@
 .table-title {
   text-align: center;
+}
+
+.title{
+  text-align: center;
   color: white;
 }
 
-.row-title {
-  text-align: center;
+.table-cell {
+  color: white;
 }

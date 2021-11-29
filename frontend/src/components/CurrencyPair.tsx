@@ -38,8 +38,8 @@ const CurrencyPair = () => {
         pairName: res.sym,
         highestBid: res.highestBid,
         lowestAsk: res.lowestAsk,
-        volumeLhr: res.volume,
-        orderImbalance: parseFloat(res.imbalance).toFixed(4),
+        volumeLhr: parseFloat(res.volume).toFixed(3),
+        orderImbalance: parseFloat(res.imbalance).toFixed(3)
       };
       const imbalanceString = cp.orderImbalance;
       cp.orderImbalance = imbalanceString.substring(0, 5);
@@ -64,11 +64,11 @@ const CurrencyPair = () => {
   const rowGenerator = (item: CurrencyPairType, key: number) => {
     const colour = colourGenerator(parseFloat(item.orderImbalance));
     return (
-      <tr key={key}>
-        <td>{item.pairName}</td>
-        <td>{item.highestBid}</td>
-        <td>{item.lowestAsk}</td>
-        <td>{item.volumeLhr}</td>
+      <tr className="table-title" key={key}>
+        <td className="table-cell">{item.pairName}</td>
+        <td className="table-cell">{item.highestBid}</td>
+        <td className="table-cell">{item.lowestAsk}</td>
+        <td className="table-cell">{item.volumeLhr}</td>
         <td
           style={{
             color: `rgb(${colour.red}, ${colour.green}, ${colour.blue})`,
@@ -82,15 +82,15 @@ const CurrencyPair = () => {
 
   return (
     <div>
-      <h1 className="table-title">Currency Pairs</h1>
-      <Table variant="dark">
+      <h1 className="title">Currency Pairs</h1>
+      <Table>
         <thead>
           <tr>
-            <th className="row-title">Pairs</th>
-            <th className="row-title">Bid</th>
-            <th className="row-title">Ask</th>
-            <th className="row-title">Vol</th>
-            <th className="row-title">Order Imbalance</th>
+            <th className="table-cell">Pairs</th>
+            <th className="table-cell">Bid</th>
+            <th className="table-cell">Ask</th>
+            <th className="table-cell">Vol</th>
+            <th className="table-cell">Order Imbalance</th>
           </tr>
         </thead>
         <tbody>
