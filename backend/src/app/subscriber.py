@@ -18,12 +18,10 @@ from qpython.qconnection import QConnection
 
 def send_orderbook(data_table, datatype, channel_layer):
     seen_exchanges = set()
-    print(data_table)
     for data_row in data_table:
         data_row = list(data_row)
         exchange = data_row[2].decode("utf-8")
         if exchange not in seen_exchanges:
-            print("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
             seen_exchanges.add(exchange)
             data = {
                 'sym': data_row[1].decode("utf-8"),
@@ -104,9 +102,6 @@ class ListenerThread(threading.Thread):
                     if isinstance(message.data, list) and len(message.data) == 3:
                         if message.data[0] == b'upd' and isinstance(
                                 message.data[2], QTable):
-                            print(
-                                f"{datetime.now()} - Recieved table: {message.data[1].decode('utf-8')} of length {len(message.data[2])}")
-                            print()
                             table_name = message.data[1].decode("utf-8")
                             (send_func,
                              datatypes) = table_to_channel_datatypes[table_name]
