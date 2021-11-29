@@ -24,6 +24,8 @@ from queue import Queue
 import sys
 from qpython.qcollection import QTable
 from qpython.qconnection import QConnection
+import time
+
 
 """ Updates the L2 Orderbook table with the top 10 bids and asks from the latest snapshot.  """
 
@@ -59,7 +61,12 @@ def run():
     channel_layer = get_channel_layer()
     q = qconnection.QConnection(host='localhost', port=5010)
 
+    last_send = {}
+
     async def l2book_callback(book_, timestamp):
+        # dt = time.time()
+        # print(dt)
+        # print(dt + 1)
         bids = []
         bid_sizes = []
         asks = []
@@ -87,10 +94,14 @@ def run():
             'askSizes': ask_sizes
         }    
 
+        # if no update in 0.25 secs, send update
         (datatypes) = table_to_channel_datatypes["orderbooktop"]
         for datatype in datatypes:
-            group_name = f"{data['exchange']}_{data['sym']}_{datatype}"
-            await (channel_layer.group_send)(group_name, {"type": f"send_{datatype}_data", "data": json.dumps(data)})  
+            key = f"{data['exchange']}_{data['sym']}_{datatype}"
+            if ((not key in last_send) or (time.time() + 1 > last_send[key])):
+                last_send[key] = time.time()
+                group_name = f"{data['exchange']}_{data['sym']}_{datatype}"
+                await (channel_layer.group_send)(group_name, {"type": f"send_{datatype}_data", "data": json.dumps(data)})
 
         data = [
             qlist([np.string_(book_.symbol)], qtype=QSYMBOL_LIST),
@@ -116,7 +127,7 @@ def run():
         data.extend(ask_sizes)
 
         q.sendAsync('.u.upd', np.string_('orderbooktop'), data)
-        print("orderbooktop updated: " + book_.exchange)
+        # print("orderbooktop updated: " + book_.exchange)
     
 
 
