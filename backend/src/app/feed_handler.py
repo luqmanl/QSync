@@ -4,7 +4,7 @@ from queue import Queue
 from cryptofeed import FeedHandler
 from cryptofeed.defines import COINBASE, L2_BOOK, TRADES
 from cryptofeed.exchanges import (
-    Binance, Coinbase, Bitfinex, Deribit, HuobiDM, OKEx)
+    Binance, Coinbase, Bitfinex, Deribit, HuobiDM, KrakenFutures, OKEx)
 
 from qpython import qconnection
 from qpython.qtype import QSYMBOL_LIST, QDOUBLE_LIST, QTIMESTAMP_LIST
@@ -25,12 +25,10 @@ import sys
 from qpython.qcollection import QTable
 from qpython.qconnection import QConnection
 import time
-
+import sys
 
 # Connect to Q
-channel_layer = get_channel_layer()
 q = qconnection.QConnection(host='localhost', port=5010)
-
 # maps data type to last client send (e.g. BINANCE_BTC-USDT_trades -> 20:29:32.549549)
 last_send = {}
 
@@ -82,8 +80,9 @@ async def l2book_callback(book_, timestamp):
     }
 
     # if no update in 1 sec, send update
-    datatypes = table_to_channel_datatypes["orderbooktop"]
-    await send_data_to_frontend(datatypes, dataFrontend, channel_layer, last_send)
+    if SEND_TO_FRONTEND:
+        datatypes = table_to_channel_datatypes["orderbooktop"]
+        await send_data_to_frontend(datatypes, dataFrontend, channel_layer, last_send)
 
     dataBackend = [
         qlist([np.string_(book_.symbol)], qtype=QSYMBOL_LIST),
@@ -119,8 +118,10 @@ async def trade_callback(trade, timestamp):
         'side': trade.side
     }
 
-    datatypes = table_to_channel_datatypes["trades"]
-    await send_data_to_frontend(datatypes, data, channel_layer, last_send)
+    print(SEND_TO_FRONTEND)
+    if SEND_TO_FRONTEND:
+        datatypes = table_to_channel_datatypes["trades"]
+        await send_data_to_frontend(datatypes, data, channel_layer, last_send)
 
     q.sendAsync('.u.upd', np.string_('trades'), [
         qlist([np.string_(trade.symbol)], qtype=QSYMBOL_LIST),
@@ -145,7 +146,7 @@ def run():
 
         # list of future and spot exchanges
         spot_exchanges = [Binance, Coinbase, Bitfinex]
-        future_exchanges = [Deribit, HuobiDM, OKEx]
+        future_exchanges = [Deribit, KrakenFutures, OKEx]
 
         args = {"channels": [L2_BOOK, TRADES], "callbacks": {
             L2_BOOK: l2book_callback, TRADES: trade_callback}}
@@ -156,3 +157,13 @@ def run():
         for x in future_exchanges:
             f.add_feed(x(symbols=future_pairs, **args))
         f.run()
+
+if __name__ == "__main__":
+    SEND_TO_FRONTEND = False
+    run()
+
+# configure to send to front end and define channel_layers
+SEND_TO_FRONTEND = True
+
+if SEND_TO_FRONTEND:
+    channel_layer = get_channel_layer()
