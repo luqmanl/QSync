@@ -27,35 +27,6 @@ from qpython.qconnection import QConnection
 
 """ Updates the L2 Orderbook table with the top 10 bids and asks from the latest snapshot.  """
 
-def send_orderbook(data, datatype, channel_layer):
-    print("entry")
-    # print(data_table)
-
-    group_name = f"{data['exchange']}_{data['sym']}_{datatype}"
-    (channel_layer.group_send)(group_name, {"type": f"send_{datatype}_data", "data": data})    
-
-    # for data_row in data_table:
-    #     print("row")
-    #     data_row = list(data_row)
-    #     exchange = data_row[2]
-    #     print(f"Exchange: {exchange}")
-    #     if exchange not in seen_exchanges:
-    #         seen_exchanges.add(exchange)
-    #         data = {
-    #             'sym': data_row[1],
-    #             'exchange': exchange,
-    #             'bids': data_row[4: 14],
-    #             'asks': data_row[14: 24],
-    #             'bidSizes': data_row[24: 34],
-    #             'askSizes': data_row[34: 44]
-    #         }
-
-    #         group_name = f"{data['exchange']}_{data['sym']}_{datatype}"
-    #         async_to_sync(
-    #             channel_layer.group_send)(group_name, {
-    #                 "type": f"send_{datatype}_data", "data": json.dumps(data)})
-
-
 # submits trade data to socket
 def send_trade(data_table, datatype, channel_layer):
     return
@@ -79,7 +50,7 @@ def send_trade(data_table, datatype, channel_layer):
     for the corresponding table updates
 """
 table_to_channel_datatypes = {
-    "orderbooktop": (send_orderbook, ["l2orderbook", "l2overview", "basis"]),
+    "orderbooktop": (["l2orderbook", "l2overview", "basis"]),
     "trades": (send_trade, ["trade"]),
 }
 
@@ -89,18 +60,19 @@ def run():
     q = qconnection.QConnection(host='localhost', port=5010)
 
     async def l2book_callback(book_, timestamp):
+        bids = []
         bid_sizes = []
+        asks = []
         ask_sizes = []
+
         if book_.timestamp != None:
             timestamp = book_.timestamp
 
-        bids = []
         for i in range(10):
             bid, size = book_.book.bids.index(i)
             bids.append(float(bid))
             bid_sizes.append(float(size))
 
-        asks = []
         for i in range(10):
             ask, size = book_.book.ask.index(i)
             asks.append(float(ask))
@@ -115,19 +87,20 @@ def run():
             'askSizes': ask_sizes
         }    
 
-        (send_func, datatypes) = table_to_channel_datatypes["orderbooktop"]
+        (datatypes) = table_to_channel_datatypes["orderbooktop"]
         for datatype in datatypes:
             group_name = f"{data['exchange']}_{data['sym']}_{datatype}"
             await (channel_layer.group_send)(group_name, {"type": f"send_{datatype}_data", "data": json.dumps(data)})  
 
-        print(data)
         data = [
             qlist([np.string_(book_.symbol)], qtype=QSYMBOL_LIST),
             qlist([np.string_(book_.exchange)], qtype=QSYMBOL_LIST),
             qlist([np.datetime64(datetime.fromtimestamp(timestamp), 'ns')],
                 qtype=QTIMESTAMP_LIST),
         ]
-        print(data)
+
+        bid_sizes = []
+        ask_sizes = []
 
         for i in range(10):
             bid, size = book_.book.bids.index(i)
