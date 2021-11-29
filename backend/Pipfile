@@ -19,6 +19,7 @@ autopep8 = "*"
 pylint = "*"
 pylint-django = "*"
 channels-redis = "*"
+cryptofeed = "*"
 
 [requires]
 python_version = "3.8"
