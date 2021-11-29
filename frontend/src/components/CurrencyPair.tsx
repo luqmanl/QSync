@@ -39,7 +39,7 @@ const CurrencyPair = () => {
         highestBid: res.highestBid,
         lowestAsk: res.lowestAsk,
         volumeLhr: parseFloat(res.volume).toFixed(3),
-        orderImbalance: parseFloat(res.imbalance).toFixed(3)
+        orderImbalance: parseFloat(res.imbalance).toFixed(3),
       };
       const imbalanceString = cp.orderImbalance;
       cp.orderImbalance = imbalanceString.substring(0, 5);

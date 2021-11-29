@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable camelcase */
 /* eslint-disable no-mixed-operators */
 /* eslint-disable no-magic-numbers */
@@ -17,7 +18,7 @@ type basisAddition = {
 };
 
 type spotMap = {
-  [spotKey: string]: any;
+  [spotKey: string]: string;
 };
 
 type futureMap = {
@@ -50,7 +51,7 @@ const BasisTable = () => {
     const socket = new WebSocket(wsAddr);
 
     socket.onopen = () => {
-        socket.send(
+      socket.send(
         JSON.stringify({
           futures_exchanges: ["DERIBIT", "OKEX", "HUOBIDM"],
           spot_exchanges: ["BINANCE", "BITFINEX", "COINBASE"],
