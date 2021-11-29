@@ -30,6 +30,8 @@ import time
 """ Updates the L2 Orderbook table with the top 10 bids and asks from the latest snapshot.  """
 
 # submits trade data to socket
+
+
 def send_trade(data_table, datatype, channel_layer):
     return
     for data_row in data_table:
@@ -55,6 +57,7 @@ table_to_channel_datatypes = {
     "orderbooktop": (["l2orderbook", "l2overview", "basis"]),
     "trades": (send_trade, ["trade"]),
 }
+
 
 def run():
     print("About to run")
@@ -84,7 +87,7 @@ def run():
             ask, size = book_.book.ask.index(i)
             asks.append(float(ask))
             ask_sizes.append(float(size))
-                
+
         data = {
             'sym': book_.symbol,
             'exchange': book_.exchange,
@@ -92,7 +95,7 @@ def run():
             'asks': asks,
             'bidSizes': bid_sizes,
             'askSizes': ask_sizes
-        }    
+        }
 
         # if no update in 0.25 secs, send update
         (datatypes) = table_to_channel_datatypes["orderbooktop"]
@@ -107,7 +110,7 @@ def run():
             qlist([np.string_(book_.symbol)], qtype=QSYMBOL_LIST),
             qlist([np.string_(book_.exchange)], qtype=QSYMBOL_LIST),
             qlist([np.datetime64(datetime.fromtimestamp(timestamp), 'ns')],
-                qtype=QTIMESTAMP_LIST),
+                  qtype=QTIMESTAMP_LIST),
         ]
 
         bid_sizes = []
@@ -128,8 +131,6 @@ def run():
 
         q.sendAsync('.u.upd', np.string_('orderbooktop'), data)
         # print("orderbooktop updated: " + book_.exchange)
-    
-
 
     async def trade_callback(trade, timestamp):
         return
@@ -137,17 +138,16 @@ def run():
             qlist([np.string_(trade.symbol)], qtype=QSYMBOL_LIST),
             qlist([np.string_(trade.exchange)], qtype=QSYMBOL_LIST),
             qlist([np.datetime64(datetime.fromtimestamp(timestamp), 'ns')],
-                qtype=QTIMESTAMP_LIST),
+                  qtype=QTIMESTAMP_LIST),
             qlist([trade.price], qtype=QDOUBLE_LIST),
             qlist([trade.amount], qtype=QDOUBLE_LIST),
             qlist([np.string_(trade.side)], qtype=QSYMBOL_LIST),
         ])
         print("trades updated: " + trade.exchange)
 
-    
     with q:
         config = {'log': {'filename': 'feedhandler.log',
-                        'level': 'DEBUG', 'disabled': True}}
+                          'level': 'DEBUG', 'disabled': True}}
         f = FeedHandler(config=config)
 
         # Add spot exchange feeds
@@ -158,17 +158,17 @@ def run():
         f.add_feed(Binance(symbols=spot_pairs, channels=[L2_BOOK, TRADES], callbacks={
             L2_BOOK: l2book_callback, TRADES: trade_callback}))
         f.add_feed(Coinbase(symbols=spot_pairs, channels=[
-                L2_BOOK, TRADES], callbacks={L2_BOOK: l2book_callback, TRADES: trade_callback}))
+            L2_BOOK, TRADES], callbacks={L2_BOOK: l2book_callback, TRADES: trade_callback}))
         f.add_feed(Bitfinex(symbols=spot_pairs, channels=[
-                L2_BOOK, TRADES], callbacks={L2_BOOK: l2book_callback, TRADES: trade_callback}))
+            L2_BOOK, TRADES], callbacks={L2_BOOK: l2book_callback, TRADES: trade_callback}))
 
         # Add Future Exchange feeds
         future_pairs = ["BTC-USD-21Z31"]
         f.add_feed(Deribit(symbols=future_pairs, channels=[
-                L2_BOOK, TRADES], callbacks={L2_BOOK: l2book_callback, TRADES: trade_callback}))
+            L2_BOOK, TRADES], callbacks={L2_BOOK: l2book_callback, TRADES: trade_callback}))
         f.add_feed(HuobiDM(symbols=future_pairs, channels=[
-                L2_BOOK, TRADES], callbacks={L2_BOOK: l2book_callback, TRADES: trade_callback}))
+            L2_BOOK, TRADES], callbacks={L2_BOOK: l2book_callback, TRADES: trade_callback}))
         f.add_feed(OKEx(symbols=future_pairs, channels=[
-                L2_BOOK, TRADES], callbacks={L2_BOOK: l2book_callback, TRADES: trade_callback}))
-        
+            L2_BOOK, TRADES], callbacks={L2_BOOK: l2book_callback, TRADES: trade_callback}))
+
         f.run()
