@@ -8,8 +8,12 @@ import {
   AxisTickStrategies,
   LegendBoxBuilders,
 } from "@arction/lcjs";
-import { dataPoint } from "../App";
 import React from "react";
+
+type dataPoint = {
+  x: number;
+  y: number;
+};
 
 type stateType = {
   series: LineSeries;

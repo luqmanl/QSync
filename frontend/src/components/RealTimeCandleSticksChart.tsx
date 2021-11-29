@@ -10,8 +10,7 @@ import {
   // AxisTickStrategies,
   // Series2D,
 } from "@arction/lcjs";
-import { dataPoint } from "../App";
-import React, { useState, useLayoutEffect } from "react";
+import React, { useState, useEffect } from "react";
 import SearchBar from "./SearchBar";
 
 type propsType = {
@@ -21,10 +20,16 @@ type propsType = {
   yAxis: string;
 };
 
+type dataPoint = {
+  x: number;
+  y: number;
+};
+
 const RealTimeCandleSticksChart = (props: propsType) => {
   const [data, setData] = useState<dataPoint[]>([]);
+  const socket = new WebSocket(`ws://localhost:8000/ws/data/l2overview/`);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const chart = lightningChart().ChartXY({ container: props.id });
     chart.setTitle(props.graphTitle);
     chart.getDefaultAxisX().setTitle(props.xAxis);
@@ -43,13 +48,28 @@ const RealTimeCandleSticksChart = (props: propsType) => {
       { seriesConstructor: OHLCSeriesTypes.AutomaticPacking }
     );
 
-    const webSocket = new WebSocket("ws://localhost:3456");
-
-    webSocket.onmessage = (event) => {
-      const newData = JSON.parse(event.data.toString());
-      setData((oldData) => [...oldData, newData]);
-      series.add(newData);
+    socket.onopen = () => {
+      console.log("OPEN");
+      socket.send(
+        JSON.stringify({
+          exchanges: ["BINANCE"],
+          pairs: ["BTC-USDT"],
+        })
+      );
     };
+
+    socket.addEventListener("message", (ev) => {
+      console.log(ev.data);
+      const res = JSON.parse(ev.data);
+      const newPoint: dataPoint = {
+        y: res.highestBid,
+        x: new Date().getSeconds()
+      };
+      const update = data;
+      update.push(newPoint);
+      setData(update);
+      series.add(newPoint);
+    });
   }, []);
 
   return (
