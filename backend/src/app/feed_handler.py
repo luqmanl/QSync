@@ -29,47 +29,33 @@ import time
 
 """ Updates the L2 Orderbook table with the top 10 bids and asks from the latest snapshot.  """
 
-# submits trade data to socket
-
-
-def send_trade(data_table, datatype, channel_layer):
-    return
-    for data_row in data_table:
-        data_row = list(data_row)
-        data = {
-            'sym': data_row[1].decode("utf-8"),
-            'exchange': data_row[2].decode("utf-8"),
-            'price': float(data_row[4]),
-            'quantity': float(data_row[5]),
-            'type': data_row[6].decode("utf-8"),
-        }
-
-        group_name = f"{data['exchange']}_{data['sym']}_{datatype}"
-        async_to_sync(
-            channel_layer.group_send)(group_name, {
-                "type": f"send_{datatype}_data", "data": json.dumps(data)})
-
+# function to send trade and l2orderbook data to frontend
+async def send_data_to_frontend(datatypes, data, channel_layer, last_send):
+    last_send = {}
+    for datatype in datatypes:
+        key = f"{data['exchange']}_{data['sym']}_{datatype}"
+        if ((not key in last_send) or (time.time() + 1 > last_send[key])):
+            last_send[key] = time.time()
+            group_name = f"{data['exchange']}_{data['sym']}_{datatype}"
+            await (channel_layer.group_send)(group_name, {"type": f"send_{datatype}_data", "data": json.dumps(data)})
 
 """ Maps kdb table names to channels with data types that are subscribing
     for the corresponding table updates
 """
 table_to_channel_datatypes = {
     "orderbooktop": (["l2orderbook", "l2overview", "basis"]),
-    "trades": (send_trade, ["trade"]),
+    "trades": (["trade"]),
 }
 
 
 def run():
-    print("About to run")
     channel_layer = get_channel_layer()
     q = qconnection.QConnection(host='localhost', port=5010)
 
+    # maps data type to last client send (e.g. BINANCE_BTC-USDT_trades -> 20:29:32.549549)
     last_send = {}
 
     async def l2book_callback(book_, timestamp):
-        # dt = time.time()
-        # print(dt)
-        # print(dt + 1)
         bids = []
         bid_sizes = []
         asks = []
@@ -82,13 +68,11 @@ def run():
             bid, size = book_.book.bids.index(i)
             bids.append(float(bid))
             bid_sizes.append(float(size))
-
-        for i in range(10):
             ask, size = book_.book.ask.index(i)
             asks.append(float(ask))
             ask_sizes.append(float(size))
 
-        data = {
+        dataFrontend = {
             'sym': book_.symbol,
             'exchange': book_.exchange,
             'bids': bids,
@@ -97,16 +81,11 @@ def run():
             'askSizes': ask_sizes
         }
 
-        # if no update in 0.25 secs, send update
-        (datatypes) = table_to_channel_datatypes["orderbooktop"]
-        for datatype in datatypes:
-            key = f"{data['exchange']}_{data['sym']}_{datatype}"
-            if ((not key in last_send) or (time.time() + 1 > last_send[key])):
-                last_send[key] = time.time()
-                group_name = f"{data['exchange']}_{data['sym']}_{datatype}"
-                await (channel_layer.group_send)(group_name, {"type": f"send_{datatype}_data", "data": json.dumps(data)})
+        # if no update in 1 sec, send update
+        datatypes = table_to_channel_datatypes["orderbooktop"]
+        await send_data_to_frontend(datatypes, dataFrontend, channel_layer, last_send)
 
-        data = [
+        dataBackend = [
             qlist([np.string_(book_.symbol)], qtype=QSYMBOL_LIST),
             qlist([np.string_(book_.exchange)], qtype=QSYMBOL_LIST),
             qlist([np.datetime64(datetime.fromtimestamp(timestamp), 'ns')],
@@ -118,22 +97,30 @@ def run():
 
         for i in range(10):
             bid, size = book_.book.bids.index(i)
-            data.append(qlist([bid], qtype=QDOUBLE_LIST))
+            dataBackend.append(qlist([bid], qtype=QDOUBLE_LIST))
             bid_sizes.append(qlist([size], qtype=QDOUBLE_LIST))
-
-        for i in range(10):
             ask, size = book_.book.asks.index(i)
-            data.append(qlist([ask], qtype=QDOUBLE_LIST))
-            bid_sizes.append(qlist([size], qtype=QDOUBLE_LIST))
+            dataBackend.append(qlist([ask], qtype=QDOUBLE_LIST))
+            bid_sizes.append(qlist([size], qtype=QDOUBLE_LIST))           
 
-        data.extend(bid_sizes)
-        data.extend(ask_sizes)
+        dataBackend.extend(bid_sizes)
+        dataBackend.extend(ask_sizes)
 
-        q.sendAsync('.u.upd', np.string_('orderbooktop'), data)
-        # print("orderbooktop updated: " + book_.exchange)
+        q.sendAsync('.u.upd', np.string_('orderbooktop'), dataBackend)
 
     async def trade_callback(trade, timestamp):
-        return
+        data = {
+            'sym': trade.symbol,
+            'exchange': trade.exchange,
+            'timestamp': timestamp,
+            'price': float(trade.price),
+            'amount': float(trade.amount),
+            'side': trade.side
+        }
+        
+        datatypes = table_to_channel_datatypes["trades"]
+        await send_data_to_frontend(datatypes, data, channel_layer, last_send)
+        
         q.sendAsync('.u.upd', np.string_('trades'), [
             qlist([np.string_(trade.symbol)], qtype=QSYMBOL_LIST),
             qlist([np.string_(trade.exchange)], qtype=QSYMBOL_LIST),
@@ -143,32 +130,28 @@ def run():
             qlist([trade.amount], qtype=QDOUBLE_LIST),
             qlist([np.string_(trade.side)], qtype=QSYMBOL_LIST),
         ])
-        print("trades updated: " + trade.exchange)
 
     with q:
         config = {'log': {'filename': 'feedhandler.log',
                           'level': 'DEBUG', 'disabled': True}}
         f = FeedHandler(config=config)
 
-        # Add spot exchange feeds
 
-        # pair is ['ETH-BTC', 'BTC-USDT', 'ETH-USDT']
+        # list of pairs for future and spot exchanges
         spot_pairs = [Binance.symbols()[i] for i in (0, 10, 11)]
-
-        f.add_feed(Binance(symbols=spot_pairs, channels=[L2_BOOK, TRADES], callbacks={
-            L2_BOOK: l2book_callback, TRADES: trade_callback}))
-        f.add_feed(Coinbase(symbols=spot_pairs, channels=[
-            L2_BOOK, TRADES], callbacks={L2_BOOK: l2book_callback, TRADES: trade_callback}))
-        f.add_feed(Bitfinex(symbols=spot_pairs, channels=[
-            L2_BOOK, TRADES], callbacks={L2_BOOK: l2book_callback, TRADES: trade_callback}))
-
-        # Add Future Exchange feeds
         future_pairs = ["BTC-USD-21Z31"]
-        f.add_feed(Deribit(symbols=future_pairs, channels=[
-            L2_BOOK, TRADES], callbacks={L2_BOOK: l2book_callback, TRADES: trade_callback}))
-        f.add_feed(HuobiDM(symbols=future_pairs, channels=[
-            L2_BOOK, TRADES], callbacks={L2_BOOK: l2book_callback, TRADES: trade_callback}))
-        f.add_feed(OKEx(symbols=future_pairs, channels=[
-            L2_BOOK, TRADES], callbacks={L2_BOOK: l2book_callback, TRADES: trade_callback}))
 
+        # list of future and spot exchanges
+        spot_exchanges = [Binance, Coinbase, Bitfinex]
+        future_exchanges = [Deribit, HuobiDM, OKEx]
+
+        args = {"channels":[L2_BOOK, TRADES], "callbacks":{
+            L2_BOOK: l2book_callback, TRADES: trade_callback}}
+        
+        for x in spot_exchanges:
+            f.add_feed(x(symbols=spot_pairs, **args))
+        
+        for x in future_exchanges:
+            f.add_feed(x(symbols=future_pairs, **args))
+        
         f.run()
