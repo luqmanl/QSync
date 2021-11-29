@@ -49,15 +49,16 @@ const BasisTable = () => {
   useEffect(() => {
     const socket = new WebSocket(wsAddr);
 
-    socket.onopen = () =>
+    socket.onopen = () => {
         socket.send(
         JSON.stringify({
-          futures_exchanges: ["BINANCE", "BITFINEX"],
-          spot_exchanges: ["DERIBIT", "OKEX"],
+          futures_exchanges: ["DERIBIT", "OKEX", "HUOBIDM"],
+          spot_exchanges: ["BINANCE", "BITFINEX", "COINBASE"],
           futures_pairs: ["BTC-USD-21Z31"],
           spot_pairs: ["BTC-USDT"],
         })
       );
+    };
 
     socket.addEventListener("message", (ev) => {
       const res: basisTableData = JSON.parse(ev.data);

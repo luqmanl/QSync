@@ -30,7 +30,6 @@ const CurrencyPair = () => {
           pairs: ["ETH-BTC", "BTC-USDT", "ETH-USDT"],
         })
       );
-      console.log("HELLO");
     };
 
     socket.addEventListener("message", (ev) => {
