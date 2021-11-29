@@ -3,7 +3,7 @@ from cryptofeed import FeedHandler
 from cryptofeed.defines import COINBASE, L2_BOOK, TRADES
 
 from cryptofeed.exchanges import (
-    Binance, Coinbase, Bitfinex, Deribit, HuobiDM, OKEx)
+    Binance, Coinbase, Bitfinex, Deribit, KrakenFutures, OKEx)
 
 from qpython import qconnection
 from qpython.qtype import QSYMBOL_LIST, QDOUBLE_LIST, QTIMESTAMP_LIST
@@ -79,7 +79,7 @@ def main():
     future_pairs = ["BTC-USD-21Z31"]
     f.add_feed(Deribit(symbols=future_pairs, channels=[
                L2_BOOK, TRADES], callbacks={L2_BOOK: l2book_callback, TRADES: trade_callback}))
-    f.add_feed(HuobiDM(symbols=future_pairs, channels=[
+    f.add_feed(KrakenFutures(symbols=future_pairs, channels=[
                L2_BOOK, TRADES], callbacks={L2_BOOK: l2book_callback, TRADES: trade_callback}))
     f.add_feed(OKEx(symbols=future_pairs, channels=[
                L2_BOOK, TRADES], callbacks={L2_BOOK: l2book_callback, TRADES: trade_callback}))
