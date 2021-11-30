@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable camelcase */
 /* eslint-disable no-mixed-operators */
 /* eslint-disable no-magic-numbers */
 import React, { useState, useEffect } from "react";
@@ -16,7 +18,7 @@ type basisAddition = {
 };
 
 type spotMap = {
-  [spotKey: string]: any;
+  [spotKey: string]: string;
 };
 
 type futureMap = {
@@ -24,7 +26,7 @@ type futureMap = {
 };
 
 const supportedSpot = ["BINANCE", "BITFINEX", "COINBASE"];
-const supportedFutures = ["DERIBIT", "HUOBIDM", "OKEX"];
+const supportedFutures = ["DERIBIT", "KRAKEN_FUTURES", "OKEX"];
 
 const BasisTable = () => {
   const initialTable: any = {};
@@ -43,10 +45,21 @@ const BasisTable = () => {
   const [basisTable, setBasisTable] = useState<futureMap>(initialTable);
 
   // TODO change this
-  const wsAddr = `ws://localhost:8000/ws/data/BINANCE+BITFINEX&DERIBIT+OKEX/BTC-USDT&BTC-USD-21Z31/basis/`;
+  const wsAddr = `ws://localhost:8000/ws/data/basis/`;
 
   useEffect(() => {
     const socket = new WebSocket(wsAddr);
+
+    socket.onopen = () => {
+      socket.send(
+        JSON.stringify({
+          futures_exchanges: ["DERIBIT", "OKEX", "KRAKEN_FUTURES"],
+          spot_exchanges: ["BINANCE", "BITFINEX", "COINBASE"],
+          futures_pairs: ["BTC-USD-21Z31"],
+          spot_pairs: ["BTC-USDT"],
+        })
+      );
+    };
 
     socket.addEventListener("message", (ev) => {
       const res: basisTableData = JSON.parse(ev.data);

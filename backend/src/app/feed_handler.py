@@ -4,7 +4,7 @@ from queue import Queue
 from cryptofeed import FeedHandler
 from cryptofeed.defines import COINBASE, L2_BOOK, TRADES
 from cryptofeed.exchanges import (
-    Binance, Coinbase, Bitfinex, Deribit, HuobiDM, KrakenFutures, OKEx)
+    Binance, Coinbase, Bitfinex, Deribit, KrakenFutures, OKEx)
 
 from qpython import qconnection
 from qpython.qtype import QSYMBOL_LIST, QDOUBLE_LIST, QTIMESTAMP_LIST
