@@ -1,0 +1,9 @@
+.spinner-container {
+  margin: 50pt 50% 50pt 50%;
+  justify-content: center;
+}
+
+.modal-container {
+  background-color: black;
+  border: white;
+}

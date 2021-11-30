@@ -30,7 +30,6 @@ export type futureMap = {
 const supportedSpot = ["BINANCE", "BITFINEX", "COINBASE"];
 const supportedFutures = ["DERIBIT", "KRAKEN_FUTURES", "OKEX"];
 
-
 const rowGenerator = (map: spotMap, index: number) => {
   return (
     <tr key={index}>

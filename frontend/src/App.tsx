@@ -11,7 +11,6 @@ import CurrencyPair from "./components/CurrencyPair";
 import { Form } from "react-bootstrap";
 import Rectangle from "./components/Rectangle";
 
-
 const App = () => {
   const [showLatest, setShowLatest] = useState(false);
 

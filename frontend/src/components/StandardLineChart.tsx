@@ -40,15 +40,7 @@ class StandardLineChart extends React.Component<propsType, stateType> {
   }
 
   render() {
-    return (
-      <div
-        style={{
-          height: "100vh",
-        }}
-        id={this.props.id}
-        className="chart"
-      ></div>
-    );
+    return <div id={this.props.id} className="chart"></div>;
   }
 }
 

@@ -63,7 +63,7 @@ const RealTimeCandleSticksChart = (props: propsType) => {
       const res = JSON.parse(ev.data);
       const newPoint: dataPoint = {
         y: res.highestBid,
-        x: new Date().getSeconds()
+        x: new Date().getSeconds(),
       };
       const update = data;
       update.push(newPoint);

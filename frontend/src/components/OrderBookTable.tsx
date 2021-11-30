@@ -29,7 +29,6 @@ interface bookData {
   askSizes: number[];
 }
 
-
 const deafult: Item = {
   id: 1,
   bookData: {
