@@ -26,7 +26,7 @@ type futureMap = {
 };
 
 const supportedSpot = ["BINANCE", "BITFINEX", "COINBASE"];
-const supportedFutures = ["DERIBIT", "HUOBIDM", "OKEX"];
+const supportedFutures = ["DERIBIT", "KRAKEN_FUTURES", "OKEX"];
 
 const BasisTable = () => {
   const initialTable: any = {};
@@ -53,7 +53,7 @@ const BasisTable = () => {
     socket.onopen = () => {
       socket.send(
         JSON.stringify({
-          futures_exchanges: ["DERIBIT", "OKEX", "HUOBIDM"],
+          futures_exchanges: ["DERIBIT", "OKEX", "KRAKEN_FUTURES"],
           spot_exchanges: ["BINANCE", "BITFINEX", "COINBASE"],
           futures_pairs: ["BTC-USD-21Z31"],
           spot_pairs: ["BTC-USDT"],
