@@ -158,6 +158,7 @@ def run():
             f.add_feed(x(symbols=future_pairs, **args))
         f.run()
 
+
 if __name__ == "__main__":
     SEND_TO_FRONTEND = False
     run()
