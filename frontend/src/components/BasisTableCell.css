@@ -11,4 +11,15 @@
 
 .chart {
   height: 80vh;
+  margin-bottom: 20px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.button {
+  margin-left: 10px;
 }

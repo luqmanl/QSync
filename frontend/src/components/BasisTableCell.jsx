@@ -6,7 +6,7 @@
 import { useState, useEffect, useRef } from "react";
 import "./BasisTable.css";
 import "./BasisTableCell.css";
-import { Modal } from "react-bootstrap";
+import { Modal, Button } from "react-bootstrap";
 import { ExampleBasisHistory } from "./ExampleBasisHistory";
 import { lightningChart } from "@arction/lcjs";
 import axios from "axios";
@@ -45,18 +45,18 @@ const basisHistoryGraph = (spot, future) => {
   const periodMap = ["MONTH", "WEEK", "YEAR"];
   const [freq, setFreq] = useState(2);
   const [period, setPeriod] = useState(2);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [data, setData] = useState(ExampleBasisHistory);
 
   const url = `http://localhost:8000/api/basis/${spot}/${future}/${freqMap[freq]}/${periodMap[period]}`;
 
   useEffect(() => {
-    axios.get(url).then((res) => {
-      console.log(res);
-      const resp = JSON.parse(res.data);
-      setData(resp);
-      setLoading(false);
-    });
+    // axios.get(url).catch((err)=>{console.log(err)}).then((res) => {
+    //   console.log(res);
+    //   const resp = JSON.parse(res.data);
+    //   setData(resp);
+    //   setLoading(false);
+    // });
   }, [freq, period]);
 
   const loadingSpinner = (
@@ -73,7 +73,43 @@ const basisHistoryGraph = (spot, future) => {
       {loading ? (
         loadingSpinner
       ) : (
-        <Chart className="graph" data={data} id="id" />
+        <div>
+          <Chart className="graph" data={data} id="id" />
+          <div className="button-container">
+            <h3>Set Data Frequency:</h3>
+            {freqMap.map((opt, i) => {
+              return (
+                <Button
+                  key={i}
+                  disabled={freq === i}
+                  onClick={() => {
+                    setFreq(i);
+                  }}
+                  className="button"
+                >
+                  {opt}
+                </Button>
+              );
+            })}
+          </div>
+          <div className="button-container">
+            <h3>Set Data Period:</h3>
+            {periodMap.map((opt, i) => {
+              return (
+                <Button
+                  key={i}
+                  disabled={period === i}
+                  onClick={() => {
+                    setPeriod(i);
+                  }}
+                  className="button"
+                >
+                  {opt}
+                </Button>
+              );
+            })}
+          </div>
+        </div>
       )}
     </div>
   );
