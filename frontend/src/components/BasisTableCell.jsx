@@ -122,7 +122,7 @@ const BasisTableCell = (props) => {
   const handleOpen = () => setShowDetailed(true);
 
   return (
-    <td onClick={handleOpen}>
+    <td onClick={handleOpen} className="table-cell">
       <Modal show={showDetailed} onHide={handleClose} fullscreen>
         <Modal.Body>{basisHistoryGraph(props.spot, props.future)}</Modal.Body>
       </Modal>
