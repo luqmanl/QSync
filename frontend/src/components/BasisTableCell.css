@@ -1,9 +1,14 @@
 .spinner-container {
-  margin: 50pt 50% 50pt 50%;
+  margin: 20% 50% 20% 50%;
+  height: 80vh;
   justify-content: center;
 }
 
 .modal-container {
   background-color: black;
   border: white;
+}
+
+.chart {
+  height: 80vh;
 }
