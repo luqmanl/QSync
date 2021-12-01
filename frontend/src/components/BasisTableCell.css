@@ -1,0 +1,25 @@
+.spinner-container {
+  margin: 20% 50% 20% 50%;
+  height: 80vh;
+  justify-content: center;
+}
+
+.modal-container {
+  background-color: black;
+  border: white;
+}
+
+.chart {
+  height: 80vh;
+  margin-bottom: 20px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.button {
+  margin-left: 10px;
+}

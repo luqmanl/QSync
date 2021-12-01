@@ -1,5 +1,4 @@
 import { lightningChart, LineSeries } from "@arction/lcjs";
-import { dataPoint } from "../App";
 import React from "react";
 
 type stateType = { series: LineSeries; id: string };
@@ -9,6 +8,11 @@ type propsType = {
   graphTitle: string;
   xAxis: string;
   yAxis: string;
+};
+
+type dataPoint = {
+  x: number;
+  y: number;
 };
 
 class StandardLineChart extends React.Component<propsType, stateType> {
@@ -36,15 +40,7 @@ class StandardLineChart extends React.Component<propsType, stateType> {
   }
 
   render() {
-    return (
-      <div
-        style={{
-          height: "100vh",
-        }}
-        id={this.props.id}
-        className="chart"
-      ></div>
-    );
+    return <div id={this.props.id} className="chart"></div>;
   }
 }
 

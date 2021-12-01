@@ -3,6 +3,8 @@
 /* eslint-disable no-mixed-operators */
 /* eslint-disable no-magic-numbers */
 import React, { useState, useEffect } from "react";
+import { exampleBasisTable } from "./ExampleBasisTable";
+import BasisTableCell from "./BasisTableCell.jsx";
 import { Table } from "react-bootstrap";
 import "./BasisTable.css";
 
@@ -17,16 +19,34 @@ type basisAddition = {
   basisValue: number;
 };
 
-type spotMap = {
+export type spotMap = {
   [spotKey: string]: string;
 };
 
-type futureMap = {
+export type futureMap = {
   [futureKey: string]: spotMap;
 };
 
 const supportedSpot = ["BINANCE", "BITFINEX", "COINBASE"];
 const supportedFutures = ["DERIBIT", "KRAKEN_FUTURES", "OKEX"];
+
+const rowGenerator = (map: spotMap, index: number) => {
+  return (
+    <tr key={index}>
+      <td className="table-cell">{supportedFutures[index]}</td>
+      {supportedSpot.map((x, i) => {
+        return (
+          <BasisTableCell
+            key={i}
+            value={map[x]}
+            future={supportedFutures[index]}
+            spot={x}
+          />
+        );
+      })}
+    </tr>
+  );
+};
 
 const BasisTable = () => {
   const initialTable: any = {};
@@ -42,7 +62,7 @@ const BasisTable = () => {
     initialTable[x] = allSpots;
   });
 
-  const [basisTable, setBasisTable] = useState<futureMap>(initialTable);
+  const [basisTable, setBasisTable] = useState<futureMap>(exampleBasisTable);
 
   // TODO change this
   const wsAddr = `ws://localhost:8000/ws/data/basis/`;
@@ -81,19 +101,6 @@ const BasisTable = () => {
       });
     });
   }, []);
-
-  const rowGenerator = (map: spotMap, index: number) => {
-    return (
-      <tr key={index}>
-        <td className="table-cell">{supportedFutures[index]}</td>
-        {supportedSpot.map((x, i) => (
-          <td key={i} className="table-cell">
-            {map[x]}
-          </td>
-        ))}
-      </tr>
-    );
-  };
 
   return (
     <div className="basis-component">
