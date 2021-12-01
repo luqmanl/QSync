@@ -4,7 +4,7 @@
 /* eslint-disable no-magic-numbers */
 import React, { useState, useEffect } from "react";
 import { exampleBasisTable } from "./ExampleBasisTable";
-import BasisTableCell from "./BasisTableCell";
+import BasisTableCell from "./BasisTableCell.jsx";
 import { Table } from "react-bootstrap";
 import "./BasisTable.css";
 
