@@ -24,12 +24,8 @@ upd:insert;
 .u.rep .(hopen `$":",.u.x 0)"(.u.sub[`;`];`.u `i`L)";
 
 / OUR FUNCTION
-.orderbook.basis: {midprices: (select midprice:(avg bid1 + avg ask1) % 2 by time.hh,time.mm,sym,exchange from orderbooktop where sym in `$("BTC-USD-21Z31";"BTC-USDT")); 
-    cutprices: 6 cut 0!midprices;
-    selectWithSpot: {[x] select from x where sym=`$"BTC-USDT"};
-    selectWithFuture: {[x] `hh`mm`sym`exchange2`midprice2 xcol (select from x where sym=`$"BTC-USD-21Z31")};
-    makeTable:{[x] (selectWithSpot x; selectWithFuture x)}; 
-    tableaux: makeTable each cutprices
-    crossThem:{[t] select hh,mm,sym,exchange,exchange2,basis:midprice2 - midprice from t[0] cross t[1]};
-    crossThem each tableaux
+.orderbook.basis:{[spotSym;futureSym;spotEx;futEx] midprices: (select midprice:(avg bid1 + avg ask1) % 2 by time.hh,time.mm,sym,exchange from orderbooktop where sym in (spotSym;futureSym), exchange in (spotEx;futEx)); 
+    diff:{[x] -/ [0 -x]};
+    basis: select basis:diff midprice by hh,mm from  midprices;
+    select from basis where basis < 30000
     }
