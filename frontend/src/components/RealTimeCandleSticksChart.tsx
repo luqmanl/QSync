@@ -59,7 +59,6 @@ const RealTimeCandleSticksChart = (props: propsType) => {
     };
 
     socket.addEventListener("message", (ev) => {
-      console.log(ev.data);
       const res = JSON.parse(ev.data);
       const newPoint: dataPoint = {
         y: res.highestBid,

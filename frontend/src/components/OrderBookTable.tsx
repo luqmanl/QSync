@@ -106,7 +106,6 @@ const OrderBookTable = () => {
         id: 2,
         bookData: newBookData,
       };
-      console.log(JSON.parse(ev.data));
       setData(newData);
     });
   }, []);

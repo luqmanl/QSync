@@ -28,7 +28,6 @@ const LatestTrades = () => {
   };
 
   const generateExamples = () => {
-    console.log(trades);
     // const curTrades = trades;
     // for (let i = 0; i < EXTEND_LIST_BY; i++) {
     //   const newTrade: Trade = {

@@ -45,7 +45,6 @@ const CurrencyPair = () => {
       cp.orderImbalance = imbalanceString.substring(0, 5);
       const newData: { [name: string]: CurrencyPairType } = { ...data };
       data[cp.pairName] = cp;
-      console.log(data, newData);
       setData(newData);
     });
   }, []);

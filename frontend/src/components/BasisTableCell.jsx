@@ -16,7 +16,9 @@ const Chart = (props) => {
   const chartRef = useRef(undefined);
 
   useEffect(() => {
+    console.log("DATA", data)
     const chart = lightningChart().ChartXY({ container: id });
+    chart.setTitle("Basis Graph")
     const series = chart.addLineSeries();
     chartRef.current = { chart, series };
 
@@ -45,18 +47,22 @@ const basisHistoryGraph = (spot, future) => {
   const periodMap = ["MONTH", "WEEK", "YEAR"];
   const [freq, setFreq] = useState(2);
   const [period, setPeriod] = useState(2);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [data, setData] = useState(ExampleBasisHistory);
 
-  const url = `http://localhost:8000/api/basis/${spot}/${future}/${freqMap[freq]}/${periodMap[period]}`;
+  const url = `http://localhost:8000/historicalBasisData`;
 
   useEffect(() => {
-    // axios.get(url).catch((err)=>{console.log(err)}).then((res) => {
-    //   console.log(res);
-    //   const resp = JSON.parse(res.data);
-    //   setData(resp);
-    //   setLoading(false);
-    // });
+    axios
+      .get(url, { })
+      .then((res) => {
+        console.log("HELLLLLOOOO", res.data);
+        setData(res.data.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.warn(err);
+      });
   }, [freq, period]);
 
   const loadingSpinner = (

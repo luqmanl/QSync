@@ -83,7 +83,6 @@ const BasisTable = () => {
 
     socket.addEventListener("message", (ev) => {
       const res: basisTableData = JSON.parse(ev.data);
-      console.log(res);
 
       const update = { ...basisTable };
 
@@ -94,11 +93,6 @@ const BasisTable = () => {
 
       setBasisTable(update);
 
-      supportedFutures.forEach((x) => {
-        supportedSpot.forEach((y) => {
-          console.log(`future: ${x}, spot: ${y}, basis: ${basisTable[x][y]}`);
-        });
-      });
     });
   }, []);
 
