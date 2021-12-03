@@ -44,68 +44,71 @@ table_to_channel_datatypes = {
 
 
 async def send_data_to_frontend(datatypes, data, channel_layer, last_send):
-    last_send = {}
+    key = f"{data['exchange']}_{data['sym']}"
+
     for datatype in datatypes:
-        key = f"{data['exchange']}_{data['sym']}_{datatype}"
-        if ((not key in last_send) or (time.time() + 1 > last_send[key])):
-            last_send[key] = time.time()
-            group_name = f"{data['exchange']}_{data['sym']}_{datatype}"
-            await (channel_layer.group_send)(group_name, {"type": f"send_{datatype}_data", "data": json.dumps(data)})
+        group_name = f"{data['exchange']}_{data['sym']}_{datatype}"
+        await (channel_layer.group_send)(group_name, {"type": f"send_{datatype}_data", "data": json.dumps(data)})
 
 
 async def l2book_callback(book_, timestamp):
-    bids = []
-    bid_sizes = []
-    asks = []
-    ask_sizes = []
-
+    key = f"{book_.exchange}_{book_.symbol}"
     if book_.timestamp != None:
         timestamp = book_.timestamp
 
-    for i in range(10):
-        bid, size = book_.book.bids.index(i)
-        bids.append(float(bid))
-        bid_sizes.append(float(size))
-        ask, size = book_.book.ask.index(i)
-        asks.append(float(ask))
-        ask_sizes.append(float(size))
+    if ((not key in last_send) or (timestamp > last_send[key] + 1)):
 
-    dataFrontend = {
-        'sym': book_.symbol,
-        'exchange': book_.exchange,
-        'bids': bids,
-        'asks': asks,
-        'bidSizes': bid_sizes,
-        'askSizes': ask_sizes
-    }
+        last_send[key] = timestamp
 
-    # if no update in 1 sec, send update
-    if SEND_TO_FRONTEND:
-        datatypes = table_to_channel_datatypes["orderbooktop"]
-        await send_data_to_frontend(datatypes, dataFrontend, channel_layer, last_send)
+        bids = []
+        bid_sizes = []
+        asks = []
+        ask_sizes = []
 
-    dataBackend = [
-        qlist([np.string_(book_.symbol)], qtype=QSYMBOL_LIST),
-        qlist([np.string_(book_.exchange)], qtype=QSYMBOL_LIST),
-        qlist([np.datetime64(datetime.fromtimestamp(timestamp), 'ns')],
-              qtype=QTIMESTAMP_LIST),
-    ]
+        for i in range(10):
+            bid, size = book_.book.bids.index(i)
+            bids.append(float(bid))
+            bid_sizes.append(float(size))
+            ask, size = book_.book.ask.index(i)
+            asks.append(float(ask))
+            ask_sizes.append(float(size))
 
-    bid_sizes = []
-    ask_sizes = []
+        dataFrontend = {
+            'sym': book_.symbol,
+            'exchange': book_.exchange,
+            'bids': bids,
+            'asks': asks,
+            'bidSizes': bid_sizes,
+            'askSizes': ask_sizes
+        }
 
-    for i in range(10):
-        bid, size = book_.book.bids.index(i)
-        dataBackend.append(qlist([bid], qtype=QDOUBLE_LIST))
-        bid_sizes.append(qlist([size], qtype=QDOUBLE_LIST))
-        ask, size = book_.book.asks.index(i)
-        dataBackend.append(qlist([ask], qtype=QDOUBLE_LIST))
-        bid_sizes.append(qlist([size], qtype=QDOUBLE_LIST))
+        # if no update in 1 sec, send update
+        if SEND_TO_FRONTEND:
+            datatypes = table_to_channel_datatypes["orderbooktop"]
+            await send_data_to_frontend(datatypes, dataFrontend, channel_layer, last_send)
 
-    dataBackend.extend(bid_sizes)
-    dataBackend.extend(ask_sizes)
+        dataBackend = [
+            qlist([np.string_(book_.symbol)], qtype=QSYMBOL_LIST),
+            qlist([np.string_(book_.exchange)], qtype=QSYMBOL_LIST),
+            qlist([np.datetime64(datetime.fromtimestamp(timestamp), 'ns')],
+                  qtype=QTIMESTAMP_LIST),
+        ]
 
-    q.sendAsync('.u.upd', np.string_('orderbooktop'), dataBackend)
+        bid_sizes = []
+        ask_sizes = []
+
+        for i in range(10):
+            bid, size = book_.book.bids.index(i)
+            dataBackend.append(qlist([bid], qtype=QDOUBLE_LIST))
+            bid_sizes.append(qlist([size], qtype=QDOUBLE_LIST))
+            ask, size = book_.book.asks.index(i)
+            dataBackend.append(qlist([ask], qtype=QDOUBLE_LIST))
+            bid_sizes.append(qlist([size], qtype=QDOUBLE_LIST))
+
+        dataBackend.extend(bid_sizes)
+        dataBackend.extend(ask_sizes)
+
+        q.sendAsync('.u.upd', np.string_('orderbooktop'), dataBackend)
 
 
 async def trade_callback(trade, timestamp):
@@ -118,7 +121,6 @@ async def trade_callback(trade, timestamp):
         'side': trade.side
     }
 
-    print(SEND_TO_FRONTEND)
     if SEND_TO_FRONTEND:
         datatypes = table_to_channel_datatypes["trades"]
         await send_data_to_frontend(datatypes, data, channel_layer, last_send)
