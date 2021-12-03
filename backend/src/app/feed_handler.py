@@ -118,7 +118,7 @@ async def trade_callback(trade, timestamp):
         'side': trade.side
     }
 
-    print(SEND_TO_FRONTEND)
+    # print(SEND_TO_FRONTEND)
     if SEND_TO_FRONTEND:
         datatypes = table_to_channel_datatypes["trades"]
         await send_data_to_frontend(datatypes, data, channel_layer, last_send)

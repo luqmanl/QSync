@@ -27,5 +27,5 @@ upd:insert;
 .orderbook.basis:{[spotSym;futureSym;spotEx;futEx] midprices: (select midprice:(avg bid1 + avg ask1) % 2 by time.hh,time.mm,sym,exchange from orderbooktop where sym in (spotSym;futureSym), exchange in (spotEx;futEx)); 
     diff:{[x] -/ [0 -x]};
     basis: select basis:diff midprice by hh,mm from  midprices;
-    select from basis where basis < 30000
+    0!select from basis where basis < 30000
     }
