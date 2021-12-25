@@ -1,31 +1,19 @@
+import json
 import numpy as np
-import asyncio
-from queue import Queue
+from datetime import datetime
+
 from cryptofeed import FeedHandler
-from cryptofeed.defines import COINBASE, L2_BOOK, TRADES
+from cryptofeed.defines import BINANCE, COINBASE, L2_BOOK, TRADES
 from cryptofeed.exchanges import (
     Binance, Coinbase, Bitfinex, Deribit, KrakenFutures, OKEx)
 
 from qpython import qconnection
-from qpython.qtype import QSYMBOL_LIST, QDOUBLE_LIST, QTIMESTAMP_LIST
-
+from qpython.qtype import QSYMBOL_LIST, QDOUBLE_LIST, QTIMESTAMP_LIST, QException
 from qpython.qcollection import qlist
-
-from datetime import datetime
-import threading
-from qpython.qtype import QException
-from qpython.qconnection import MessageType
-from qpython.qcollection import QTable
-from channels.layers import get_channel_layer
-from asgiref.sync import async_to_sync
-from time import sleep
-import json
-from queue import Queue
-import sys
-from qpython.qcollection import QTable
 from qpython.qconnection import QConnection
-import time
-import sys
+
+from channels.layers import get_channel_layer
+
 
 # Connect to Q
 q = qconnection.QConnection(host='localhost', port=5010)
@@ -40,7 +28,7 @@ table_to_channel_datatypes = {
     "trades": (["trade"]),
 }
 
-# function to send trade and l2orderbook data to frontend
+# send input data to frontend through channel group
 
 
 async def send_data_to_frontend(datatypes, data, channel_layer, last_send):
@@ -82,7 +70,6 @@ async def l2book_callback(book_, timestamp):
             'askSizes': ask_sizes
         }
 
-        # if no update in 1 sec, send update
         if SEND_TO_FRONTEND:
             datatypes = table_to_channel_datatypes["orderbooktop"]
             await send_data_to_frontend(datatypes, dataFrontend, channel_layer, last_send)
@@ -144,7 +131,7 @@ def run():
 
         # list of pairs for future and spot exchanges
         spot_pairs = [Binance.symbols()[i] for i in (0, 10, 11)]
-        future_pairs = ["BTC-USD-21Z31"]
+        future_pairs = ["BTC-USD-PERP"]
 
         # list of future and spot exchanges
         spot_exchanges = [Binance, Coinbase, Bitfinex]
