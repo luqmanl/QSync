@@ -8,10 +8,7 @@ from django.http import JsonResponse
 def index(request):
     return render(request, "index.html")
 
-
-# Returns the historical value of the difference in midprices of the given currencies and exchanges
-@csrf_exempt
-def getHistoricalBasisData(request):
+def getDataFromKDB(minTimestamp):
     data = {}
 
     with qconnection.QConnection(host='localhost', port=5011) as q:
@@ -28,5 +25,12 @@ def getHistoricalBasisData(request):
         coordinate["x"] = float(60*d[0] + d[1])
         coordinate["y"] = float(d[2])
         outputData["data"].append(coordinate)
+    
+    return outputData
 
+# Returns the historical value of the difference in midprices of the given currencies and exchanges
+@csrf_exempt
+def getHistoricalBasisData(request):
+    
+    outputData = getDataFromKDB(0)
     return JsonResponse(outputData)
