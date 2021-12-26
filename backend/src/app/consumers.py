@@ -34,7 +34,7 @@ class TradeTableConsumer(AsyncConsumer):
         )
 
     async def websocket_disconnect(self, event):
-        print('disconnected', event)
+        print('disconnected trade table websocket: ', event['code'])
 
 
 # Handles spot-future basis table data for exchanges and pairs specified by client in request
@@ -77,15 +77,15 @@ class BasisTableConsumer(AsyncConsumer):
                     "basisValue": self.spot_prices[data["exchange"]] - future
                 }
                 basis_prices.append(basisAddition)
-
-        data = {"basisAdditions": basis_prices}
-        await self.send({
-            'type': 'websocket.send',
-            'text': json.dumps(data)
-        })
+        if len(basis_prices) != 0:
+            data = {"basisAdditions": basis_prices}
+            await self.send({
+                'type': 'websocket.send',
+                'text': json.dumps(data)
+            })
 
     async def websocket_receive(self, event):
-        # data = {futures-exchanges: String[], spot-exchanges: String[], spot-pairs: String[], futures_pairs: String[]}
+        # data = {futures_exchanges: String[], spot_exchanges: String[], spot_pairs: String[], futures_pairs: String[]}
         data = json.loads(event["text"])
 
         for exchange in data["futures_exchanges"]:
@@ -103,7 +103,7 @@ class BasisTableConsumer(AsyncConsumer):
                 )
 
     async def websocket_disconnect(self, event):
-        print('disconnected', event)
+        print('disconnected basis table websocket: ', event['code'])
 
 
 # Handles l2orderbook overview data for exchanges and pairs specified by client in request
@@ -125,7 +125,7 @@ class L2overviewConsumer(AsyncConsumer):
                 )
 
     async def websocket_disconnect(self, event):
-        print('disconnected', event)
+        print('disconnected l2overview websocket: ', event['code'])
 
     async def send_l2overview_data(self, event):
         data = json.loads(event["data"])
@@ -141,6 +141,7 @@ class L2overviewConsumer(AsyncConsumer):
             (highestBidSize + lowestAskSize)
 
         data = {
+            "exchange": data["exchange"],
             "sym": data["sym"],
             "highestBid": highestBid,
             "lowestAsk": lowestAsk,
@@ -177,4 +178,4 @@ class L2orderbookConsumer(AsyncConsumer):
         )
 
     async def websocket_disconnect(self, event):
-        print('disconnected', event)
+        print('disconnected l2orderbook websocket: ', event['code'])
