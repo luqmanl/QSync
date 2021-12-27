@@ -20,10 +20,12 @@ def convertToDateTime(days):
 def getDataFromKDB(minTimestamp):
     data = {}
 
+    minTimestamp = datetime.now() - timedelta(minutes=20)
+
     with qconnection.QConnection(host='localhost', port=5011) as q:
         try:
             data = q.sendSync('.orderbook.basis', np.string_(
-                "BTC-USDT"), np.string_("BTC-USD-PERP"), np.string_("BINANCE"), np.string_("DERIBIT"))
+                "BTC-USDT"), np.string_("BTC-USD-PERP"), np.string_("BINANCE"), np.string_("DERIBIT"), np.datetime64(minTimestamp, 'ns'))
         except Exception as e:
             print(e)
 
@@ -36,13 +38,24 @@ def getDataFromKDB(minTimestamp):
         coordinate["y"] = float(d[1])
         outputData["data"].append(coordinate)
 
+    # with qconnection.QConnection(host='localhost', port=5012) as q:
+
     return outputData
 
 # Returns the historical value of the difference in midprices of the given currencies and exchanges
 
 
 @csrf_exempt
-def getHistoricalBasisData(request):
+def getHistoricalBasisData(request, period="1h"):
 
-    outputData = getDataFromKDB(0)
+    minTimestamp = 0
+
+    if period == "1d":
+        minTimestamp = datetime.now() - timedelta(days=1)
+    elif period == "1w":
+        minTimestamp = datetime.now() - timedelta(weeks=1)
+    else:  # 1 hour default
+        minTimestamp = datetime.now() - timedelta(hours=1)
+
+    outputData = getDataFromKDB(minTimestamp)
     return JsonResponse(outputData)
