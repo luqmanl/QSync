@@ -5,14 +5,17 @@ import numpy as np
 from django.http import JsonResponse
 from datetime import datetime, timedelta
 
+
 def index(request):
     return render(request, "index.html")
+
 
 def convertToDateTime(days):
     jan2000 = datetime(2000, 1, 1)
     daysAsSeconds = days * 86400
     a = jan2000 + timedelta(0, daysAsSeconds)
     return a
+
 
 def getDataFromKDB(minTimestamp):
     data = {}
@@ -32,12 +35,14 @@ def getDataFromKDB(minTimestamp):
         coordinate["x"] = timestamp
         coordinate["y"] = float(d[1])
         outputData["data"].append(coordinate)
-    
+
     return outputData
 
 # Returns the historical value of the difference in midprices of the given currencies and exchanges
+
+
 @csrf_exempt
 def getHistoricalBasisData(request):
-    
+
     outputData = getDataFromKDB(0)
     return JsonResponse(outputData)
