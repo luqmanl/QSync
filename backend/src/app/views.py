@@ -3,10 +3,16 @@ from django.views.decorators.csrf import csrf_exempt
 from qpython import qconnection
 import numpy as np
 from django.http import JsonResponse
-
+from datetime import datetime, timedelta
 
 def index(request):
     return render(request, "index.html")
+
+def convertToDateTime(days):
+    jan2000 = datetime(2000, 1, 1)
+    daysAsSeconds = days * 86400
+    a = jan2000 + timedelta(0, daysAsSeconds)
+    return a
 
 def getDataFromKDB(minTimestamp):
     data = {}
@@ -21,9 +27,10 @@ def getDataFromKDB(minTimestamp):
     outputData = {"data": []}
 
     for d in data:
+        timestamp = convertToDateTime(d[0])
         coordinate = {}
-        coordinate["x"] = float(60*d[0] + d[1])
-        coordinate["y"] = float(d[2])
+        coordinate["x"] = timestamp
+        coordinate["y"] = float(d[1])
         outputData["data"].append(coordinate)
     
     return outputData

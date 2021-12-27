@@ -24,8 +24,8 @@ upd:insert;
 .u.rep .(hopen `$":",.u.x 0)"(.u.sub[`;`];`.u `i`L)";
 
 / OUR FUNCTION
-.orderbook.basis:{[spotSym;futureSym;spotEx;futEx] midprices: (select midprice:(avg bid1 + avg ask1) % 2 by time.hh,time.mm,sym,exchange from orderbooktop where sym in (spotSym;futureSym), exchange in (spotEx;futEx)); 
+.orderbook.basis:{[spotSym;futureSym;spotEx;futEx] midprices: (select midprice:(avg bid1 + avg ask1) % 2 by exchangeTime,sym,exchange from (update exchangeTime:`datetime$(0D00:00:01 xbar exchangeTime) from orderbooktop) where sym in (spotSym;futureSym), exchange in (spotEx;futEx)); 
     diff:{[x] -/ [0 -x]};
-    basis: select basis:diff midprice by hh,mm from  midprices;
-    0!select from basis where basis < 30000
+    basis: select basis:diff midprice by exchangeTime from midprices;
+    0!select from basis where basis > -30000
     }
