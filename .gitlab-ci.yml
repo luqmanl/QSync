@@ -64,7 +64,7 @@ test-back:
   image: python:3.8.10-slim-buster
   script:
     - !reference [.setup, back]
-    - pipenv run test
+    - python3 manage.py test
   needs: [style-back]
 
 # Deploy
