@@ -10,10 +10,10 @@ def index(request):
     return render(request, "index.html")
 
 
-def convertToDateTime(days):
+def convertNanosecsToDatetime(nanosecs):
     jan2000 = datetime(2000, 1, 1)
-    daysAsSeconds = days * 86400
-    a = jan2000 + timedelta(0, daysAsSeconds)
+    nanosecsAsSecs = nanosecs / 1000000000
+    a = jan2000 + timedelta(0, nanosecsAsSecs)
     return a
 
 
@@ -31,7 +31,7 @@ def getDataFromKDB(minTimestamp, resolution):
             print(e)
 
     for d in data:
-        timestamp = convertToDateTime(d[0] / 86400000000000)
+        timestamp = convertNanosecsToDatetime(d[0])
         coordinate = {}
         coordinate["x"] = timestamp
         coordinate["y"] = float(d[1])
@@ -46,7 +46,7 @@ def getDataFromKDB(minTimestamp, resolution):
             print(e)
 
     for d in data:
-        timestamp = convertToDateTime(d[0] / 86400000000000)
+        timestamp = convertNanosecsToDatetime(d[0])
         coordinate = {}
         coordinate["x"] = timestamp
         coordinate["y"] = float(d[1])
@@ -54,14 +54,13 @@ def getDataFromKDB(minTimestamp, resolution):
 
     return outputData
 
+
 # Returns the historical value of the difference in midprices of the given currencies and exchanges
-
-
 @csrf_exempt
 def getHistoricalBasisData(request, period="1d"):
 
-    minTimestamp = 0
-    resolution = 0  # every x datapoint
+    minTimestamp = 0  # date to start at
+    resolution = 0  # frequency of returned data (in seconds)
 
     if period == "1d":
         minTimestamp = datetime.now() - timedelta(days=1)
@@ -73,7 +72,7 @@ def getHistoricalBasisData(request, period="1d"):
         minTimestamp = datetime.now() - timedelta(days=31)
         resolution = 3600
     elif period == "3m":
-        minTimestamp = datetime.now() - timedelta(days=31*3)
+        minTimestamp = datetime.now() - timedelta(days=90)
         resolution = 21600
     elif period == "1y":
         minTimestamp = datetime.now() - timedelta(year=1)
