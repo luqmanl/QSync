@@ -42,7 +42,7 @@ def getDataFromKDB(minTimestamp):
                 "BTC-USDT"), np.string_("BTC-USD-PERP"), np.string_("BINANCE"), np.string_("DERIBIT"), np.datetime64(minTimestamp, 'ns'))
         except Exception as e:
             print(e)
-    
+
     for d in data:
         timestamp = convertToDateTime(d[0] / 86400000000000)
         coordinate = {}
@@ -59,7 +59,7 @@ def getDataFromKDB(minTimestamp):
 def getHistoricalBasisData(request, period="1w"):
 
     minTimestamp = 0
-    frequency = 0 # every x datapoint
+    frequency = 0  # every x datapoint
 
     if period == "1d":
         minTimestamp = datetime.now() - timedelta(days=1)
