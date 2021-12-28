@@ -20,8 +20,6 @@ def convertToDateTime(days):
 def getDataFromKDB(minTimestamp):
     data = {}
 
-    minTimestamp = datetime.now() - timedelta(minutes=20)
-
     with qconnection.QConnection(host='localhost', port=5011) as q:
         try:
             data = q.sendSync('.orderbook.basis', np.string_(
@@ -38,7 +36,19 @@ def getDataFromKDB(minTimestamp):
         coordinate["y"] = float(d[1])
         outputData["data"].append(coordinate)
 
-    # with qconnection.QConnection(host='localhost', port=5012) as q:
+    with qconnection.QConnection(host='localhost', port=5012) as q:
+        try:
+            data = q.sendSync('.orderbook.basis', np.string_(
+                "BTC-USDT"), np.string_("BTC-USD-PERP"), np.string_("BINANCE"), np.string_("DERIBIT"), np.datetime64(minTimestamp, 'ns'))
+        except Exception as e:
+            print(e)
+    
+    for d in data:
+        timestamp = convertToDateTime(d[0] / 86400000000000)
+        coordinate = {}
+        coordinate["x"] = timestamp
+        coordinate["y"] = float(d[1])
+        outputData["data"].append(coordinate)
 
     return outputData
 
@@ -46,14 +56,23 @@ def getDataFromKDB(minTimestamp):
 
 
 @csrf_exempt
-def getHistoricalBasisData(request, period="1h"):
+def getHistoricalBasisData(request, period="1w"):
 
     minTimestamp = 0
+    frequency = 0 # every x datapoint
 
     if period == "1d":
         minTimestamp = datetime.now() - timedelta(days=1)
     elif period == "1w":
         minTimestamp = datetime.now() - timedelta(weeks=1)
+    elif period == "1m":
+        minTimestamp = datetime.now() - timedelta(months=1)
+    elif period == "3m":
+        minTimestamp = datetime.now() - timedelta(months=3)
+    elif period == "1y":
+        minTimestamp = datetime.now() - timedelta(years=1)
+    elif period == "all":
+        minTimestamp = datetime.now() - timedelta(years=100)
     else:  # 1 hour default
         minTimestamp = datetime.now() - timedelta(hours=1)
 

@@ -41,8 +41,8 @@ async def send_data_to_frontend(datatypes, data, channel_layer, last_send):
 
 async def l2book_callback(book_, timestamp):
     key = f"{book_.exchange}_{book_.symbol}"
-    if book_.timestamp != None:
-        timestamp = book_.timestamp
+    # if book_.timestamp != None:
+    #     timestamp = book_.timestamp
 
     if ((not key in last_send) or (timestamp > last_send[key] + 1)):
 
