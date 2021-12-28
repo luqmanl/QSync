@@ -16,9 +16,9 @@ const Chart = (props) => {
   const chartRef = useRef(undefined);
 
   useEffect(() => {
-    console.log("DATA", data)
+    console.log("DATA", data);
     const chart = lightningChart().ChartXY({ container: id });
-    chart.setTitle("Basis Graph")
+    chart.setTitle("Basis Graph");
     const series = chart.addLineSeries();
     chartRef.current = { chart, series };
 
@@ -54,7 +54,7 @@ const basisHistoryGraph = (spot, future) => {
 
   useEffect(() => {
     axios
-      .get(url, { })
+      .get(url, {})
       .then((res) => {
         console.log("HELLLLLOOOO", res.data);
         setData(res.data.data);
