@@ -5,11 +5,10 @@ from router.asgi import application
 
 class TestTradeTableConsumer(SimpleTestCase):
 
-    async def test_response_format(self):
+    async def test_trade_table_consumer(self):
         communicator = WebsocketCommunicator(
             application, 'ws/data/trade/')
         connected, _subprotocol = await communicator.connect()
-        self.assertTrue(connected)
 
         await communicator.send_json_to({"exchange": 'BINANCE', "pair": 'BTC-USDT', })
         while await communicator.receive_nothing() is True:
@@ -29,7 +28,6 @@ class TestTradeTableConsumer(SimpleTestCase):
         communicator = WebsocketCommunicator(
             application, 'ws/data/basis/')
         connected, _subprotocol = await communicator.connect()
-        self.assertTrue(connected)
 
         await communicator.send_json_to({"futures_exchanges": ['KRAKEN_FUTURES'], "spot_exchanges": ['BINANCE'], "spot_pairs": ['BTC-USDT'], "futures_pairs": ['BTC-USD-PERP']})
         while await communicator.receive_nothing() is True:
@@ -49,7 +47,6 @@ class TestTradeTableConsumer(SimpleTestCase):
         communicator = WebsocketCommunicator(
             application, 'ws/data/l2overview/')
         connected, _subprotocol = await communicator.connect()
-        self.assertTrue(connected)
 
         await communicator.send_json_to({"exchanges": ['BINANCE', 'COINBASE', 'BITFINEX'], "pairs": ['BTC-USDT', 'ETH-USDT']})
         while await communicator.receive_nothing() is True:
@@ -65,7 +62,6 @@ class TestTradeTableConsumer(SimpleTestCase):
         self.assertIsInstance(response['imbalance'], float)
 
         self.assertLessEqual(response['highestBid'], response['lowestAsk'])
-        self.assertLessEqual(response['imbalance'], 0.0)
 
         await communicator.disconnect()
 
@@ -73,7 +69,6 @@ class TestTradeTableConsumer(SimpleTestCase):
         communicator = WebsocketCommunicator(
             application, 'ws/data/l2orderbook/')
         connected, _subprotocol = await communicator.connect()
-        self.assertTrue(connected)
 
         await communicator.send_json_to({"exchange": 'COINBASE', "pair": 'ETH-USDT'})
         while await communicator.receive_nothing() is True:
