@@ -1,0 +1,19 @@
+.disabled-link{
+    border: 1px solid rgba(0, 0, 0, 0.4);
+    border-radius: 30px;
+    text-transform: capitalize;
+    padding: 5px 20px 5px 20px;
+    background-color: lightgray;
+}
+
+.link{
+    text-transform: capitalize;
+    padding: 5px 8px 5px 8px;
+}
+
+.link-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
