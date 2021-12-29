@@ -9,12 +9,34 @@
 .link{
     text-transform: capitalize;
     padding: 5px 8px 5px 8px;
-    text-decoration: none;
+    
 }
 
 .link-container{
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     align-items: center;
+    justify-content: center;
+    flex-grow: 100;
+}
+
+.logo-container{
+    width: 85%;
+    padding: 0 40px 0 40px;
+}
+
+.canvas-body{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+}
+
+.info-text{
+    color: rgba(0, 0, 0, 0.4);
+}
+
+.info-box{
+    text-align: center;
+    flex-grow: 1;
 }

@@ -28,7 +28,7 @@ const links = (addr: string, label: string) => {
   }
   return (
     <div className="link">
-      <Link to={linkAddr} style={{textDecoration:"none", color:"black"}}>
+      <Link to={linkAddr} style={{ textDecoration: "none", color: "black" }}>
         <h4>{label}</h4>
       </Link>
     </div>
@@ -51,6 +51,10 @@ const SideBar = (props: propsType) => {
         <div className="canvas-body">
           <div className="link-container">
             {addList.map((a) => links(addr, a))}
+          </div>
+          <div className="info-box">
+            <h5 className="info-text">Current Exchange : Binance</h5>
+            <h5 className="info-text">Latency : 150ms</h5>
           </div>
         </div>
       </Offcanvas>
