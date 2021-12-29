@@ -5,6 +5,7 @@ import {
   OffcanvasTitle,
   Image,
 } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import "./SideBar.css";
 
 interface propsType {
@@ -14,6 +15,9 @@ interface propsType {
 const addList = ["overview", "detailed Analysis", "arbitrarge"];
 
 const links = (addr: string, label: string) => {
+  const endPoint = label === addList[1] ? "analysis" : label;
+  const linkAddr =
+    `${process.env.PUBLIC_URL}/${endPoint}` || `localhost:3000/${endPoint}`;
   const disable = addr === label;
   if (disable) {
     return (
@@ -24,7 +28,9 @@ const links = (addr: string, label: string) => {
   }
   return (
     <div className="link">
-      <h4>{label}</h4>
+      <Link to={linkAddr} style={{textDecoration:"none", color:"black"}}>
+        <h4>{label}</h4>
+      </Link>
     </div>
   );
 };
