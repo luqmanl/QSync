@@ -21,13 +21,13 @@ const links = (addr: string, label: string) => {
   const disable = addr === label;
   if (disable) {
     return (
-      <div className="disabled-link">
+      <div key={label} className="disabled-link">
         <h4>{label}</h4>
       </div>
     );
   }
   return (
-    <div className="link">
+    <div key={label} className="link">
       <Link to={linkAddr} style={{ textDecoration: "none", color: "black" }}>
         <h4>{label}</h4>
       </Link>
