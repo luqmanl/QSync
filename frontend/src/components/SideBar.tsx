@@ -40,7 +40,9 @@ const SideBar = (props: propsType) => {
   const { addr } = props;
   return (
     <div>
-      {show ? null : <button onClick={() => setShow(true)}>Find 3 line button</button>}
+      {show ? null : (
+        <button onClick={() => setShow(true)}>Find 3 line button</button>
+      )}
       <Offcanvas show={show} onHide={() => setShow(false)}>
         <OffcanvasHeader closeButton={true}>
           <div className="logo-container">
