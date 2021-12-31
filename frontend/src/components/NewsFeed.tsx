@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import "./NewsFeed.css";
-import { exampleData } from "../exampleData/ExampleNewsFeed";
+
 
 export type reponseType = newsListing[];
 
@@ -16,7 +16,7 @@ const NewsFeed = () => {
   const url = `${process.env.PUBLIC_URL || "localhost:8000"}/api/data/newsfeed`;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [loading, setLoading] = useState(true);
-  const [news, setNews] = useState<newsListing[]>(exampleData);
+  const [news, setNews] = useState<newsListing[]>([]);
 
   useEffect(() => {
     axios
