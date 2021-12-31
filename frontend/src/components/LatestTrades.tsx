@@ -40,7 +40,6 @@ const LatestTrades = () => {
     //     // eslint-disable-next-line no-magic-numbers
     //     price: (Math.random() * 20000) + 10000,
     //   };
-
     //   curTrades.push(newTrade);
     // }
     // setTrades(curTrades);

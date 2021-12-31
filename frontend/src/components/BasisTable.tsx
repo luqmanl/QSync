@@ -92,7 +92,6 @@ const BasisTable = () => {
       });
 
       setBasisTable(update);
-
     });
   }, []);
 

@@ -1,0 +1,54 @@
+.page-box {
+  background-color: white;
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+  width: 100%;
+}
+
+.title-box {
+  display: flex;
+  justify-content: center;
+}
+
+.page-title {
+  justify-content: center;
+  text-align: center;
+  flex-grow: 100;
+}
+
+.content-box {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.left-box {
+  display: flex;
+  flex-flow: column;
+  width: 66%;
+  flex-grow: 1;
+}
+
+.graph {
+  height: 60%;
+}
+
+.table {
+  height: 40%;
+}
+
+.right-box {
+  display: flex;
+  flex-flow: column;
+  width: 34%;
+  flex-grow: 1;
+}
+
+.news-box {
+  flex-grow: 1;
+}
+
+.indicator-box {
+  flex-grow: 2;
+}
