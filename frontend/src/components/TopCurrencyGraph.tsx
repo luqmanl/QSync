@@ -1,6 +1,6 @@
 /* eslint-disable no-magic-numbers */
 import React, { useEffect, useState } from "react";
-import exampleData from "./ExampleTopCurrencyGraphData";
+import exampleData from "../exampleData/ExampleTopCurrencyGraphData";
 import { LegendBoxBuilders, lightningChart, Themes } from "@arction/lcjs";
 import "./TopCurrencyGraph.css";
 export interface data {

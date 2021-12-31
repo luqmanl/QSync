@@ -7,7 +7,7 @@ import { useState, useEffect, useRef } from "react";
 import "./BasisTable.css";
 import "./BasisTableCell.css";
 import { Modal, Button } from "react-bootstrap";
-import { ExampleBasisHistory } from "./ExampleBasisHistory";
+import { ExampleBasisHistory } from "../exampleData/ExampleBasisHistory";
 import { lightningChart } from "@arction/lcjs";
 import axios from "axios";
 

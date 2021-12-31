@@ -1,4 +1,4 @@
-import { futureMap } from "./BasisTable";
+import { futureMap } from "../components/BasisTable";
 
 export const exampleBasisTable: futureMap = {
   DERIBIT: { BINANCE: "0.12", BITFINEX: "0.45", COINBASE: "0.56" },

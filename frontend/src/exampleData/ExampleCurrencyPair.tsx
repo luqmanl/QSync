@@ -1,4 +1,4 @@
-import { CurrencyPairType } from "./CurrencyPair";
+import { CurrencyPairType } from "../components/CurrencyPair";
 
 const defaultData: { [name: string]: CurrencyPairType } = {
   "BTC/ETH": {
