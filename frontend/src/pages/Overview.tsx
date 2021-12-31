@@ -1,5 +1,6 @@
 import React from "react";
 import SideBar from "../components/SideBar";
+import TopCurrencyGraph from "../components/TopCurrencyGraph";
 import "./Overview.css";
 
 const Overview = () => {
@@ -10,11 +11,16 @@ const Overview = () => {
         <h2 className="page-title">Market Overview</h2>
       </div>
       <div className="content-box">
-        <div className="graph-box">
-          <div className="graph"></div>
+        <div className="left-box">
+          <div className="graph">
+            <TopCurrencyGraph />
+          </div>
           <div className="table"></div>
         </div>
-        <div className="side-box"></div>
+        <div className="right-box">
+          <div className="news-box"></div>
+          <div className="indicator-box"></div>
+        </div>
       </div>
     </div>
   );

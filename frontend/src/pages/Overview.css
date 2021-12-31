@@ -23,25 +23,35 @@
   height: 100%;
 }
 
-.graph-box {
+.left-box {
   display: flex;
   flex-flow: column;
   border-right: 1px solid rgba(0, 0, 0, 0.4);
-  height: 100%;
-  flex-grow: 2;
+  width: 66%;
+  flex-grow: 1;
 }
 
 .graph {
-  flex-grow: 2;
+  height: 60%;
+  border: 2px solid black;
 }
 
 .table {
+  height: 40%;
+}
+
+.right-box {
+  display: flex;
+  flex-flow: column;
+  width: 34%;
   flex-grow: 1;
 }
 
-.side-box {
-  display: flex;
-  flex-flow: column;
-  height: 100%;
-  flex-grow: 1;
+.news-box{
+    flex-grow: 1;
+    border: 2px solid black;
+}
+
+.indicator-box{
+    flex-grow: 2;
 }
