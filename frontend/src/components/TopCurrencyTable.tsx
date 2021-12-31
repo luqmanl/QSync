@@ -56,9 +56,9 @@ const generateColour7d = (value: number): colour => {
     return maxRed;
   }
   return {
-    red: 143.5 - ((gradient.red / 10) * value),
-    green: 80 + ((gradient.green / 10) * value),
-    blue: 7.5 + ((gradient.blue / 10) * value ),
+    red: 143.5 - (gradient.red / 10) * value,
+    green: 80 + (gradient.green / 10) * value,
+    blue: 7.5 + (gradient.blue / 10) * value,
   };
 };
 
@@ -70,9 +70,9 @@ const generateColour24h = (value: number): colour => {
     return maxRed;
   }
   return {
-    red: 143.5 - ((gradient.red / 20) * value),
-    green: 80 + ((gradient.green / 20) * value),
-    blue: 7.5 + ((gradient.blue / 20) * value ),
+    red: 143.5 - (gradient.red / 20) * value,
+    green: 80 + (gradient.green / 20) * value,
+    blue: 7.5 + (gradient.blue / 20) * value,
   };
 };
 

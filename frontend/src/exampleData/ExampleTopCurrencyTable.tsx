@@ -26,7 +26,7 @@ const exampleData: tableRep = {
     name: "Solana",
     price: 194.58,
     change24h: -6.29,
-    change7d: 9.30,
+    change7d: 9.3,
     marketCap: 60291049,
   },
   "͏": {
