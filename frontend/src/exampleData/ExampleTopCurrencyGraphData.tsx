@@ -1,4 +1,4 @@
-import { data } from "./TopCurrencyGraph";
+import { data } from "../components/TopCurrencyGraph";
 
 const exampleData: data = {
   data: [
