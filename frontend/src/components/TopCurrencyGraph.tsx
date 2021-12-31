@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import exampleData from "./ExampleTopCurrencyGraphData";
 import { LegendBoxBuilders, lightningChart, Themes } from "@arction/lcjs";
-import "./TopCurrencyGraph.css"
+import "./TopCurrencyGraph.css";
 export interface data {
   data: dataPoint[];
 }
@@ -49,9 +49,6 @@ const TopCurrencyGraph = () => {
     chart.setTitle("Top Currencies");
     chart.getDefaultAxisX().setTitle("Time");
     chart.getDefaultAxisY().setTitle("Percentage Change");
-    chart.addLegendBox(LegendBoxBuilders.HorizontalLegendBox);
-    chart.setPadding(0)
-    
 
     graphData.forEach((list, name) => {
       const newSeries = chart
@@ -60,19 +57,20 @@ const TopCurrencyGraph = () => {
             pattern: "ProgressiveX",
           },
         })
-        .setCursorEnabled(false)
         .setStrokeStyle((strokeStyle) =>
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          strokeStyle.setFillStyle((fill: any) => fill.setA(70)).setThickness(2)
+          strokeStyle.setFillStyle((fill: any) => fill.setA(70)).setThickness(5)
         )
         .setName(name);
+
       newSeries.add(list);
     });
+    chart.addLegendBox(LegendBoxBuilders.HorizontalLegendBox).add(chart);
   }, []);
 
   return (
     <div className="graph-container">
-      <div id="currency-graph"></div>
+      <div id="currency-graph" className="graph-container"></div>
     </div>
   );
 };
