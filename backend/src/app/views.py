@@ -17,7 +17,7 @@ def convertNanosecsToDatetime(nanosecs):
     return a
 
 
-def getDataFromKDB(minTimestamp, resolution):
+def getDataFromKDB(spotSym, futureSym, spotExch, futureExch, minTimestamp, resolution):
     data = {}
 
     outputData = {"data": []}
@@ -26,9 +26,12 @@ def getDataFromKDB(minTimestamp, resolution):
     with qconnection.QConnection(host='localhost', port=5012) as q:
         try:
             data = q.sendSync('.orderbook.basis', np.string_(
-                "BTC-USDT"), np.string_("BTC-USD-PERP"), np.string_("BINANCE"), np.string_("DERIBIT"), np.datetime64(minTimestamp, 'ns'), resolution)
+                spotSym), np.string_(futureSym), np.string_(spotExch), np.string_(futureExch), np.datetime64(minTimestamp, 'ns'), resolution)
         except Exception as e:
             print(e)
+
+    print("HDB")
+    print(data)
 
     for d in data:
         timestamp = convertNanosecsToDatetime(d[0])
@@ -41,7 +44,7 @@ def getDataFromKDB(minTimestamp, resolution):
     with qconnection.QConnection(host='localhost', port=5011) as q:
         try:
             data = q.sendSync('.orderbook.basis', np.string_(
-                "BTC-USDT"), np.string_("BTC-USD-PERP"), np.string_("BINANCE"), np.string_("DERIBIT"), np.datetime64(minTimestamp, 'ns'), resolution)
+                spotSym), np.string_(futureSym), np.string_(spotExch), np.string_(futureExch), np.datetime64(minTimestamp, 'ns'), resolution)
         except Exception as e:
             print(e)
 
@@ -57,20 +60,20 @@ def getDataFromKDB(minTimestamp, resolution):
 
 # Returns the historical value of the difference in midprices of the given currencies and exchanges
 @csrf_exempt
-def getHistoricalBasisData(request, period="1d"):
+def getHistoricalBasisData(request, period, spotSym, futureSym, spotExch, futureExch):
 
     minTimestamp = 0  # date to start at
     resolution = 0  # frequency of returned data (in seconds)
 
     if period == "1d":
         minTimestamp = datetime.now() - timedelta(days=1)
-        resolution = 60
+        resolution = 60 # 1 minute
     elif period == "1w":
         minTimestamp = datetime.now() - timedelta(days=7)
-        resolution = 600
+        resolution = 600 # 10 minutes
     elif period == "1m":
         minTimestamp = datetime.now() - timedelta(days=31)
-        resolution = 3600
+        resolution = 3600 #
     elif period == "3m":
         minTimestamp = datetime.now() - timedelta(days=90)
         resolution = 21600
@@ -84,5 +87,5 @@ def getHistoricalBasisData(request, period="1d"):
         minTimestamp = datetime.now() - timedelta(hours=1)
         resolution = 10
 
-    outputData = getDataFromKDB(minTimestamp, resolution)
+    outputData = getDataFromKDB(spotSym, futureSym, spotExch, futureExch, minTimestamp, resolution)
     return JsonResponse(outputData)
