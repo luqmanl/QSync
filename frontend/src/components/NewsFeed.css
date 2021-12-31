@@ -1,10 +1,22 @@
 .news-box {
-  height: 66%;
+  height: 90%;
   width: 100%;
+  display: grid;
   overflow: scroll;
 }
 
 .newsfeed-container {
   height: 66%;
   width: 100%;
+  text-align: center;
+}
+
+.headline-container{
+    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+    margin: 0 15px 0 15px;
+}
+
+.headline{
+    color: black;
+    text-decoration: none;
 }

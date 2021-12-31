@@ -31,10 +31,22 @@ const NewsFeed = () => {
   }, []);
 
   return (
-    <div className="news-box">
-      {news.map((item) => {
-        return <h2 key={item.description}>{item.description}</h2>;
-      })}
+    <div className="newsfeed-container">
+      <h1 className="title">Newsfeed</h1>
+      <div className="news-box">
+        {news.map((item) => {
+          return (
+            <div key={Date.now()} className="headline-container">
+              <h5 className="source-box">
+                {item.provider} • {item.timestamp} hours ago
+              </h5>
+              <a href={item.url} className="headline">
+                <h5>{item.description}</h5>
+              </a>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };
