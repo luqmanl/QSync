@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-operators */
 /* eslint-disable no-magic-numbers */
 import React, { useState } from "react";
 import { Table } from "react-bootstrap";
