@@ -1,4 +1,10 @@
 .news-box {
-    height: 70%;
-    overflow: scroll;
-  }
+  height: 66%;
+  width: 100%;
+  overflow: scroll;
+}
+
+.newsfeed-container {
+  height: 66%;
+  width: 100%;
+}
