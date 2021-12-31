@@ -2,6 +2,7 @@ import React from "react";
 import SideBar from "../components/SideBar";
 import TopCurrencyGraph from "../components/TopCurrencyGraph";
 import TopCurrencyTable from "../components/TopCurrencyTable";
+import NewsFeed from "../components/NewsFeed";
 import "./Overview.css";
 
 const Overview = () => {
@@ -21,8 +22,8 @@ const Overview = () => {
           </div>
         </div>
         <div className="right-box">
-          <div className="news-box"></div>
           <div className="indicator-box"></div>
+          <NewsFeed />
         </div>
       </div>
     </div>
