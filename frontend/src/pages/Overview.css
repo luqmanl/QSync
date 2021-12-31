@@ -40,16 +40,11 @@
 }
 
 .right-box {
-  display: flex;
   flex-flow: column;
   width: 34%;
   flex-grow: 1;
 }
 
-.news-box {
-  flex-grow: 1;
-}
-
 .indicator-box {
-  flex-grow: 2;
+  height: 30%;
 }
