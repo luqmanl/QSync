@@ -1,4 +1,4 @@
-import {newsListing} from "../components/NewsFeed";
+import { newsListing } from "../components/NewsFeed";
 
 export const exampleData: newsListing[] = [
   {
