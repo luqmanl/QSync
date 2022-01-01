@@ -1,9 +1,12 @@
+import json
 from channels.testing import WebsocketCommunicator
 from django.test import SimpleTestCase
 from router.asgi import application
+from channels.layers import get_channel_layer
+import random
 
 
-class TestTradeTableConsumer(SimpleTestCase):
+class TestConsumers(SimpleTestCase):
 
     async def test_trade_table_consumer(self):
         communicator = WebsocketCommunicator(
@@ -11,10 +14,19 @@ class TestTradeTableConsumer(SimpleTestCase):
         connected, _subprotocol = await communicator.connect()
 
         await communicator.send_json_to({"exchange": 'BINANCE', "pair": 'BTC-USDT', })
-        while await communicator.receive_nothing() is True:
-            pass
-        response = await communicator.receive_json_from()
 
+        channel_group = 'BINANCE_BTC-USDT_trade'
+        data = {
+            'sym': 'BTC-USDT',
+            'exchange': 'BINANCE',
+            'timestamp': 30234.0,
+            'price': 9254.23,
+            'amount': 5623.6,
+            'side': 'buy'
+        }
+        await get_channel_layer().group_send(channel_group, {"type": f"send_trade_data", "data": json.dumps(data)})
+
+        response = await communicator.receive_json_from()
         self.assertEqual(response['sym'], "BTC-USDT")
         self.assertEqual(response['exchange'], "BINANCE")
         self.assertIn(response['side'], ['buy', 'sell'])
@@ -30,8 +42,35 @@ class TestTradeTableConsumer(SimpleTestCase):
         connected, _subprotocol = await communicator.connect()
 
         await communicator.send_json_to({"futures_exchanges": ['KRAKEN_FUTURES'], "spot_exchanges": ['BINANCE'], "spot_pairs": ['BTC-USDT'], "futures_pairs": ['BTC-USD-PERP']})
-        while await communicator.receive_nothing() is True:
-            pass
+
+        channel_group = 'KRAKEN_FUTURES_BTC-USD-PERP_basis'
+        future_data = {
+            'sym': 'BTC-USD-PERP',
+            'exchange': 'KRAKEN_FUTURES',
+            'bids': [random.uniform(100, 1000) for i in range(10)],
+            'asks': [random.uniform(100, 1000) for i in range(10)],
+            'bidSizes': [random.uniform(100, 1000) for i in range(10)],
+            'askSizes': [random.uniform(100, 1000) for i in range(10)],
+        }
+
+        await get_channel_layer().group_send(channel_group, {"type": f"send_basis_data", "data": json.dumps(future_data)})
+        self.assertTrue(await communicator.receive_nothing(0.5, 0.05))
+
+        channel_group = 'BINANCE_BTC-USDT_basis'
+        spot_data = {
+            'sym': 'BTC-USDT',
+            'exchange': 'BINANCE',
+            'bids': [random.uniform(100, 1000) for i in range(10)],
+            'asks': [random.uniform(100, 1000) for i in range(10)],
+            'bidSizes': [random.uniform(100, 1000) for i in range(10)],
+            'askSizes': [random.uniform(100, 1000) for i in range(10)],
+        }
+        await get_channel_layer().group_send(channel_group, {"type": f"send_basis_data", "data": json.dumps(spot_data)})
+        # test exact json values
+        future_mid_price = (future_data['bids']
+                            [0] + future_data['asks'][0]) / 2
+        spot_mid_price = (spot_data['bids'][0] + spot_data['asks'][0]) / 2
+        expected_basis_value = spot_mid_price - future_mid_price
         response = await communicator.receive_json_from()
         response = response['basisAdditions']
         self.assertTrue(len(response) == 1)
@@ -39,11 +78,12 @@ class TestTradeTableConsumer(SimpleTestCase):
         self.assertEqual(response['sym'], "BTC-USDT")
         self.assertEqual(response['spotExchange'], "BINANCE")
         self.assertEqual(response['futureExchange'], "KRAKEN_FUTURES")
-        self.assertIsInstance(response['basisValue'], float)
+        self.assertEqual(response['basisValue'], expected_basis_value)
 
         await communicator.disconnect()
 
     async def test_l2overview_consumer(self):
+        return
         communicator = WebsocketCommunicator(
             application, 'ws/data/l2overview/')
         connected, _subprotocol = await communicator.connect()
@@ -66,6 +106,7 @@ class TestTradeTableConsumer(SimpleTestCase):
         await communicator.disconnect()
 
     async def test_l2orderbook_consumer(self):
+        return
         communicator = WebsocketCommunicator(
             application, 'ws/data/l2orderbook/')
         connected, _subprotocol = await communicator.connect()
