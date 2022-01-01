@@ -6,6 +6,8 @@ import {
   Image,
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
 import "./SideBar.css";
 
 interface propsType {
@@ -40,9 +42,9 @@ const SideBar = (props: propsType) => {
   const { addr } = props;
   return (
     <div>
-      {show ? null : (
-        <button onClick={() => setShow(true)}>Find 3 line button</button>
-      )}
+      <div className="button-container" onClick={() => setShow(true)}>
+        <FontAwesomeIcon icon={faBars} size="2x" />
+      </div>
       <Offcanvas show={show} onHide={() => setShow(false)}>
         <OffcanvasHeader closeButton={true}>
           <div className="logo-container">

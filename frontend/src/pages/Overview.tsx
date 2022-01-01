@@ -3,6 +3,7 @@ import SideBar from "../components/SideBar";
 import TopCurrencyGraph from "../components/TopCurrencyGraph";
 import TopCurrencyTable from "../components/TopCurrencyTable";
 import NewsFeed from "../components/NewsFeed";
+import KeyMetrics from "../components/KeyMetrics";
 import "./Overview.css";
 
 const Overview = () => {
@@ -22,7 +23,9 @@ const Overview = () => {
           </div>
         </div>
         <div className="right-box">
-          <div className="indicator-box"></div>
+          <div className="indicator-box">
+            <KeyMetrics />
+          </div>
           <NewsFeed />
         </div>
       </div>

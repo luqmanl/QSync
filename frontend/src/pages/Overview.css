@@ -6,6 +6,16 @@
   width: 100%;
   overflow: hidden;
   font-family: "Nunito Sans", sans-serif;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.4) white;
+}
+
+.page-box::webkir-scrollbar-thumb {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.page-box::webkir-scrollbar-track {
+  color: white;
 }
 
 .title-box {
@@ -23,6 +33,7 @@
   display: flex;
   width: 100%;
   height: 100%;
+  margin-bottom: 20px;
 }
 
 .left-box {
@@ -42,11 +53,12 @@
 }
 
 .right-box {
-  flex-flow: column;
   width: 34%;
   flex-grow: 1;
 }
 
 .indicator-box {
   height: 30%;
+  margin: 0 10px 10px 10px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
 }
