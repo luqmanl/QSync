@@ -30,12 +30,12 @@ table_to_channel_datatypes = {
 # send input data to frontend through channel group
 
 
-async def send_data_to_frontend(datatypes, data, channel_layer, last_send):
+async def send_data_to_frontend(datatypes, data):
     key = f"{data['exchange']}_{data['sym']}"
 
     for datatype in datatypes:
         group_name = f"{data['exchange']}_{data['sym']}_{datatype}"
-        await (channel_layer.group_send)(group_name, {"type": f"send_{datatype}_data", "data": json.dumps(data)})
+        await (get_channel_layer().group_send)(group_name, {"type": f"send_{datatype}_data", "data": json.dumps(data)})
 
 
 async def l2book_callback(book_, timestamp):
@@ -71,8 +71,7 @@ async def l2book_callback(book_, timestamp):
 
         if SEND_TO_FRONTEND:
             datatypes = table_to_channel_datatypes["orderbooktop"]
-            await send_data_to_frontend(datatypes, dataFrontend, channel_layer, last_send)
-
+            await send_data_to_frontend(datatypes, dataFrontend)
         dataBackend = [
             qlist([np.string_(book_.symbol)], qtype=QSYMBOL_LIST),
             qlist([np.string_(book_.exchange)], qtype=QSYMBOL_LIST),
@@ -109,7 +108,7 @@ async def trade_callback(trade, timestamp):
 
     if SEND_TO_FRONTEND:
         datatypes = table_to_channel_datatypes["trades"]
-        await send_data_to_frontend(datatypes, data, channel_layer, last_send)
+        await send_data_to_frontend(datatypes, data)
 
     q.sendAsync('.u.upd', np.string_('trades'), [
         qlist([np.string_(trade.symbol)], qtype=QSYMBOL_LIST),
@@ -153,6 +152,3 @@ if __name__ == "__main__":
 
 # configure to send to front end and define channel_layers
 SEND_TO_FRONTEND = True
-
-if SEND_TO_FRONTEND:
-    channel_layer = get_channel_layer()

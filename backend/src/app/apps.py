@@ -8,5 +8,3 @@ class AppConfig(AppConfig):
 
     def ready(self) -> None:
         super().ready()
-        p = Process(target=fh.run)
-        p.start()
