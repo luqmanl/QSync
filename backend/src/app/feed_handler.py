@@ -44,6 +44,7 @@ async def l2book_callback(book_, timestamp):
     # if book_.timestamp != None:
     #     timestamp = book_.timestamp
 
+    # save data (and send to clients) once a second
     if ((not key in last_send) or (timestamp > last_send[key] + 1)):
 
         last_send[key] = timestamp
