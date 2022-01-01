@@ -50,4 +50,6 @@
 
 .indicator-box {
   height: 30%;
+  margin: 0 10px 10px 10px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
 }
