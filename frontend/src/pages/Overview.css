@@ -6,6 +6,16 @@
   width: 100%;
   overflow: hidden;
   font-family: "Nunito Sans", sans-serif;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.4) white;
+}
+
+.page-box::webkir-scrollbar-thumb{
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.page-box::webkir-scrollbar-track{
+  color: white
 }
 
 .title-box {
@@ -43,7 +53,6 @@
 }
 
 .right-box {
-  flex-flow: column;
   width: 34%;
   flex-grow: 1;
 }
