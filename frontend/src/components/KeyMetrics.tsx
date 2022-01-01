@@ -2,7 +2,6 @@
 /* eslint-disable no-magic-numbers */
 import React, { useEffect, useState } from "react";
 import "./KeyMetrics.css";
-import exampleData from "../exampleData/ExampleKeyMetrics";
 import axios from "axios";
 import Spinner from "react-bootstrap/Spinner";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
@@ -79,8 +78,8 @@ const generateToolTip = (tip: string) => {
 };
 
 const KeyMetrics = () => {
-  const [loading, setLoading] = useState(false);
-  const [info, setInfo] = useState<metricInfo[]>(exampleData);
+  const [loading, setLoading] = useState(true);
+  const [info, setInfo] = useState<metricInfo[]>([]);
 
   const endPoint = "/api/key_metrics";
   const linkAddr =

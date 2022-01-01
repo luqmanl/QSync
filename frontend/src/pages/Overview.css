@@ -10,12 +10,12 @@
   scrollbar-color: rgba(0, 0, 0, 0.4) white;
 }
 
-.page-box::webkir-scrollbar-thumb{
+.page-box::webkir-scrollbar-thumb {
   color: rgba(0, 0, 0, 0.4);
 }
 
-.page-box::webkir-scrollbar-track{
-  color: white
+.page-box::webkir-scrollbar-track {
+  color: white;
 }
 
 .title-box {
