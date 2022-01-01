@@ -149,8 +149,9 @@ def run():
             f.add_feed(x(symbols=future_pairs, **args))
 
         # manually add Binance with extra symbols
-        spot_pairs = ['ETH-BTC', 'BTC-USDT', 'ETH-USDT', 'SOL-USDT', 'DOGE-USDT', 'ADA-USDT']
-        f.add_feed(Binance(symbols=spot_pairs, **args)) 
+        spot_pairs = ['ETH-BTC', 'BTC-USDT', 'ETH-USDT',
+                      'SOL-USDT', 'DOGE-USDT', 'ADA-USDT']
+        f.add_feed(Binance(symbols=spot_pairs, **args))
 
         f.run()
 
