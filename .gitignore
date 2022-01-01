@@ -21,4 +21,5 @@ __pycache__/
 .pytest_cache/
 
 # Backend
+q/tables*
 dump.rdb
