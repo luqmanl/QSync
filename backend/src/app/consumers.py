@@ -1,14 +1,18 @@
-import json
 from channels.consumer import AsyncConsumer
-import asyncio
+import json
 import numpy as np
+from qpython import qconnection
 import re
 
-from qpython import qconnection
 
-""" Consumer responsible for handling connection from each frontend component. """
+""" 
+    Consumers responsible for handling different types of data required by clients.
+    Each Consumer receives request to subscribe to new streams of data, handled through django channels.
+    Each Consumer has a "send_<datatype>_data" function utilised by django channels for sending new data to clients.
+"""
 
 
+# Handles trade data for exchange and pair specified by client in request
 class TradeTableConsumer(AsyncConsumer):
     async def websocket_connect(self, event):
         await self.send({
@@ -22,17 +26,18 @@ class TradeTableConsumer(AsyncConsumer):
         })
 
     async def websocket_receive(self, event):
-        # {exchange: "", pair: ""}
-        data = json.loads(event["text"])
+        # req = {exchange: String, pair: String}
+        req = json.loads(event["text"])
         await self.channel_layer.group_add(
-            f"{data['exchange']}_{data['pair']}_trade",
+            f"{req['exchange']}_{req['pair']}_trade",
             self.channel_name
         )
 
     async def websocket_disconnect(self, event):
-        print('disconnected', event)
+        print('disconnected trade table websocket: ', event['code'])
 
 
+# Handles spot-future basis table data for exchanges and pairs specified by client in request
 class BasisTableConsumer(AsyncConsumer):
 
     async def websocket_connect(self, event):
@@ -51,7 +56,8 @@ class BasisTableConsumer(AsyncConsumer):
 
         basis_prices = []
 
-        if re.search("[0-9][0-9].[0-9][0-9]", data["sym"]):  # if symbol has future form
+        # if symbol is perpetual
+        if re.search("PERP", data["sym"]):
             self.future_prices[data["exchange"]] = (highestBid + lowestAsk) / 2
             for (exchange, spot) in self.spot_prices.items():
                 basisAddition = {
@@ -71,18 +77,17 @@ class BasisTableConsumer(AsyncConsumer):
                     "basisValue": self.spot_prices[data["exchange"]] - future
                 }
                 basis_prices.append(basisAddition)
-
-        data = {"basisAdditions": basis_prices}
-
-        await self.send({
-            'type': 'websocket.send',
-            'text': json.dumps(data)
-        })
+        if len(basis_prices) != 0:
+            data = {"basisAdditions": basis_prices}
+            await self.send({
+                'type': 'websocket.send',
+                'text': json.dumps(data)
+            })
 
     async def websocket_receive(self, event):
-        # {futures-exchanges: [], spot-exchanges: [], spot-pairs: [], futures_pairs: []}
+        # data = {futures_exchanges: String[], spot_exchanges: String[], spot_pairs: String[], futures_pairs: String[]}
         data = json.loads(event["text"])
-        # add FUTURES exchanges and pairs to group
+
         for exchange in data["futures_exchanges"]:
             for pair in data["futures_pairs"]:
                 await self.channel_layer.group_add(
@@ -98,9 +103,10 @@ class BasisTableConsumer(AsyncConsumer):
                 )
 
     async def websocket_disconnect(self, event):
-        print('disconnected', event)
+        print('disconnected basis table websocket: ', event['code'])
 
 
+# Handles l2orderbook overview data for exchanges and pairs specified by client in request
 class L2overviewConsumer(AsyncConsumer):
     async def websocket_connect(self, event):
 
@@ -109,7 +115,7 @@ class L2overviewConsumer(AsyncConsumer):
         })
 
     async def websocket_receive(self, event):
-        # {exchanges: [], pairs: []}
+        # {exchanges: String[], pairs: String[]}
         data = json.loads(event["text"])
         for pair in data["pairs"]:
             for exchange in data["exchanges"]:
@@ -119,20 +125,23 @@ class L2overviewConsumer(AsyncConsumer):
                 )
 
     async def websocket_disconnect(self, event):
-        print('disconnected', event)
+        print('disconnected l2overview websocket: ', event['code'])
 
     async def send_l2overview_data(self, event):
         data = json.loads(event["data"])
         highestBid = data["bids"][0]
         lowestAsk = data["asks"][0]
+
         with qconnection.QConnection(host='localhost', port=5011) as q:
             volume = q.sendSync('.trades.vol', np.string_(data['sym']))
+
         highestBidSize = data["bidSizes"][0]
         lowestAskSize = data["askSizes"][0]
         imbalance = (highestBidSize - lowestAskSize) / \
             (highestBidSize + lowestAskSize)
 
         data = {
+            "exchange": data["exchange"],
             "sym": data["sym"],
             "highestBid": highestBid,
             "lowestAsk": lowestAsk,
@@ -144,6 +153,8 @@ class L2overviewConsumer(AsyncConsumer):
             "type": 'websocket.send',
             "text": json.dumps(data)
         })
+
+# Handles l2 orderbook data for exchange and pair specified by client in request
 
 
 class L2orderbookConsumer(AsyncConsumer):
@@ -159,7 +170,7 @@ class L2orderbookConsumer(AsyncConsumer):
         })
 
     async def websocket_receive(self, event):
-        # {exchange: "", pair: ""}
+        # data = {exchange: String, pair: String}
         data = json.loads(event["text"])
         await self.channel_layer.group_add(
             f"{data['exchange']}_{data['pair']}_l2orderbook",
@@ -167,4 +178,4 @@ class L2orderbookConsumer(AsyncConsumer):
         )
 
     async def websocket_disconnect(self, event):
-        print('disconnected', event)
+        print('disconnected l2orderbook websocket: ', event['code'])

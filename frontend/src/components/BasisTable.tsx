@@ -75,7 +75,7 @@ const BasisTable = () => {
         JSON.stringify({
           futures_exchanges: ["DERIBIT", "OKEX", "KRAKEN_FUTURES"],
           spot_exchanges: ["BINANCE", "BITFINEX", "COINBASE"],
-          futures_pairs: ["BTC-USD-21Z31"],
+          futures_pairs: ["BTC-USD-PERP"],
           spot_pairs: ["BTC-USDT"],
         })
       );
