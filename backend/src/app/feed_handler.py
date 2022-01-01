@@ -132,10 +132,11 @@ def run():
 
         # list of pairs for future and spot exchanges
         spot_pairs = [Binance.symbols()[i] for i in (0, 10, 11)]
+        print(spot_pairs)
         future_pairs = ["BTC-USD-PERP"]
 
         # list of future and spot exchanges
-        spot_exchanges = [Binance, Coinbase, Bitfinex]
+        spot_exchanges = [Coinbase, Bitfinex]
         future_exchanges = [Deribit, KrakenFutures, OKEx]
 
         args = {"channels": [L2_BOOK, TRADES], "callbacks": {
@@ -146,6 +147,11 @@ def run():
 
         for x in future_exchanges:
             f.add_feed(x(symbols=future_pairs, **args))
+
+        # manually add Binance with extra symbols
+        spot_pairs = ['ETH-BTC', 'BTC-USDT', 'ETH-USDT', 'SOL-USDT', 'DOGE-USDT', 'ADA-USDT']
+        f.add_feed(Binance(symbols=spot_pairs, **args)) 
+
         f.run()
 
 
