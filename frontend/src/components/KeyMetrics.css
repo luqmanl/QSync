@@ -1,0 +1,29 @@
+.metric-box{
+    width: 100%;
+    height: 80%;
+}
+
+.metric-title{
+    font-weight :bolder;
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.metrics-container{
+    display: grid;
+    grid-template-columns: auto auto;
+    text-align: center;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.spinner-container{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.metric{
+    font-size: large;
+}
