@@ -3,6 +3,8 @@
 /* eslint-disable no-mixed-operators */
 /* eslint-disable no-magic-numbers */
 import React, { useState, useEffect } from "react";
+import { exampleBasisTable } from "../exampleData/ExampleBasisTable";
+import BasisTableCell from "./BasisTableCell.jsx";
 import { Table } from "react-bootstrap";
 import "./BasisTable.css";
 
@@ -17,16 +19,34 @@ type basisAddition = {
   basisValue: number;
 };
 
-type spotMap = {
+export type spotMap = {
   [spotKey: string]: string;
 };
 
-type futureMap = {
+export type futureMap = {
   [futureKey: string]: spotMap;
 };
 
 const supportedSpot = ["BINANCE", "BITFINEX", "COINBASE"];
-const supportedFutures = ["DERIBIT", "HUOBIDM", "OKEX"];
+const supportedFutures = ["DERIBIT", "KRAKEN_FUTURES", "OKEX"];
+
+const rowGenerator = (map: spotMap, index: number) => {
+  return (
+    <tr key={index}>
+      <td className="table-cell">{supportedFutures[index]}</td>
+      {supportedSpot.map((x, i) => {
+        return (
+          <BasisTableCell
+            key={i}
+            value={map[x]}
+            future={supportedFutures[index]}
+            spot={x}
+          />
+        );
+      })}
+    </tr>
+  );
+};
 
 const BasisTable = () => {
   const initialTable: any = {};
@@ -42,7 +62,7 @@ const BasisTable = () => {
     initialTable[x] = allSpots;
   });
 
-  const [basisTable, setBasisTable] = useState<futureMap>(initialTable);
+  const [basisTable, setBasisTable] = useState<futureMap>(exampleBasisTable);
 
   // TODO change this
   const wsAddr = `ws://localhost:8000/ws/data/basis/`;
@@ -53,7 +73,7 @@ const BasisTable = () => {
     socket.onopen = () => {
       socket.send(
         JSON.stringify({
-          futures_exchanges: ["DERIBIT", "OKEX", "HUOBIDM"],
+          futures_exchanges: ["DERIBIT", "OKEX", "KRAKEN_FUTURES"],
           spot_exchanges: ["BINANCE", "BITFINEX", "COINBASE"],
           futures_pairs: ["BTC-USD-21Z31"],
           spot_pairs: ["BTC-USDT"],
@@ -63,7 +83,6 @@ const BasisTable = () => {
 
     socket.addEventListener("message", (ev) => {
       const res: basisTableData = JSON.parse(ev.data);
-      console.log(res);
 
       const update = { ...basisTable };
 
@@ -73,27 +92,8 @@ const BasisTable = () => {
       });
 
       setBasisTable(update);
-
-      supportedFutures.forEach((x) => {
-        supportedSpot.forEach((y) => {
-          console.log(`future: ${x}, spot: ${y}, basis: ${basisTable[x][y]}`);
-        });
-      });
     });
   }, []);
-
-  const rowGenerator = (map: spotMap, index: number) => {
-    return (
-      <tr key={index}>
-        <td className="table-cell">{supportedFutures[index]}</td>
-        {supportedSpot.map((x, i) => (
-          <td key={i} className="table-cell">
-            {map[x]}
-          </td>
-        ))}
-      </tr>
-    );
-  };
 
   return (
     <div className="basis-component">

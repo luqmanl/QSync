@@ -3,7 +3,7 @@
 /* eslint-disable no-magic-numbers */
 import React, { useState, useEffect } from "react";
 import { Table } from "react-bootstrap";
-import defaultData from "./ExampleCurrencyPair";
+import defaultData from "../exampleData/ExampleCurrencyPair";
 import "./CurrencyPair.css";
 
 export interface CurrencyPairType {
@@ -45,7 +45,6 @@ const CurrencyPair = () => {
       cp.orderImbalance = imbalanceString.substring(0, 5);
       const newData: { [name: string]: CurrencyPairType } = { ...data };
       data[cp.pairName] = cp;
-      console.log(data, newData);
       setData(newData);
     });
   }, []);

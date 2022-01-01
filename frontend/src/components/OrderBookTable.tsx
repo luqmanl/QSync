@@ -1,6 +1,5 @@
 /* eslint-disable no-magic-numbers */
 import React, { useState, useEffect } from "react";
-import { Item, bookData } from "../App";
 import { Table } from "react-bootstrap";
 import "./OrderBookTable.css";
 
@@ -14,6 +13,21 @@ type rowPropType = {
   data: Item;
   index: number;
 };
+
+interface Item {
+  id: number;
+  bookData: bookData;
+}
+
+interface bookData {
+  time: string;
+  sym: string;
+  feedhandlerTime: string;
+  bids: number[];
+  asks: number[];
+  bidSizes: number[];
+  askSizes: number[];
+}
 
 const deafult: Item = {
   id: 1,
@@ -92,7 +106,6 @@ const OrderBookTable = () => {
         id: 2,
         bookData: newBookData,
       };
-      console.log(JSON.parse(ev.data));
       setData(newData);
     });
   }, []);

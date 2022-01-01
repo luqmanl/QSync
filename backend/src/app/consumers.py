@@ -68,7 +68,7 @@ class BasisTableConsumer(AsyncConsumer):
                     "spotExchange": data["exchange"],
                     "futureExchange": exchange,
                     "sym": data["sym"],
-                    "basisValue": future - self.spot_prices[data["exchange"]]
+                    "basisValue": self.spot_prices[data["exchange"]] - future
                 }
                 basis_prices.append(basisAddition)
 
