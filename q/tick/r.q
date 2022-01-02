@@ -23,8 +23,9 @@ upd:insert;
 / connect to ticker plant for (schema;(logcount;log))
 .u.rep .(hopen `$":",.u.x 0)"(.u.sub[`;`];`.u `i`L)";
 
-secondInNanosecs: 1000000000j
-dayInSeconds: 86400
+secondInNanosecs: 1000000000j;
+dayInSeconds: 86400;
+weekInSeconds: 604800;
 
 / OUR FUNCTION
 .orderbook.basis:{[spotSym;futureSym;spotEx;futEx;minTimestamp;resolution] midprices: (select midprice:(avg bid1 + avg ask1) % 2 by (secondInNanosecs*resolution) xbar exchangeTime,sym,exchange from orderbooktop where sym in (spotSym;futureSym), exchange in (spotEx;futEx), exchangeTime > minTimestamp); 
@@ -36,14 +37,23 @@ dayInSeconds: 86400
 / open hdb
 hdb:hopen`::5012;
 
+.syms.percentage:{[syms;exchange] 
+    table: ([] sym:(); price:(); change24h:(); change7d:(); marketCap:());
+    .percentage.change[;exchange] each syms
+    }
+
 .percentage.change:{[sym;exchange]
-    priceNow:hdb(`.price.at.time, sym, exchange, 2021.12.28D13:27:25.065361000);
-    price24hAgo:hdb(`.price.at.time, sym, exchange, 2021.12.28D13:27:25.065361000 - 1000000000j*86400);
-    price7dAgo:hdb(`.price.at.time, sym, exchange, 2021.12.28D13:27:25.065361000 - 1000000000j*604800);
+    timeNow: .z.p;
+    priceNow:hdb(`.price.at.time, sym, exchange, timeNow);
+    price24hAgo:hdb(`.price.at.time, sym, exchange, timeNow - secondInNanosecs*dayInSeconds);
+    price7dAgo:hdb(`.price.at.time, sym, exchange, timeNow - secondInNanosecs*weekInSeconds);
     percentageChange24h: (priceNow - price24hAgo) % price24hAgo;
     percentageChange7d: (priceNow - price7dAgo) % price7dAgo;
-    percentageChange24h,percentageChange7d
+    `name`price`change24h`change7d`marketCap!(sym;priceNow;percentageChange24h;percentageChange7d;0) / market cap zero for moment
     }
 
 / close hdb
 /hclose hdb;
+/ 
+/ for reference
+/ syms:(`$"BTC-USDT";`$"ETH-USDT")

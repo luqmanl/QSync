@@ -8,6 +8,6 @@ secondInNanosecs: 1000000000j
     }
 
 .price.at.time:{[sym1;exchange1;theTime] 
-    firstOrderbookEntry:1#select from orderbooktop where exchangeTime > theTime - secondInNanosecs * 3, sym=sym1, exchange=exchange1;
+    firstOrderbookEntry:-1#select from orderbooktop where exchangeTime < theTime, sym=sym1, exchange=exchange1;
     price: (exec midprice from (select midprice:(avg bid1 + avg ask1) % 2 by exchangeTime from firstOrderbookEntry))[0]
     }
