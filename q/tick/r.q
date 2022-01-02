@@ -37,12 +37,13 @@ weekInSeconds: 604800;
 / open hdb
 hdb:hopen`::5012;
 
-\t 2000
-.z.ts:{.syms.percentage[(`$"BTC-USDT";`$"ETH-USDT";`$"ADA-USDT";`$"SOL-USDT";`$"DOGE-USDT");`BINANCE]}
+/ \t 2000
+.syms.easy:{.syms.percentage[(`$"BTC-USDT";`$"ETH-USDT";`$"ADA-USDT";`$"SOL-USDT";`$"DOGE-USDT");`BINANCE]};
 
 .syms.percentage:{[syms;exchange] 
     t:.percentage.change[;exchange] each syms;
-    topCurrencyData: `topCurrencyData insert t;
+    `topCurrencyData insert t;
+    -5#topCurrencyData
     }
 
 .percentage.change:{[sym;exchange]
