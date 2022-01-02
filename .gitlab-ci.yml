@@ -61,7 +61,7 @@ test-front:
 
 test-back:
   stage: test
-  image: python:3.8.10-slim-buster
+  image: redislabs/redis-py:latest
   script:
     - !reference [.setup, back]
     - apt-get install redis-server -y
