@@ -64,7 +64,7 @@ test-back:
   image: python:3.8.10-slim-buster
   script:
     - !reference [.setup, back]
-    - apt install redis-server
+    - apt-get install redis-server -y
     - pipenv run test
   needs: [style-back]
 
