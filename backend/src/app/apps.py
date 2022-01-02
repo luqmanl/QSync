@@ -1,6 +1,5 @@
 from django.apps import AppConfig
-import app.feed_handler as fh
-from multiprocessing import Process
+import subprocess
 
 
 class AppConfig(AppConfig):
@@ -8,3 +7,4 @@ class AppConfig(AppConfig):
 
     def ready(self) -> None:
         super().ready()
+        subprocess.run(["redis-server"])
