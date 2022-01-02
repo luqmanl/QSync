@@ -24,6 +24,7 @@ upd:insert;
 .u.rep .(hopen `$":",.u.x 0)"(.u.sub[`;`];`.u `i`L)";
 
 secondInNanosecs: 1000000000j
+dayInSeconds: 86400
 
 / OUR FUNCTION
 .orderbook.basis:{[spotSym;futureSym;spotEx;futEx;minTimestamp;resolution] midprices: (select midprice:(avg bid1 + avg ask1) % 2 by (secondInNanosecs*resolution) xbar exchangeTime,sym,exchange from orderbooktop where sym in (spotSym;futureSym), exchange in (spotEx;futEx), exchangeTime > minTimestamp); 
@@ -31,3 +32,18 @@ secondInNanosecs: 1000000000j
     basis: select basis:diff midprice by exchangeTime from midprices;
     0!select from basis where basis > -30000
     }
+
+/ open hdb
+hdb:hopen`::5012;
+
+.percentage.change:{[sym;exchange]
+    priceNow:hdb(`.price.at.time, sym, exchange, 2021.12.28D13:27:25.065361000);
+    price24hAgo:hdb(`.price.at.time, sym, exchange, 2021.12.28D13:27:25.065361000 - 1000000000j*86400);
+    price7dAgo:hdb(`.price.at.time, sym, exchange, 2021.12.28D13:27:25.065361000 - 1000000000j*604800);
+    percentageChange24h: (priceNow - price24hAgo) % price24hAgo;
+    percentageChange7d: (priceNow - price7dAgo) % price7dAgo;
+    percentageChange24h,percentageChange7d
+    }
+
+/ close hdb
+/hclose hdb;
