@@ -4,7 +4,7 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('historicalBasisData', views.getHistoricalBasisData,
+    path('historicalBasisData/<str:period>/<str:spotSym>/<str:futureSym>/<str:spotExch>/<str:futureExch>', views.getHistoricalBasisData,
          name='historicalBasisData'),
 
 ]
