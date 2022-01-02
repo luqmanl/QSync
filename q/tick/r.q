@@ -37,9 +37,12 @@ weekInSeconds: 604800;
 / open hdb
 hdb:hopen`::5012;
 
+\t 2000
+.z.ts:{.syms.percentage[(`$"BTC-USDT";`$"ETH-USDT";`$"ADA-USDT";`$"SOL-USDT";`$"DOGE-USDT");`BINANCE]}
+
 .syms.percentage:{[syms;exchange] 
-    table: ([] sym:(); price:(); change24h:(); change7d:(); marketCap:());
-    .percentage.change[;exchange] each syms
+    t:.percentage.change[;exchange] each syms;
+    topCurrencyData: `topCurrencyData insert t;
     }
 
 .percentage.change:{[sym;exchange]
@@ -49,7 +52,7 @@ hdb:hopen`::5012;
     price7dAgo:hdb(`.price.at.time, sym, exchange, timeNow - secondInNanosecs*weekInSeconds);
     percentageChange24h: (priceNow - price24hAgo) % price24hAgo;
     percentageChange7d: (priceNow - price7dAgo) % price7dAgo;
-    `name`price`change24h`change7d`marketCap!(sym;priceNow;percentageChange24h;percentageChange7d;0) / market cap zero for moment
+    `time`sym`price`change24h`change7d`marketCap!(timeNow;sym;priceNow;percentageChange24h;percentageChange7d;0f) / market cap zero for the time being
     }
 
 / close hdb
