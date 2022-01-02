@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
-from qpython import qconnection
+from qpython.qconnection import QConnection
 import numpy as np
 from django.http import JsonResponse
 
@@ -14,7 +14,7 @@ def index(request):
 def getHistoricalBasisData(request):
     data = {}
 
-    with qconnection.QConnection(host='localhost', port=5011) as q:
+    with QConnection(host='localhost', port=5011) as q:
         try:
             data = q.sendSync('.orderbook.basis', np.string_(
                 "BTC-USDT"), np.string_("BTC-USD-PERP"), np.string_("BINANCE"), np.string_("DERIBIT"))
