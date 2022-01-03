@@ -1,4 +1,4 @@
-import { data, analysisRow } from "../pages/AnalaysisLanding";
+import { data } from "../pages/AnalaysisLanding";
 
 const exampleData: data = {
   analysesRows: [
@@ -21,7 +21,7 @@ const exampleData: data = {
       orderImbalance: 0.52,
     },
     {
-      name: "Cardano",
+      name: "ADA-USDT",
       price: 1.47,
       change24h: 4.93,
       change7d: 16.42,
@@ -30,7 +30,7 @@ const exampleData: data = {
       orderImbalance: 0.53,
     },
     {
-      name: "Solana",
+      name: "SOL-USDT",
       price: 194.58,
       change24h: -6.29,
       change7d: 9.3,
@@ -39,7 +39,7 @@ const exampleData: data = {
       orderImbalance: 0.48,
     },
     {
-      name: "Dogecoin",
+      name: "DOGE-USDT",
       price: 0.19,
       change24h: -1.92,
       change7d: 3.54,
