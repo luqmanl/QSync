@@ -10,15 +10,15 @@
 
   <body>
     <script>
-      var socket = new WebSocket('ws://localhost:8000/ws/data/l2overview/')
+      // var socket = new WebSocket('ws://localhost:8000/ws/data/l2overview/')
 
-      socket.addEventListener('message', (e) => {
+      // socket.addEventListener('message', (e) => {
 
-          console.log("socket 1: " + e.data)
-      })
-      socket.onopen = () => socket.send(JSON.stringify({exchanges: ["BINANCE", "COINBASE"], pairs: ["BTC-USDT", "ETH-USDT"]}))
+      //     console.log("socket 1: " + e.data)
+      // })
+      // socket.onopen = () => socket.send(JSON.stringify({exchanges: ["BINANCE", "COINBASE"], pairs: ["BTC-USDT", "ETH-USDT"]}))
 
-      var socket1 = new WebSocket('ws://localhost:8000/ws/data/l2orderbook/')
+      var socket1 = new WebSocket('ws://localhost:8000/ws/data/top_currencies_table/')
       socket1.onopen = () => socket1.send(JSON.stringify({exchange: "BINANCE", pair: "BTC-USDT"}))
       socket1.addEventListener('message', (e) => {
 
@@ -26,26 +26,26 @@
       })
       
 
-      var socket2 = new WebSocket('ws://localhost:8000/ws/data/basis/')
+      // var socket2 = new WebSocket('ws://localhost:8000/ws/data/basis/')
 
-      socket2.addEventListener('message', (e) => {
+      // socket2.addEventListener('message', (e) => {
 
-          console.log("socket 3: " + e.data)
-      })
-      socket2.onopen = () => socket2.send(JSON.stringify({spot_exchanges: ["BINANCE", "COINBASE"],
-                                                         spot_pairs: ["BTC-USDT"],
-                                                         futures_exchanges: ["DERIBIT", "OKEX"],
-                                                         futures_pairs: ["BTC-USD-21Z31"]}))
+      //     console.log("socket 3: " + e.data)
+      // })
+      // socket2.onopen = () => socket2.send(JSON.stringify({spot_exchanges: ["BINANCE", "COINBASE"],
+      //                                                    spot_pairs: ["BTC-USDT"],
+      //                                                    futures_exchanges: ["DERIBIT", "OKEX"],
+      //                                                    futures_pairs: ["BTC-USD-21Z31"]}))
 
       
                                                   
 
-      var socket3 = new WebSocket('ws://localhost:8000/ws/data/trade/')
-      socket3.addEventListener('message', (e) => {
+      // var socket3 = new WebSocket('ws://localhost:8000/ws/data/trade/')
+      // socket3.addEventListener('message', (e) => {
 
-          console.log("socket 4: " + e.data)
-      })
-      socket3.onopen = () => socket3.send(JSON.stringify({exchange: "BINANCE", pair: "BTC-USDT"}))
+      //     console.log("socket 4: " + e.data)
+      // })
+      // socket3.onopen = () => socket3.send(JSON.stringify({exchange: "BINANCE", pair: "BTC-USDT"}))
 
     </script>
   </body>

@@ -12,6 +12,8 @@ import re
 """
 
 # Handles trade data for exchange and pair specified by client in request
+
+
 class TradeTableConsumer(AsyncConsumer):
     async def websocket_connect(self, event):
         await self.send({
@@ -187,10 +189,10 @@ class TopCurrenciesConsumer(AsyncConsumer):
         await self.send({
             "type": "websocket.accept"
         })
-        await self.channel_layer.group_add(
-            "top_currencies",
-            self.channel_name
-        )
+        # await self.channel_layer.group_add(
+        #     "top_currencies",
+        #     self.channel_name
+        # )
 
     async def send_top_currencies_data(self, event):
         # print("BANG")
@@ -201,7 +203,7 @@ class TopCurrenciesConsumer(AsyncConsumer):
         })
 
     async def websocket_receive(self, event):
-        # print("\n\n\nLAAAAAAAAAAAA\n\n\n")
+        print("\n\n\nLAAAAAAAAAAAA\n\n\n")
         await self.channel_layer.group_add(
             "top_currencies",
             self.channel_name

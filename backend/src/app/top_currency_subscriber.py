@@ -23,7 +23,8 @@ def run():
 
             for d in response:
                 currencyDataPoint = {}
-                currencyDataPoint["name"] = d[1].decode('UTF-8') # change bytes type to string
+                currencyDataPoint["name"] = d[1].decode(
+                    'UTF-8')  # change bytes type to string
                 currencyDataPoint["price"] = d[2]
                 num = d[3]
                 if np.isnan(num):
