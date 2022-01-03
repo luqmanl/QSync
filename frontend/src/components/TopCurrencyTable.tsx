@@ -14,28 +14,11 @@ interface responseType {
   marketCap: number;
 }
 
-// eslint-disable-next-line no-magic-numbers
-const defaultData: responseType = {
-  name: "-",
-  price: 0,
-  change24h: 0,
-  change7d: 0,
-  marketCap: 0,
-};
-
-const defaultTable: tableRep = {
-  " ": defaultData,
-  "": defaultData,
-  "	": defaultData,
-  "­": defaultData,
-  "͏": defaultData,
-};
-
 const tableColumns = [
   "Currency",
   "Price",
   "24H Change",
-  "7H Change",
+  "7D Change",
   "Market Cap",
 ];
 
@@ -83,17 +66,28 @@ const TopCurrencyTable = () => {
     `ws://${process.env.PUBLIC_URL || "localhost:8000"}${endPoint}`
   );
 
-  const [tableData, setTableData] = useState<tableRep>(defaultTable);
+  ws.onopen = () =>
+    ws.send(JSON.stringify({ exchange: "BINANCE", pair: "BTC-USDT" }));
+
+  const [tableData, setTableData] = useState<tableRep>({});
   const [loading, setLoading] = useState(true);
 
   ws.addEventListener("message", (ev) => {
-    const res: responseType = JSON.parse(ev.data);
+    const res: { currencyData: responseType[] } = JSON.parse(ev.data);
     if (loading) {
       setLoading(false);
       setTableData({});
     }
     const updatedTable = tableData;
-    updatedTable[res.name] = res;
+    res.currencyData.forEach((item) => {
+      item.change24h = parseFloat(item.change24h.toFixed(3));
+      item.change7d = parseFloat(item.change24h.toFixed(3));
+      updatedTable[item.name] = item;
+    });
+    // if (!loading){
+    //   console.log(Object.entries(updatedTable))
+    // }
+    setTableData(updatedTable);
   });
 
   return (
