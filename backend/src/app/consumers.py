@@ -199,12 +199,9 @@ class TopCurrenciesConsumer(AsyncConsumer):
             "text": event["data"]
         })
 
+    # shouldn't be used
     async def websocket_receive(self, event):
-        print("\n\n\nLAAAAAAAAAAAA\n\n\n")
-        # await self.channel_layer.group_add(
-        #     "top_currencies",
-        #     self.channel_name
-        # )
+        pass
 
     async def websocket_disconnect(self, event):
         print('disconnected top currencies websocket: ', event['code'])

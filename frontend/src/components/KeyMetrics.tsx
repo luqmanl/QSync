@@ -82,7 +82,7 @@ const KeyMetrics = () => {
   const [info, setInfo] = useState<metricInfo[]>([]);
 
   const endPoint = "/api/key_metrics";
-  const linkAddr = `https://${
+  const linkAddr = `http://${
     process.env.PUBLIC_URL || "localhost:3000"
   }/${endPoint}`;
 
