@@ -14,7 +14,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='CachedNews',
             fields=[
-                ('date_created', models.DateTimeField(primary_key=True, serialize=False)),
+                ('date_created', models.DateTimeField(
+                    primary_key=True, serialize=False)),
                 ('news_list', models.JSONField()),
             ],
         ),

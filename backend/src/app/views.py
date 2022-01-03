@@ -9,9 +9,9 @@ import numpy as np
 from datetime import datetime, timedelta
 import requests
 from django.forms.models import model_to_dict
-import json
 
 from .models import CachedNews
+
 
 def index(request):
     return render(request, "index.html")
@@ -98,10 +98,15 @@ def getHistoricalBasisData(request, period, spotSym, futureSym, spotExch, future
         spotSym, futureSym, spotExch, futureExch, minTimestamp, resolution)
     return JsonResponse(outputData)
 
+
 @csrf_exempt
 def getNewsfeed(request):
-    if len(CachedNews.objects.filter(date_created__gte=timezone.now() - timedelta(minutes=30))): #if already have a cached version in the db
-        r = CachedNews.objects.filter(date_created__gte=timezone.now() - timedelta(minutes=30))[0]
+
+    if len(CachedNews.objects.filter(date_created__gte=timezone.now() - timedelta(minutes=30))):
+        # if already have a cached version in the db
+
+        r = CachedNews.objects.filter(
+            date_created__gte=timezone.now() - timedelta(minutes=30))[0]
         return JsonResponse(model_to_dict(r)['news_list'])
     else:
         r = requests.get(settings.NEWS_URL + settings.NEWS_API_KEY)
@@ -121,7 +126,6 @@ def getNewsfeed(request):
                 "description": article["description"],
                 "url": article["url"],
             })
-            
             i += 1
 
         news = CachedNews(news_list=toSave, date_created=timezone.now())
