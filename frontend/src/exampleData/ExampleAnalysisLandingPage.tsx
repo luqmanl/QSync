@@ -1,4 +1,4 @@
-import { data } from "../pages/AnalaysisLanding";
+import { data } from "../pages/AnalysisLanding";
 
 const exampleData: data = {
   analysesRows: [

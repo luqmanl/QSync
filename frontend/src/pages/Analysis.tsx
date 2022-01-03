@@ -2,12 +2,11 @@ import React, { useState } from "react";
 import SideBar from "../components/SideBar";
 import "./Analysis.css";
 import { useParams } from "react-router-dom";
+import { nameMap } from "../NameMap";
 
 interface paramType {
   pair: string;
 }
-
-const pairNameMap: { [pairName: string]: string } = { "BTC-USDT": "Bitcoin" };
 
 export const PairContext = React.createContext<string>("");
 
@@ -33,7 +32,7 @@ const Analysis = () => {
         <div className="analysis-title-box">
           <SideBar addr="detailed Analysis" />
           <h2 className="analysis-page-title">
-            {pairNameMap[pair] || "Update Pair Name Map"}
+            {nameMap[pair] || "Update Pair Name Map"}
           </h2>
         </div>
         <div className="analysis-content-box">
