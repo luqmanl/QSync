@@ -9,7 +9,7 @@ const App = () => {
     <div className="page">
       <Switch>
         <Route path="/overview">{<Overview />}</Route>
-        <Route path="/analysis/:id">{<Analysis />}</Route>
+        <Route path="/analysis/:pair">{<Analysis />}</Route>
       </Switch>
     </div>
   );
