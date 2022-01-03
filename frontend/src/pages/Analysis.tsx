@@ -1,47 +1,70 @@
-import React from "react";
+import React, { useState } from "react";
 import SideBar from "../components/SideBar";
-import CurrencyGraph from "../components/CurrencyGraph";
-import TopCurrencyTable from "../components/TopCurrencyTable";
-import NewsFeed from "../components/NewsFeed";
-import OrderBookTable from "../components/OrderBookTable";
 import "./Analysis.css";
+import { useParams } from "react-router-dom";
+
+interface paramType {
+  pair: string;
+}
+
+const pairNameMap: { [pairName: string]: string } = { "BTC-USDT": "Bitcoin" };
+
+export const PairContext = React.createContext<string>("");
+
+const Arbitrage = () => {
+  return <div className="main-content-box"></div>;
+};
+
+const SubAnalysis = () => {
+  return <div className="main-content-box"></div>;
+};
 
 const Analysis = () => {
-  const url = window.location.href.split('/');
-  const pair = (url[url.length-1]).toUpperCase();
-  return (
-    <div className="page-box">
-      <div className="title-box">
-        <SideBar addr="detailed analyses" />
-        <h2 className="page-title">{pair}</h2>
-      </div>
-      <div className="content-box">
-        <div className="left-box">
-          <div className="graph">
-            <CurrencyGraph />
-          </div>
-        </div>
-        <div className="right-box">
-          <div className="orderbook">
-            <OrderBookTable />
-          </div>
-        </div>
-      </div>
-      
-      <div className="middle-box">
-      </div>
-      <div className="stats-box-3">
-        <div className="left-box-3">
-        </div>
+  const { pair } = useParams<paramType>();
+  const [showArbitrage, setShowArbitrage] = useState(false);
+  const disabledButtonStyle = {
+    background: "rgba(0, 0, 0, 0.1)",
+    cursor: "auto",
+  };
 
-        <div className="middle-box-3">
+  return (
+    <PairContext.Provider value={pair}>
+      <div className="analysis-page-box">
+        <div className="analysis-title-box">
+          <SideBar addr="detailed Analysis" />
+          <h2 className="analysis-page-title">
+            {pairNameMap[pair] || "Update Pair Name Map"}
+          </h2>
         </div>
-  
-        <div className="right-box-3">
+        <div className="analysis-content-box">
+          <div className="tab-container">
+            <div
+              className="tab"
+              style={showArbitrage ? {} : disabledButtonStyle}
+              onClick={() => {
+                if (showArbitrage) {
+                  setShowArbitrage(false);
+                }
+              }}
+            >
+              Analysis
+            </div>
+            <div
+              className="tab"
+              style={showArbitrage ? disabledButtonStyle : {}}
+              onClick={() => {
+                if (!showArbitrage) {
+                  setShowArbitrage(true);
+                }
+              }}
+            >
+              Arbitrage
+            </div>
+          </div>
+          {showArbitrage ? <Arbitrage /> : <SubAnalysis />}
         </div>
-  
       </div>
-    </div>
+    </PairContext.Provider>
   );
 };
 

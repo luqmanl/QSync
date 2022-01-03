@@ -21,7 +21,7 @@ interface graphPoint {
 // const colours = ["red", "blue", "green", "pink", "brown"];
 
 const CurrencyGraph = (props : { data: string}) => {
-  const [graphData, setGraphData] : graphPoint[];
+  const [graphData, setGraphData] = useState<graphPoint[]>([]);
 
   useEffect(() => {
     const updatedGraphData = graphData;
@@ -31,7 +31,6 @@ const CurrencyGraph = (props : { data: string}) => {
         updatedGraphData?.push({ x: item.timestamp, y: item.percentage });
       }
     });
-    print(updatedGraphData);
     setGraphData(updatedGraphData);
   });
 
@@ -69,4 +68,4 @@ const CurrencyGraph = (props : { data: string}) => {
   );
 };
 
-export default TopCurrencyGraph;
+export default CurrencyGraph;
