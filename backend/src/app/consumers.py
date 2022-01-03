@@ -185,18 +185,15 @@ class L2orderbookConsumer(AsyncConsumer):
 
 class TopCurrenciesConsumer(AsyncConsumer):
     async def websocket_connect(self, event):
-        # print("---Connect to top currencies websocket")
         await self.send({
             "type": "websocket.accept"
         })
-        # await self.channel_layer.group_add(
-        #     "top_currencies",
-        #     self.channel_name
-        # )
+        await self.channel_layer.group_add(
+            "top_currencies",
+            self.channel_name
+        )
 
     async def send_top_currencies_data(self, event):
-        # print("BANG")
-        # print(event["data"])
         await self.send({
             "type": 'websocket.send',
             "text": event["data"]
@@ -204,10 +201,10 @@ class TopCurrenciesConsumer(AsyncConsumer):
 
     async def websocket_receive(self, event):
         print("\n\n\nLAAAAAAAAAAAA\n\n\n")
-        await self.channel_layer.group_add(
-            "top_currencies",
-            self.channel_name
-        )
+        # await self.channel_layer.group_add(
+        #     "top_currencies",
+        #     self.channel_name
+        # )
 
     async def websocket_disconnect(self, event):
         print('disconnected top currencies websocket: ', event['code'])

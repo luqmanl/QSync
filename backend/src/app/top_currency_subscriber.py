@@ -17,8 +17,7 @@ def run():
 
         while True:
             response = Q.sendSync('.syms.easy', np.string_())
-            # print("YES")
-            # print(channel_layer)
+
             data = {"currencyData": []}
 
             for d in response:
@@ -37,9 +36,6 @@ def run():
                 currencyDataPoint["marketCap"] = d[5]
                 data["currencyData"].append(currencyDataPoint)
 
-            # data = {"hi":4}
-
-            # print(data)
             group_name = "top_currencies"
             async_to_sync(
                 channel_layer.group_send)(group_name, {

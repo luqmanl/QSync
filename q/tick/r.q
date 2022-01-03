@@ -38,7 +38,7 @@ weekInSeconds: 604800;
 hdb:hopen`::5012;
 
 / \t 2000
-.syms.easy:{.syms.percentage[(`$"BTC-USDT";`$"ETH-USDT";`$"ADA-USDT";`$"SOL-USDT";`$"DOGE-USDT");`BINANCE]};
+.syms.easy:{`.syms.percentage[(`$"BTC-USDT";`$"ETH-USDT";`$"ADA-USDT";`$"SOL-USDT";`$"DOGE-USDT");`BINANCE]};
 
 .syms.percentage:{[syms;exchange] 
     t:.percentage.change[;exchange] each syms;
@@ -48,12 +48,18 @@ hdb:hopen`::5012;
 
 .percentage.change:{[sym;exchange]
     timeNow: .z.p;
-    priceNow:hdb(`.price.at.time, sym, exchange, timeNow);
+    / priceNow:hdb(`.price.at.time, sym, exchange, timeNow);
+    priceNow:.price.at.time[sym;exchange;timeNow];
     price24hAgo:hdb(`.price.at.time, sym, exchange, timeNow - secondInNanosecs*dayInSeconds);
     price7dAgo:hdb(`.price.at.time, sym, exchange, timeNow - secondInNanosecs*weekInSeconds);
     percentageChange24h: (priceNow - price24hAgo) % price24hAgo;
     percentageChange7d: (priceNow - price7dAgo) % price7dAgo;
     `time`sym`price`change24h`change7d`marketCap!(timeNow;sym;priceNow;percentageChange24h;percentageChange7d;0f) / market cap zero for the time being
+    }
+
+.price.at.time:{[sym1;exchange1;theTime] 
+    firstOrderbookEntry:-1#select from orderbooktop where exchangeTime < theTime, sym=sym1, exchange=exchange1;
+    price: (exec midprice from (select midprice:(avg bid1 + avg ask1) % 2 by exchangeTime from firstOrderbookEntry))[0]
     }
 
 / close hdb

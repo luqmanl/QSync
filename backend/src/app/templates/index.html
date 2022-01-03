@@ -19,7 +19,7 @@
       // socket.onopen = () => socket.send(JSON.stringify({exchanges: ["BINANCE", "COINBASE"], pairs: ["BTC-USDT", "ETH-USDT"]}))
 
       var socket1 = new WebSocket('ws://localhost:8000/ws/data/top_currencies_table/')
-      socket1.onopen = () => socket1.send(JSON.stringify({exchange: "BINANCE", pair: "BTC-USDT"}))
+      // socket1.onopen = () => socket1.send(JSON.stringify({exchange: "BINANCE", pair: "BTC-USDT"}))
       socket1.addEventListener('message', (e) => {
 
           console.log("socket 2: " + e.data)
