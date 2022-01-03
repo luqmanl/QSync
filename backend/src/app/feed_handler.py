@@ -3,15 +3,13 @@ import numpy as np
 from datetime import datetime
 
 from cryptofeed import FeedHandler
-from cryptofeed.defines import BINANCE, COINBASE, L2_BOOK, TRADES
+from cryptofeed.defines import L2_BOOK, TRADES
 from cryptofeed.exchanges import (
     Binance, Coinbase, Bitfinex, Deribit, KrakenFutures, OKEx)
 
 from qpython import qconnection
-from qpython.qtype import QSYMBOL_LIST, QDOUBLE_LIST, QTIMESTAMP_LIST, QException
+from qpython.qtype import QSYMBOL_LIST, QDOUBLE_LIST, QTIMESTAMP_LIST
 from qpython.qcollection import qlist
-from qpython.qconnection import QConnection
-
 from channels.layers import get_channel_layer
 
 

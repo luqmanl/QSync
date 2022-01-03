@@ -23,7 +23,9 @@ upd:insert;
 / connect to ticker plant for (schema;(logcount;log))
 .u.rep .(hopen `$":",.u.x 0)"(.u.sub[`;`];`.u `i`L)";
 
-secondInNanosecs: 1000000000j
+secondInNanosecs: 1000000000j;
+dayInSeconds: 86400;
+weekInSeconds: 604800;
 
 / OUR FUNCTION
 .orderbook.basis:{[spotSym;futureSym;spotEx;futEx;minTimestamp;resolution] midprices: (select midprice:(avg bid1 + avg ask1) % 2 by (secondInNanosecs*resolution) xbar exchangeTime,sym,exchange from orderbooktop where sym in (spotSym;futureSym), exchange in (spotEx;futEx), exchangeTime > minTimestamp); 
@@ -31,3 +33,37 @@ secondInNanosecs: 1000000000j
     basis: select basis:diff midprice by exchangeTime from midprices;
     0!select from basis where basis > -30000
     }
+
+/ open hdb
+hdb:hopen`::5012;
+
+/ \t 2000
+.syms.easy:{`.syms.percentage[(`$"BTC-USDT";`$"ETH-USDT";`$"ADA-USDT";`$"SOL-USDT";`$"DOGE-USDT");`BINANCE]};
+
+.syms.percentage:{[syms;exchange] 
+    t:.percentage.change[;exchange] each syms;
+    `topCurrencyData insert t;
+    -5#topCurrencyData
+    }
+
+.percentage.change:{[sym;exchange]
+    timeNow: .z.p;
+    / priceNow:hdb(`.price.at.time, sym, exchange, timeNow);
+    priceNow:.price.at.time[sym;exchange;timeNow];
+    price24hAgo:hdb(`.price.at.time, sym, exchange, timeNow - secondInNanosecs*dayInSeconds);
+    price7dAgo:hdb(`.price.at.time, sym, exchange, timeNow - secondInNanosecs*weekInSeconds);
+    percentageChange24h: (priceNow - price24hAgo) % price24hAgo;
+    percentageChange7d: (priceNow - price7dAgo) % price7dAgo;
+    `time`sym`price`change24h`change7d`marketCap!(timeNow;sym;priceNow;percentageChange24h;percentageChange7d;0f) / market cap zero for the time being
+    }
+
+.price.at.time:{[sym1;exchange1;theTime] 
+    firstOrderbookEntry:-1#select from orderbooktop where exchangeTime < theTime, sym=sym1, exchange=exchange1;
+    price: (exec midprice from (select midprice:(avg bid1 + avg ask1) % 2 by exchangeTime from firstOrderbookEntry))[0]
+    }
+
+/ close hdb
+/hclose hdb;
+/ 
+/ for reference
+/ syms:(`$"BTC-USDT";`$"ETH-USDT")
