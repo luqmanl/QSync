@@ -10,7 +10,7 @@ type propsType = {
   yAxis: string;
 };
 
-type dataPoint = {
+export type dataPoint = {
   x: number;
   y: number;
 };

@@ -13,6 +13,7 @@
 .analysis-title-box {
   display: flex;
   justify-content: center;
+  background: white;
 }
 
 .analysis-page-title {
@@ -35,7 +36,7 @@
   align-items: center;
   justify-content: space-evenly;
   border-bottom: 1px solid rgba(0, 0, 0, 0.4);
-  margin: 0 5px;
+  margin: 0 10px;
 }
 
 .tab {
@@ -49,4 +50,31 @@
   flex-grow: 100;
   margin: 5px 5px;
   overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.summary-title {
+  margin: 10px 10px 0 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+}
+
+.coin-summary {
+  white-space: pre-line;
+  margin-right: 20px;
+}
+
+.his-price-graph-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.time-buttons-container {
+  margin: 10px 0;
+}
+
+.time-button {
+  margin-right: 30px;
+  text-transform: capitalize;
+  flex-shrink: 1000;
 }
