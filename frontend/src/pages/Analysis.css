@@ -21,31 +21,31 @@
   flex-grow: 100;
 }
 
-.analysis-content-box{
+.analysis-content-box {
   display: flex;
   flex-direction: column;
   width: 100%;
   flex-grow: 100;
 }
 
-.tab-container{
+.tab-container {
   margin-top: 5px;
   display: grid;
-  grid-template-columns: auto auto; 
+  grid-template-columns: auto auto;
   align-items: center;
   justify-content: space-evenly;
   border-bottom: 1px solid rgba(0, 0, 0, 0.4);
   margin: 0 5px;
 }
 
-.tab{
+.tab {
   font-size: x-large;
   padding: 0 10px;
   border-radius: 20px;
   cursor: pointer;
 }
 
-.main-content-box{
+.main-content-box {
   flex-grow: 100;
   margin: 5px 5px;
   overflow-y: scroll;

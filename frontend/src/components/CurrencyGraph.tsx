@@ -20,7 +20,7 @@ interface graphPoint {
 
 // const colours = ["red", "blue", "green", "pink", "brown"];
 
-const CurrencyGraph = (props : { data: string}) => {
+const CurrencyGraph = (props: { data: string }) => {
   const [graphData, setGraphData] = useState<graphPoint[]>([]);
 
   useEffect(() => {
@@ -44,18 +44,17 @@ const CurrencyGraph = (props : { data: string}) => {
     chart.getDefaultAxisX().setTitle("Time");
     chart.getDefaultAxisY().setTitle("Percentage Change");
 
-
     const newSeries = chart
-    .addLineSeries({
+      .addLineSeries({
         dataPattern: {
-        pattern: "ProgressiveX",
+          pattern: "ProgressiveX",
         },
-    })
-    .setStrokeStyle((strokeStyle) =>
+      })
+      .setStrokeStyle((strokeStyle) =>
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         strokeStyle.setFillStyle((fill: any) => fill.setA(70)).setThickness(5)
-    )
-    .setName(props.data);
+      )
+      .setName(props.data);
 
     newSeries.add(graphData);
     chart.addLegendBox(LegendBoxBuilders.HorizontalLegendBox).add(chart);
