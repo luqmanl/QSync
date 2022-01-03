@@ -61,12 +61,11 @@ test-front:
 
 test-back:
   stage: test
-  image: redislabs/redis-py:latest
+  image: python:3.8.10-slim-buster
   script:
-    #- !reference [.setup, back]
-    - cd backend
-    - pip install pipenv
-    - pipenv install --dev
+    - !reference [.setup, back]
+    - apt-get update
+    - apt-get install redis-server -y
     - pipenv run test
   needs: [style-back]
 
