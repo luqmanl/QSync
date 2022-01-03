@@ -78,7 +78,7 @@ const generateColour24h = (value: number): colour => {
 };
 
 const TopCurrencyTable = () => {
-  const endPoint = "/ws/data/top_currencies_table";
+  const endPoint = "/ws/data/top_currencies_table/";
   const ws = new WebSocket(
     `ws://${process.env.PUBLIC_URL || "localhost:8000"}${endPoint}`
   );

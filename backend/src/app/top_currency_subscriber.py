@@ -1,3 +1,4 @@
+import json
 import time
 from qpython.qtype import QSYMBOL_LIST, QException
 from qpython.qconnection import MessageType
@@ -6,28 +7,41 @@ from channels.layers import get_channel_layer
 import numpy as np
 from qpython.qcollection import QTable
 from qpython.qconnection import QConnection
+from asgiref.sync import async_to_sync
 
 
 def run():
-    # channel_layer = get_channel_layer()
+    channel_layer = get_channel_layer()
 
     with QConnection(host='localhost', port=5011) as Q:
 
         while True:
             response = Q.sendSync('.syms.easy', np.string_())
-            print(response[0][0])
-
+            # print("YES")
+            # print(channel_layer)
             data = {"currencyData": []}
 
             for d in response:
                 currencyDataPoint = {}
                 currencyDataPoint["name"] = d[1].decode('UTF-8') # change bytes type to string
                 currencyDataPoint["price"] = d[2]
-                currencyDataPoint["change24h"] = d[3]
-                currencyDataPoint["change7d"] = d[4]
+                num = d[3]
+                if np.isnan(num):
+                    num = 0
+                currencyDataPoint["change24h"] = num
+                num = d[4]
+                if np.isnan(num):
+                    num = 0
+                currencyDataPoint["change7d"] = num
                 currencyDataPoint["marketCap"] = d[5]
                 data["currencyData"].append(currencyDataPoint)
 
-            print(data)
+            # data = {"hi":4}
+
+            # print(data)
+            group_name = "top_currencies"
+            async_to_sync(
+                channel_layer.group_send)(group_name, {
+                    "type": "send_top_currencies_data", "data": json.dumps(data)})
 
             time.sleep(2)
