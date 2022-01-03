@@ -1,0 +1,65 @@
+.page-box {
+  background-color: white;
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  font-family: "Nunito Sans", sans-serif;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.4) white;
+  padding:2%;
+}
+
+.page-box::webkir-scrollbar-thumb {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.page-box::webkir-scrollbar-track {
+  color: white;
+}
+
+.title-box {
+  display: flex;
+  justify-content: center;
+}
+
+.page-title {
+  justify-content: center;
+  text-align: center;
+  flex-grow: 100;
+}
+
+.content-box {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  margin-bottom: 20px;
+}
+
+.left-box {
+  display: flex;
+  flex-flow: column;
+  width: 66%;
+  flex-grow: 1;
+  border-right: 1px solid rgba(0, 0, 0, 0.4);
+}
+
+.graph {
+  height: 60%;
+}
+
+.table {
+  height: 40%;
+}
+
+.right-box {
+  width: 34%;
+  flex-grow: 1;
+}
+
+.indicator-box {
+  height: 30%;
+  margin: 0 10px 10px 10px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+}
