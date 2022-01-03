@@ -1,4 +1,4 @@
-import { lightningChart, LineSeries } from "@arction/lcjs";
+import { lightningChart, LineSeries, Themes } from "@arction/lcjs";
 import React from "react";
 
 type stateType = { series: LineSeries; id: string };
@@ -18,7 +18,10 @@ type dataPoint = {
 class StandardLineChart extends React.Component<propsType, stateType> {
   componentDidMount() {
     // eslint-disable-next-line new-cap
-    const chart = lightningChart().ChartXY({ container: this.props.id });
+    const chart = lightningChart().ChartXY({
+      container: this.props.id,
+      theme: Themes.lightNew,
+    });
     const series = chart.addLineSeries();
 
     this.setState({
