@@ -62,10 +62,10 @@ const generateColour24h = (value: number): colour => {
 
 const TopCurrencyTable = () => {
   const endPoint = "/ws/data/top_currencies_table/";
-  
+
   const [tableData, setTableData] = useState<tableRep>({});
   const [loading, setLoading] = useState(true);
-  
+
   useEffect(() => {
     const ws = new WebSocket(
       `ws://${process.env.PUBLIC_URL || "localhost:8000"}${endPoint}`
@@ -84,8 +84,6 @@ const TopCurrencyTable = () => {
       });
       setTableData(updatedTable);
     });
-
-  
   }, []);
 
   return (
