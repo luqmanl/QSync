@@ -1,6 +1,6 @@
 /* eslint-disable no-mixed-operators */
 /* eslint-disable no-magic-numbers */
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Table } from "react-bootstrap";
 import "./TopCurrencyTable.css";
 
@@ -47,48 +47,46 @@ const generateColour7d = (value: number): colour => {
 };
 
 const generateColour24h = (value: number): colour => {
-  if (value >= 10) {
+  if (value >= 0.03) {
     return maxGreen;
   }
-  if (value <= -10) {
+  if (value <= -0.03) {
     return maxRed;
   }
   return {
-    red: 143.5 - (gradient.red / 20) * value,
-    green: 80 + (gradient.green / 20) * value,
-    blue: 7.5 + (gradient.blue / 20) * value,
+    red: 143.5 - (gradient.red / 0.06) * value,
+    green: 80 + (gradient.green / 0.06) * value,
+    blue: 7.5 + (gradient.blue / 0.06) * value,
   };
 };
 
 const TopCurrencyTable = () => {
   const endPoint = "/ws/data/top_currencies_table/";
-  const ws = new WebSocket(
-    `ws://${process.env.PUBLIC_URL || "localhost:8000"}${endPoint}`
-  );
-
-  ws.onopen = () =>
-    ws.send(JSON.stringify({ exchange: "BINANCE", pair: "BTC-USDT" }));
-
+  
   const [tableData, setTableData] = useState<tableRep>({});
   const [loading, setLoading] = useState(true);
-
-  ws.addEventListener("message", (ev) => {
-    const res: { currencyData: responseType[] } = JSON.parse(ev.data);
-    if (loading) {
-      setLoading(false);
-      setTableData({});
-    }
-    const updatedTable = tableData;
-    res.currencyData.forEach((item) => {
-      item.change24h = parseFloat(item.change24h.toFixed(3));
-      item.change7d = parseFloat(item.change24h.toFixed(3));
-      updatedTable[item.name] = item;
+  
+  useEffect(() => {
+    const ws = new WebSocket(
+      `ws://${process.env.PUBLIC_URL || "localhost:8000"}${endPoint}`
+    );
+    ws.addEventListener("message", (ev) => {
+      const res: { currencyData: responseType[] } = JSON.parse(ev.data);
+      if (loading) {
+        setLoading(false);
+        setTableData({});
+      }
+      const updatedTable = tableData;
+      res.currencyData.forEach((item) => {
+        item.change24h = parseFloat(item.change24h.toFixed(3));
+        item.change7d = parseFloat(item.change7d.toFixed(3));
+        updatedTable[item.name] = item;
+      });
+      setTableData(updatedTable);
     });
-    // if (!loading){
-    //   console.log(Object.entries(updatedTable))
-    // }
-    setTableData(updatedTable);
-  });
+
+  
+  }, []);
 
   return (
     <div className="table-container">
