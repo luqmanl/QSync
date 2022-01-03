@@ -22,7 +22,7 @@ const NewsFeed = () => {
     axios
       .get(url)
       .then((resp) => {
-        setNews(resp.data);
+        setNews(resp.data.newsListings);
         setLoading(false);
       })
       .catch((err) => {
