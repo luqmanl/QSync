@@ -4,9 +4,10 @@
 }
 
 .metric-title {
-  font-weight: bolder;
+  /* font-weight: bolder; */
   text-align: center;
   margin-bottom: 5px;
+  font-size: 26px;
 }
 
 .metrics-container {
