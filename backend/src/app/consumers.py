@@ -11,7 +11,6 @@ import re
     Each Consumer has a "send_<datatype>_data" function utilised by django channels for sending new data to clients.
 """
 
-
 # Handles trade data for exchange and pair specified by client in request
 class TradeTableConsumer(AsyncConsumer):
     async def websocket_connect(self, event):
@@ -128,6 +127,7 @@ class L2overviewConsumer(AsyncConsumer):
         print('disconnected l2overview websocket: ', event['code'])
 
     async def send_l2overview_data(self, event):
+        print("SHEEEESH")
         data = json.loads(event["data"])
         highestBid = data["bids"][0]
         lowestAsk = data["asks"][0]
@@ -179,3 +179,33 @@ class L2orderbookConsumer(AsyncConsumer):
 
     async def websocket_disconnect(self, event):
         print('disconnected l2orderbook websocket: ', event['code'])
+
+
+class TopCurrenciesConsumer(AsyncConsumer):
+    async def websocket_connect(self, event):
+        # print("---Connect to top currencies websocket")
+        await self.send({
+            "type": "websocket.accept"
+        })
+        await self.channel_layer.group_add(
+            "top_currencies",
+            self.channel_name
+        )
+
+    async def send_top_currencies_data(self, event):
+        # print("BANG")
+        # print(event["data"])
+        await self.send({
+            "type": 'websocket.send',
+            "text": event["data"]
+        })
+
+    async def websocket_receive(self, event):
+        # print("\n\n\nLAAAAAAAAAAAA\n\n\n")
+        await self.channel_layer.group_add(
+            "top_currencies",
+            self.channel_name
+        )
+
+    async def websocket_disconnect(self, event):
+        print('disconnected top currencies websocket: ', event['code'])
