@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-duplicate-imports */
 import React, { useContext, useEffect, useState } from "react";
 import SideBar from "../components/SideBar";
@@ -7,6 +8,10 @@ import { nameMap, coinSummary } from "../CoinData";
 import StandardLineChart from "../components/StandardLineChart";
 import { Button } from "react-bootstrap";
 import axios from "axios";
+import {
+  exampleData,
+  initalData,
+} from "../exampleData/ExampleDetailedAnalysis";
 
 interface paramType {
   pair: string;
@@ -17,7 +22,62 @@ interface graphPoint {
   y: number;
 }
 
+export type data = {
+  generalInfoDescription: string;
+  currencyCharacteristics: string[];
+  currencyInformation: currencyInformation;
+  priceInformation: priceInformation;
+  futureInformation: futuresInformation;
+};
+
+type currencyInformation = {
+  currentSupply: number;
+  totalSupply: number;
+  transactionsPerSecond: number;
+  totalTransactions: number;
+  totalAddresses: number;
+  activeAddresses: number;
+  dailyTransactions: number;
+  transactionFee: number;
+};
+
+type priceInformation = {
+  high24h: number;
+  low24h: number;
+  high1y: number;
+  low1y: number;
+  change1y: number;
+  change24h: number;
+  volume24h: number;
+  marketCap: number;
+};
+
+type futuresInformation = {
+  perpetualPrice: number;
+  fundingRate: number;
+  basis: number;
+  openInterest: number;
+};
+
 export const PairContext = React.createContext<string>("");
+
+const priceInfoNames = [
+  "24H High",
+  "24H Low",
+  "1Y High",
+  "1Y Low",
+  "24H Change",
+  "24H Volume",
+  "1Y Change",
+  "Market Cap",
+];
+
+const futureNames = [
+  ["Perpetual Price", "EXPLANATION NEEDED"],
+  ["Funding Rate", "EXPLANATION NEEDED"],
+  ["Basis", "EXPLANATION NEEDED"],
+  ["Open Interest", "EXPLANANTION NEEDED"],
+];
 
 const Arbitrage = () => {
   return <div className="main-content-box"></div>;
@@ -25,26 +85,43 @@ const Arbitrage = () => {
 
 const SubAnalysis = () => {
   const pair = useContext(PairContext);
-  const [data, setData] = useState<graphPoint[]>([]);
+  const [priceGraphData, setPriceGraphData] = useState<graphPoint[]>([]);
   const [selectedPeriod, setSelectedPeriod] = useState(0);
+  const [currencyInfo, setCurrencyInfo] = useState<data>(exampleData);
 
   const timePeriods = ["1D", "7D", "1M", "3M", "1Y", "all"];
-  const endpoint = "/api/prices/fdfdsjk";
+  const priceGraphEndpoint = `/api/general-info/${pair}`;
   const addr = `http://${
     process.env.PUBLIC_URL || "localhost:8000"
-  }/${endpoint}/${timePeriods[selectedPeriod]}`;
+  }/${priceGraphEndpoint}/${timePeriods[selectedPeriod]}`;
+
+  const currencyInfoAddr = `http://${
+    process.env.PUBLIC_URL || "localhost:8000"
+  }/api/general-info/${pair}`;
 
   useEffect(() => {
     axios
       .get(addr)
       .then((res) => {
         const { prices } = res.data;
-        setData(prices);
+        setPriceGraphData(prices);
       })
       .catch((err) => {
         console.log(err);
       });
   }, [selectedPeriod]);
+
+  useEffect(() => {
+    axios
+      .get(currencyInfoAddr)
+      .then((res) => {
+        const { data } = res.data;
+        setCurrencyInfo(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   return (
     <div
@@ -53,14 +130,11 @@ const SubAnalysis = () => {
     >
       <div className="coin-summary">
         <h2 className="summary-title">General Info</h2>
-        <p>
-          {coinSummary[pair] || `COIN SUMMARY NEEDED FOR ${nameMap[pair]}`}
-        </p>{" "}
-        {/* dev note*/}
+        <p>{currencyInfo.generalInfoDescription}</p>
       </div>
       <div className="his-price-graph-container">
         <StandardLineChart
-          data={data}
+          data={priceGraphData}
           id="id"
           graphTitle={`Price of ${nameMap[pair]}`}
           xAxis="Price"
@@ -84,11 +158,23 @@ const SubAnalysis = () => {
           })}
         </div>
       </div>
+      <div className="coin-summary">
+        <h2 className="summary-title">Price Information</h2>
+        <div className="price-info-columns">
+          {Object.values(currencyInfo.priceInformation).map((item, idx) => {
+            return (
+              <h3 key={idx}>
+                {priceInfoNames[idx]}: {item.toLocaleString("en-UK")}
+              </h3>
+            );
+          })}
+        </div>
+      </div>
     </div>
   );
 };
 
-const Analysis = () => {
+function Analysis(): JSX.Element {
   const { pair } = useParams<paramType>();
   const [showArbitrage, setShowArbitrage] = useState(false);
   const disabledButtonStyle = {
@@ -135,6 +221,6 @@ const Analysis = () => {
       </div>
     </PairContext.Provider>
   );
-};
+}
 
 export default Analysis;
