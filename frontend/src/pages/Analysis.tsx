@@ -4,7 +4,7 @@ import React, { useContext, useEffect, useState } from "react";
 import SideBar from "../components/SideBar";
 import "./Analysis.css";
 import { useParams } from "react-router-dom";
-import { nameMap, coinSummary } from "../CoinData";
+import { nameMap } from "../CoinData";
 import StandardLineChart from "../components/StandardLineChart";
 import { Button } from "react-bootstrap";
 import axios from "axios";
@@ -12,11 +12,11 @@ import {
   exampleData,
   initalData,
 } from "../exampleData/ExampleDetailedAnalysis";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 
 interface paramType {
   pair: string;
 }
-
 interface graphPoint {
   x: number;
   y: number;
@@ -24,7 +24,7 @@ interface graphPoint {
 
 export type data = {
   generalInfoDescription: string;
-  currencyCharacteristics: string[];
+  currencyCharacteristics: string[][];
   currencyInformation: currencyInformation;
   priceInformation: priceInformation;
   futureInformation: futuresInformation;
@@ -73,6 +73,7 @@ const priceInfoNames = [
 ];
 
 const futureNames = [
+  ["", "EXPLANATION NEEDED"],
   ["Perpetual Price", "EXPLANATION NEEDED"],
   ["Funding Rate", "EXPLANATION NEEDED"],
   ["Basis", "EXPLANATION NEEDED"],
@@ -131,6 +132,18 @@ const SubAnalysis = () => {
       <div className="coin-summary">
         <h2 className="summary-title">General Info</h2>
         <p>{currencyInfo.generalInfoDescription}</p>
+        <div className="keyword-container">
+          {currencyInfo.currencyCharacteristics.map((item, idx) => {
+            const tooltip = <Tooltip id="button-tooltip">{item[1]}</Tooltip>;
+            return (
+              <OverlayTrigger key={idx} placement="top" overlay={tooltip}>
+                <div className="keyword">
+                  <h4>{item[0]}</h4>
+                </div>
+              </OverlayTrigger>
+            );
+          })}
+        </div>
       </div>
       <div className="his-price-graph-container">
         <StandardLineChart
@@ -166,6 +179,23 @@ const SubAnalysis = () => {
               <h3 key={idx}>
                 {priceInfoNames[idx]}: {item.toLocaleString("en-UK")}
               </h3>
+            );
+          })}
+        </div>
+      </div>
+      <div className="coin-summary">
+        <h2 className="summary-title">Future Information</h2>
+        <div className="price-info-columns">
+          {Object.values(currencyInfo.futureInformation).map((item, idx) => {
+            const tooltip = (
+              <Tooltip id="button-tooltip">{futureNames[idx + 1][1]}</Tooltip>
+            );
+            return (
+              <OverlayTrigger key={idx} placement="bottom" overlay={tooltip}>
+                <h3>
+                  {futureNames[idx + 1][0]}: {item.toLocaleString("en-UK")}
+                </h3>
+              </OverlayTrigger>
             );
           })}
         </div>

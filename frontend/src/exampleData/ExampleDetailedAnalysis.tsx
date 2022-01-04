@@ -7,10 +7,10 @@ export const exampleData: data = {
     
     Some concepts for a similar type of a decentralized electronic currency precede BTC, but Bitcoin holds the distinction of being the first-ever cryptocurrency to come into actual use.`,
   currencyCharacteristics: [
-    "Proof of work",
-    "Decentralised",
-    "Finite Supply",
-    "Blockchain",
+    ["Proof of work", "EXPLAIN"],
+    ["Decentralised", "EXPLAIN"],
+    ["Finite Supply", "EXPLAIN"],
+    ["Blockchain", "EXPLAIN"],
   ],
   currencyInformation: {
     currentSupply: 18283102,
