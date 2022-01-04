@@ -1,3 +1,4 @@
+/* eslint-disable no-magic-numbers */
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Spinner from "react-bootstrap/Spinner";

@@ -129,75 +129,80 @@ const SubAnalysis = () => {
       className="main-content-box"
       style={{ display: "grid", gridTemplateColumns: "50% 50%" }}
     >
-      <div className="coin-summary">
-        <h2 className="summary-title">General Info</h2>
-        <p>{currencyInfo.generalInfoDescription}</p>
-        <div className="keyword-container">
-          {currencyInfo.currencyCharacteristics.map((item, idx) => {
-            const tooltip = <Tooltip id="button-tooltip">{item[1]}</Tooltip>;
-            return (
-              <OverlayTrigger key={idx} placement="top" overlay={tooltip}>
-                <div className="keyword">
-                  <h4>{item[0]}</h4>
-                </div>
-              </OverlayTrigger>
-            );
-          })}
+      <div className="analysis-column">
+        <div className="coin-summary">
+          <h2 className="summary-title">General Info</h2>
+          <p>{currencyInfo.generalInfoDescription}</p>
+          <div className="keyword-container">
+            {currencyInfo.currencyCharacteristics.map((item, idx) => {
+              const tooltip = <Tooltip id="button-tooltip">{item[1]}</Tooltip>;
+              return (
+                <OverlayTrigger key={idx} placement="top" overlay={tooltip}>
+                  <div className="keyword">
+                    <h4>{item[0]}</h4>
+                  </div>
+                </OverlayTrigger>
+              );
+            })}
+          </div>
         </div>
-      </div>
-      <div className="his-price-graph-container">
-        <StandardLineChart
-          data={priceGraphData}
-          id="id"
-          graphTitle={`Price of ${nameMap[pair]}`}
-          xAxis="Price"
-          yAxis="Time"
-        />
-        <div className="time-buttons-container">
-          {timePeriods.map((period, idx) => {
-            return (
-              <Button
-                key={idx}
-                className="time-button"
-                disabled={idx === selectedPeriod}
-                onClick={() => {
-                  setSelectedPeriod(idx);
-                }}
-                variant="dark"
-              >
-                {period}
-              </Button>
-            );
-          })}
-        </div>
-      </div>
-      <div className="coin-summary">
-        <h2 className="summary-title">Price Information</h2>
-        <div className="price-info-columns">
-          {Object.values(currencyInfo.priceInformation).map((item, idx) => {
-            return (
-              <h3 key={idx}>
-                {priceInfoNames[idx]}: {item.toLocaleString("en-UK")}
-              </h3>
-            );
-          })}
-        </div>
-      </div>
-      <div className="coin-summary">
-        <h2 className="summary-title">Future Information</h2>
-        <div className="price-info-columns">
-          {Object.values(currencyInfo.futureInformation).map((item, idx) => {
-            const tooltip = (
-              <Tooltip id="button-tooltip">{futureNames[idx + 1][1]}</Tooltip>
-            );
-            return (
-              <OverlayTrigger key={idx} placement="bottom" overlay={tooltip}>
-                <h3>
-                  {futureNames[idx + 1][0]}: {item.toLocaleString("en-UK")}
+
+        <div className="coin-summary">
+          <h2 className="summary-title">Price Information</h2>
+          <div className="price-info-columns">
+            {Object.values(currencyInfo.priceInformation).map((item, idx) => {
+              return (
+                <h3 key={idx}>
+                  {priceInfoNames[idx]}: {item.toLocaleString("en-UK")}
                 </h3>
-              </OverlayTrigger>
-            );
-          })}
+              );
+            })}
+          </div>
+        </div>
+        <div className="coin-summary">
+          <h2 className="summary-title">Future Information</h2>
+          <div className="price-info-columns">
+            {Object.values(currencyInfo.futureInformation).map((item, idx) => {
+              const tooltip = (
+                <Tooltip id="button-tooltip">{futureNames[idx + 1][1]}</Tooltip>
+              );
+              return (
+                <OverlayTrigger key={idx} placement="bottom" overlay={tooltip}>
+                  <h3>
+                    {futureNames[idx + 1][0]}: {item.toLocaleString("en-UK")}
+                  </h3>
+                </OverlayTrigger>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+      <div className="analysis-column">
+        <div className="his-price-graph-container">
+          <StandardLineChart
+            data={priceGraphData}
+            id="history-price-graph"
+            graphTitle={`Price of ${nameMap[pair]}`}
+            xAxis="Price"
+            yAxis="Time"
+          />
+          <div className="time-buttons-container">
+            {timePeriods.map((period, idx) => {
+              return (
+                <Button
+                  key={idx}
+                  className="time-button"
+                  disabled={idx === selectedPeriod}
+                  onClick={() => {
+                    setSelectedPeriod(idx);
+                  }}
+                  variant="dark"
+                >
+                  {period}
+                </Button>
+              );
+            })}
+          </div>
         </div>
       </div>
     </div>
