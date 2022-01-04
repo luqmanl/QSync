@@ -1,6 +1,6 @@
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 import Overview from "./pages/Overview";
 import Analysis from "./pages/Analysis";
 import AnalysisLanding from "./pages/AnalysisLanding";
@@ -14,6 +14,7 @@ const App = () => {
           {<AnalysisLanding />}
         </Route>
         <Route path="/analysis/:pair">{<Analysis />}</Route>
+        <Redirect from="*" to="/overview" />
       </Switch>
     </div>
   );
