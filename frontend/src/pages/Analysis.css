@@ -10,6 +10,11 @@
   scrollbar-color: rgba(0, 0, 0, 0.4) white;
 }
 
+.analysis-column{
+  display: flex;
+  flex-direction: column;
+}
+
 .analysis-title-box {
   display: flex;
   justify-content: center;
@@ -59,8 +64,13 @@
 }
 
 .coin-summary {
+  margin-top: 20px;
   white-space: pre-line;
   margin-right: 20px;
+}
+
+.coin-summary:first-child{
+  margin-top: 0;
 }
 
 .keyword-container {
@@ -76,7 +86,7 @@
 }
 
 .his-price-graph-container {
-  height: 100%;
+  height: 30vh;
 }
 
 .time-buttons-container {
