@@ -1,0 +1,36 @@
+.landing-page-box {
+  background-color: white;
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  font-family: "Nunito Sans", sans-serif;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.4) white;
+}
+
+.landing-title-box {
+  display: flex;
+  justify-content: center;
+  flex-grow: 1;
+}
+
+.landing-title {
+  text-align: center;
+  flex-grow: 1000;
+}
+
+.landing-main {
+  flex-grow: 1000;
+  margin: 5px 15px;
+}
+
+.landing-subtitle {
+  text-align: center;
+  margin-top: 5px;
+}
+
+.landing-table {
+  text-align: center;
+}
