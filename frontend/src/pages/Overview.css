@@ -27,6 +27,7 @@
   justify-content: center;
   text-align: center;
   flex-grow: 100;
+  font-size: 36px;
 }
 
 .content-box {
