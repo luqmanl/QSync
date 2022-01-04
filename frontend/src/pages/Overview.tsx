@@ -10,18 +10,18 @@ import { useCookies } from "react-cookie";
 
 const Overview = () => {
   const [warning, setWarning] = useState(false);
-  const [cookies, setCookies] = useCookies(["user"])
+  const [cookies, setCookies] = useCookies(["user"]);
 
   const addCookie = () => {
-    setCookies("user","yes")
-  }
+    setCookies("user", "yes");
+  };
 
   useEffect(() => {
-    if("user" in cookies){
-      console.log("hi")
+    if ("user" in cookies) {
+      console.log("hi");
     } else {
-      addCookie()
-      setWarning(true)
+      addCookie();
+      setWarning(true);
     }
   }, []);
 
