@@ -1,8 +1,9 @@
 /* eslint-disable no-magic-numbers */
-import React, { useEffect, useState } from "react";
+import React, { useEffect,useState } from "react";
 import exampleData from "../exampleData/ExampleTopCurrencyGraphData";
-import { LegendBoxBuilders, lightningChart, Themes } from "@arction/lcjs";
+import { LegendBoxBuilders, lightningChart, Themes, LineSeries } from "@arction/lcjs";
 import "./TopCurrencyGraph.css";
+import axios from "axios"
 export interface data {
   data: dataPoint[];
 }
@@ -10,7 +11,7 @@ export interface data {
 export interface dataPoint {
   currency: string;
   percentage: number;
-  timestamp: number;
+  timestamp: string;
 }
 
 interface graphPoint {
@@ -21,58 +22,70 @@ interface graphPoint {
 // const colours = ["red", "blue", "green", "pink", "brown"];
 
 const TopCurrencyGraph = () => {
-  const [graphData, setGraphData] = useState<Map<string, graphPoint[]>>(
-    new Map()
-  );
+  const historicalAddr = `http://${process.env.back || "localhost:8000"}/historical24hChangeData`
+  const [stuf, setStuf] = useState<{[name : string] : graphPoint[]}>({})
 
+  
+  
   useEffect(() => {
-    const updatedGraphData = graphData;
-    exampleData.data.forEach((item) => {
-      if (updatedGraphData.has(item.currency)) {
-        const curList = updatedGraphData.get(item.currency);
-        curList?.push({ x: item.timestamp, y: item.percentage });
-      } else {
-        updatedGraphData.set(item.currency, [
-          { x: item.timestamp, y: item.percentage },
-        ]);
-      }
-    });
-    setGraphData(updatedGraphData);
-  });
+    const map: { [name: string]: graphPoint[] } = {}
+    axios.get(historicalAddr).then((res) => {
+      const { points } = res.data;
+      const pointList = points as dataPoint[]
+      pointList.forEach((obj)=>{
+        const newPoint = {x : new Date(obj.timestamp).getTime(), y : obj.percentage}
+        if (obj.currency in map){
+          map[obj.currency].push(newPoint)
+          
+        } else {
+          map[obj.currency] = [newPoint]
+        }
+      })
+      setStuf(map)
+    }).catch((err) => { console.log(err, historicalAddr) })
+}, [])
 
-  useEffect(() => {
-    // eslint-disable-next-line new-cap
-    const chart = lightningChart().ChartXY({
-      theme: Themes.lightNew,
-      container: "currency-graph",
-    });
-    chart.setTitle("Top Currencies");
-    chart.getDefaultAxisX().setTitle("Time");
-    chart.getDefaultAxisY().setTitle("Percentage Change");
+useEffect(()=>{
+  const chart = lightningChart().ChartXY({
+    theme: Themes.lightNew,
+    container: "currency-graph",
+  })
+  chart.setTitle("Top Currencies");
+  chart.getDefaultAxisX().setTitle("Time");
+  chart.getDefaultAxisY().setTitle("Percentage Change");
 
-    graphData.forEach((list, name) => {
-      const newSeries = chart
-        .addLineSeries({
-          dataPattern: {
-            pattern: "ProgressiveX",
-          },
-        })
-        .setStrokeStyle((strokeStyle) =>
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          strokeStyle.setFillStyle((fill: any) => fill.setA(70)).setThickness(5)
-        )
-        .setName(name);
+  const seriesMap : {[cur : string] : LineSeries} = {}
 
-      newSeries.add(list);
-    });
-    chart.addLegendBox(LegendBoxBuilders.HorizontalLegendBox).add(chart);
-  }, []);
 
-  return (
-    <div className="graph-container">
-      <div id="currency-graph" className="graph-container"></div>
-    </div>
-  );
+  const entries = Object.entries(stuf)
+  const names = entries.map(([a,_])=> a)
+  const lists = entries.map(([_,b])=>b)
+
+  const seriesArray = new Array(5).fill(null).map((_,idx) => chart
+    .addLineSeries({ dataPattern: {
+      pattern: 'ProgressiveX',
+    } })
+      .setStrokeStyle(stroke => stroke.setThickness(1))
+      .setName(names[idx])
+  )
+
+  seriesArray.forEach((series,idx)=>{
+    series.add(lists[idx])
+  })
+
+ 
+
+  chart.addLegendBox(LegendBoxBuilders.HorizontalLegendBox).add(chart);
+  
+  console.log(seriesArray)
+},[stuf])
+
+// done thnx
+return (
+  <div className="graph-container">
+    <div id="currency-graph" className="graph-container"></div>
+  </div>
+);
 };
 
 export default TopCurrencyGraph;

@@ -76,7 +76,7 @@ hdb:hopen`::5012;
     raze midpricesWithResolutionAnd24hChange
     }
 
-.selectMidpricesWithResolution:{[data;sym] select midprice:(avg bid1 + avg ask1) % 2 by (secondInNanosecs*5) xbar exchangeTime,sym,exchange from data}
+.selectMidpricesWithResolution:{[data;sym] select midprice:(avg bid1 + avg ask1) % 2 by (secondInNanosecs*60) xbar exchangeTime,sym,exchange from data}
 
 .selectByMinTime:{[timeFrom] select from orderbooktop where exchangeTime > timeFrom}
 
