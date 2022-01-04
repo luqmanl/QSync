@@ -14,15 +14,16 @@ def index(request):
 def getHistoricalBasisData(request):
     data = {}
 
-    with QConnection(host='localhost', port=5011) as q:
-        try:
-            data = q.sendSync('.orderbook.basis', np.string_(
-                "BTC-USDT"), np.string_("BTC-USD-PERP"), np.string_("BINANCE"), np.string_("DERIBIT"))
-        except Exception as e:
-            print(e)
+    q = QConnection(host='localhost', port=5011)
+    q.open()
+    try:
+        data = q.sendSync('.orderbook.basis', np.string_(
+            "BTC-USDT"), np.string_("BTC-USD-PERP"), np.string_("BINANCE"), np.string_("DERIBIT"))
+    except Exception as e:
+        print(e)
+    q.close()
 
     outputData = {"data": []}
-
     for d in data:
         coordinate = {}
         coordinate["x"] = float(60*d[0] + d[1])
