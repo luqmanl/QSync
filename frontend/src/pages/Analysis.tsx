@@ -181,7 +181,7 @@ const SubAnalysis = () => {
         <div className="his-price-graph-container">
           <StandardLineChart
             data={priceGraphData}
-            id="id"
+            id="history-price-graph"
             graphTitle={`Price of ${nameMap[pair]}`}
             xAxis="Price"
             yAxis="Time"
