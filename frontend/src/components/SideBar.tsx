@@ -14,7 +14,7 @@ interface propsType {
   addr: string;
 }
 
-const addList = ["overview", "detailed Analysis", "arbitrarge"];
+const addList = ["overview", "detailed Analysis", "arbitrage"];
 
 const links = (addr: string, label: string) => {
   const endPoint = label === addList[1] ? "analysis" : label;
