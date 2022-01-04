@@ -1,4 +1,9 @@
-import { lightningChart, LineSeries, Themes } from "@arction/lcjs";
+import {
+  FontSettings,
+  lightningChart,
+  LineSeries,
+  Themes,
+} from "@arction/lcjs";
 import React from "react";
 
 type stateType = { series: LineSeries; id: string };
@@ -29,11 +34,17 @@ class StandardLineChart extends React.Component<propsType, stateType> {
       id: this.props.id,
     });
 
+    const font = new FontSettings({
+      size: 20,
+      family: "Nunito Sans, sans-serif",
+    });
+    chart.setTitleFont(font);
+
     chart.setTitle(this.props.graphTitle);
 
-    chart.getDefaultAxisX().setTitle(this.props.xAxis);
+    chart.getDefaultAxisX().setTitle(this.props.xAxis).setTitleFont(font);
 
-    chart.getDefaultAxisY().setTitle(this.props.yAxis);
+    chart.getDefaultAxisY().setTitle(this.props.yAxis).setTitleFont(font);
 
     series.add(this.props.data);
   }
