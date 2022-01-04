@@ -68,9 +68,8 @@
 }
 
 .coin-summary {
-  margin-top: 20px;
+  margin: 20px 20px 0;
   white-space: pre-line;
-  margin-right: 20px;
 }
 
 .coin-summary:first-child {
@@ -86,7 +85,7 @@
 .keyword {
   border-radius: 20px;
   background: rgba(0, 0, 0, 0.1);
-  padding: 2px 10px;
+  padding: 6px 10px 2px;
 }
 
 .his-price-graph-container {
