@@ -1,10 +1,9 @@
 /* eslint-disable no-magic-numbers */
 import React, { useEffect, useState } from "react";
-import exampleData from "../exampleData/ExampleTopCurrencyGraphData";
-import { LegendBoxBuilders, lightningChart, Themes } from "@arction/lcjs";
 import "./TopCurrencyGraph.css";
 import axios from "axios";
 import MultiLineGraph from "./MultiLineGraph";
+import { Spinner } from "react-bootstrap";
 export interface data {
   data: dataPoint[];
 }
@@ -26,6 +25,7 @@ const TopCurrencyGraph = () => {
   const [graphDataMap, setGraphDataMap] = useState<{
     [name: string]: graphPoint[];
   }>({});
+  const [loading, setLoading] = useState(true);
 
   const historicalAddr = `http://${
     process.env.back || "localhost:8000"
@@ -50,6 +50,7 @@ const TopCurrencyGraph = () => {
           }
         });
         setGraphDataMap(map);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err, historicalAddr);
@@ -58,7 +59,11 @@ const TopCurrencyGraph = () => {
 
   return (
     <div className="graph-container">
-      <MultiLineGraph data={graphDataMap} />
+      {loading ? (
+        <Spinner animation="border" />
+      ) : (
+        <MultiLineGraph map={graphDataMap} />
+      )}
     </div>
   );
 };
