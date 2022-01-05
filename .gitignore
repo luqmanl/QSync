@@ -24,3 +24,8 @@ __pycache__/
 # Backend
 backend/src/.env
 dump.rdb
+
+# q
+q/tables*
+q/tables/2*
+q/tables/sym
