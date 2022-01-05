@@ -35,6 +35,7 @@ const PriceHistoryGraph = () => {
   };
 
   useEffect(() => {
+    console.log(addr);
     const pastDate = new Date();
     changeDate(pastDate, selectedPeriod);
     setDate(pastDate);
@@ -56,32 +57,13 @@ const PriceHistoryGraph = () => {
       });
   }, [selectedPeriod]);
 
-  useEffect(() => {
-    const yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
-    setDate(yesterday);
-    axios
-      .get(addr)
-      .then((res) => {
-        const { data } = res.data;
-        data.map((item: { time: string; price: number }) => {
-          return {
-            x: new Date(item.time).getTime() - yesterday.getTime(),
-            y: item.price,
-          };
-        });
-        setPriceGraphData(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.log(err, "hi");
-      });
-  }, []);
-
   return (
     <div className="his-price-graph-container">
       {loading ? (
-        <Spinner animation="border" />
+        <Spinner
+          animation="border"
+          style={{ height: "30vh", width: "30vh", margin: "auto auto" }}
+        />
       ) : (
         <StandardLineChart
           data={priceGraphData}

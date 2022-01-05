@@ -159,7 +159,7 @@ const SubAnalysis = () => {
         </div>
       </div>
       <div className="analysis-column">
-        <Spinner animation="border" />
+        <PriceHistoryGraph />
       </div>
     </div>
   );
