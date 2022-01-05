@@ -10,10 +10,11 @@ import { graphPoint } from "./TopCurrencyGraph";
 
 interface propsType {
   map: { [name: string]: graphPoint[] };
+  date: Date;
 }
 
 const MultiLineGraph = (props: propsType) => {
-  const { map } = props;
+  const { map, date } = props;
   console.log(map);
   useEffect(() => {
     // eslint-disable-next-line new-cap
@@ -22,14 +23,13 @@ const MultiLineGraph = (props: propsType) => {
       container: "currency-graph",
     });
     chart.setTitle("Top Currencies");
-    const yesterday = new Date();
     chart
       .getDefaultAxisX()
       .setTitle("Time")
-      // .setTickStrategy(AxisTickStrategies.DateTime, (tickstrategy) =>
-      //   tickstrategy.setDateOrigin(yesterday)
-      // );
-    yesterday.setDate(yesterday.getDate() - 1);
+      .setTickStrategy(AxisTickStrategies.DateTime, (tickstrategy) =>
+        tickstrategy.setDateOrigin(date)
+      );
+    date.setDate(date.getDate() - 1);
     chart.getDefaultAxisY().setTitle("Percentage Change");
 
     const entries = Object.entries(map);

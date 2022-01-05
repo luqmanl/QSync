@@ -27,6 +27,8 @@ const TopCurrencyGraph = () => {
   }>({});
   // here
   const [loading, setLoading] = useState(true);
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
 
   const historicalAddr = `http://${
     process.env.back || "localhost:8000"
@@ -41,7 +43,7 @@ const TopCurrencyGraph = () => {
         const pointList = points as dataPoint[];
         pointList.forEach((obj) => {
           const newPoint = {
-            x: new Date(obj.timestamp).getTime() * (60 * 24),
+            x: new Date(obj.timestamp).getTime() - yesterday.getTime(),
             y: obj.percentage * 100,
           };
           if (obj.currency in map) {
@@ -63,7 +65,7 @@ const TopCurrencyGraph = () => {
       {loading ? (
         <Spinner animation="border" />
       ) : (
-        <MultiLineGraph map={graphDataMap} />
+        <MultiLineGraph map={graphDataMap} date={yesterday} />
       )}
     </div>
   );
