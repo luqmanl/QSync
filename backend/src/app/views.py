@@ -127,6 +127,8 @@ def getHistorical24hChangeData(request):
 
     outputData = getKDBHistorical24hChangeData()
     return JsonResponse(outputData)
+
+
 @csrf_exempt
 def getNewsfeed(request):
 
