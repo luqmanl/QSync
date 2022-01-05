@@ -1,5 +1,6 @@
 from django.apps import AppConfig
-import subprocess
+import app.top_currency_subscriber as tcs
+from multiprocessing import Process
 
 
 class AppConfig(AppConfig):
@@ -7,3 +8,5 @@ class AppConfig(AppConfig):
 
     def ready(self) -> None:
         super().ready()
+        p2 = Process(target=tcs.run)
+        p2.start()

@@ -15,11 +15,12 @@ frontend/.yarn/*
 !frontend/.yarn/versions
 yarn-error.log
 .yarnrc.yml
+frontend/.pnp.cjs
 
 # Python Files
 __pycache__/
 .pytest_cache/
 
 # Backend
-q/tables*
+backend/src/.env
 dump.rdb

@@ -1,26 +1,21 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable no-magic-numbers */
-import React, { useState } from "react";
 import "./App.css";
-import BasisTable from "./components/BasisTable";
-import RealTimeCandleSticksChart from "./components/RealTimeCandleSticksChart";
 import "bootstrap/dist/css/bootstrap.min.css";
-import NavBar from "./components/NavBar";
-import LatestTrades from "./components/LatestTrades";
-import CurrencyPair from "./components/CurrencyPair";
-import { Form } from "react-bootstrap";
-import Rectangle from "./components/Rectangle";
+import { Switch, Route, Redirect } from "react-router-dom";
+import Overview from "./pages/Overview";
+import Analysis from "./pages/Analysis";
+import AnalysisLanding from "./pages/AnalysisLanding";
 
 const App = () => {
-  const [showLatest, setShowLatest] = useState(false);
-
   return (
     <div className="page">
-      <NavBar />
-      <div className="flex-container">
-        <Rectangle innerComponents={<CurrencyPair />} />
-        <Rectangle innerComponents={<BasisTable />} />
-      </div>
+      <Switch>
+        <Route path="/overview">{<Overview />}</Route>
+        <Route exact path="/analysis">
+          {<AnalysisLanding />}
+        </Route>
+        <Route path="/analysis/:pair">{<Analysis />}</Route>
+        <Redirect from="*" to="/overview" />
+      </Switch>
     </div>
   );
 };
