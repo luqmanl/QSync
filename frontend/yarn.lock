@@ -43,14 +43,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@arction/lcjs@npm:^3.2.0":
-  version: 3.2.0
-  resolution: "@arction/lcjs@npm:3.2.0"
+"@arction/lcjs@npm:^3.3.3":
+  version: 3.3.3
+  resolution: "@arction/lcjs@npm:3.3.3"
   dependencies:
     "@arction/eventer": ^1.0.1
     earcut: ^2.2.2
     immutable: ^4.0.0-rc.12
-  checksum: 3631f961ec02280836332de3d8a4b7336e0d41e9c79332e5d36cc3c8c4b9fcd81e4bb4597cfda1adf407622aeaa832b96254a396eea70d3fbd21117048d6bae1
+  checksum: f9ef2d8ec90895f65e0656cfd148c7abfb041b7ab4e4d68951c95ddb5de105c4767e9c8ae84fc475a8431df8f4b78aaf9ddb29a0286821a0a1073bd8c30163fc
   languageName: node
   linkType: hard
 
@@ -14399,7 +14399,7 @@ fsevents@^1.2.7:
   resolution: "qsync@workspace:."
   dependencies:
     "@amcharts/amcharts4": ^4.10.22
-    "@arction/lcjs": ^3.2.0
+    "@arction/lcjs": ^3.3.3
     "@fortawesome/fontawesome-svg-core": ^1.2.36
     "@fortawesome/free-solid-svg-icons": ^5.15.4
     "@fortawesome/react-fontawesome": ^0.1.16
