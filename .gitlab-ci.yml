@@ -69,7 +69,7 @@ stages:
 
 # Deploy
 deploy-app:
-  image: docker:latest
+  image: docker/compose:1.29.2
   stage: deploy
   script:
     - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )'
