@@ -1,10 +1,10 @@
-/* eslint-disable new-cap */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-magic-numbers */
 import React, { useEffect, useState } from "react";
+import exampleData from "../exampleData/ExampleTopCurrencyGraphData";
 import { LegendBoxBuilders, lightningChart, Themes } from "@arction/lcjs";
 import "./TopCurrencyGraph.css";
 import axios from "axios";
+import MultiLineGraph from "./MultiLineGraph";
 export interface data {
   data: dataPoint[];
 }
@@ -15,7 +15,7 @@ export interface dataPoint {
   timestamp: string;
 }
 
-interface graphPoint {
+export interface graphPoint {
   x: number;
   y: number;
 }
@@ -23,6 +23,10 @@ interface graphPoint {
 // const colours = ["red", "blue", "green", "pink", "brown"];
 
 const TopCurrencyGraph = () => {
+  const [graphDataMap, setGraphDataMap] = useState<{
+    [name: string]: graphPoint[];
+  }>({});
+
   const historicalAddr = `http://${
     process.env.back || "localhost:8000"
   }/historical24hChangeData`;
@@ -45,51 +49,16 @@ const TopCurrencyGraph = () => {
             map[obj.currency] = [newPoint];
           }
         });
+        setGraphDataMap(map);
       })
       .catch((err) => {
         console.log(err, historicalAddr);
       });
-    const chart = lightningChart().ChartXY({
-      theme: Themes.lightNew,
-      container: "currency-graph",
-    });
-    chart.setTitle("Top Currencies");
-    chart.getDefaultAxisX().setTitle("Time");
-    chart.getDefaultAxisY().setTitle("Percentage Change");
-
-    const entries = Object.entries(map);
-    const names = entries.map(([a, _b]) => a);
-    const lists = entries.map(([_, b]) => b);
-
-    const seriesArray = new Array(5).fill(null).map((_, idx) =>
-      chart
-        .addLineSeries({
-          dataPattern: {
-            pattern: "ProgressiveX",
-          },
-        })
-        // eslint-disable-next-line arrow-parens
-        .setStrokeStyle((stroke) => stroke.setThickness(1))
-        .setName(names[idx])
-    );
-
-    seriesArray.forEach((series, idx) => {
-      if (idx === 1) {
-        series.add(lists[idx]);
-      }
-    });
-
-    chart.addLegendBox(LegendBoxBuilders.HorizontalLegendBox).add(chart);
-
-    return () => {
-      chart.dispose();
-    };
   }, []);
 
-  // done thnx
   return (
     <div className="graph-container">
-      <div id="currency-graph" className="graph-container"></div>
+      <MultiLineGraph data={graphDataMap} />
     </div>
   );
 };
