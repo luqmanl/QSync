@@ -129,7 +129,6 @@ class L2overviewConsumer(AsyncConsumer):
         print('disconnected l2overview websocket: ', event['code'])
 
     async def send_l2overview_data(self, event):
-        print("SHEEEESH")
         data = json.loads(event["data"])
         highestBid = data["bids"][0]
         lowestAsk = data["asks"][0]
