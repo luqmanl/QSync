@@ -64,6 +64,8 @@ test-back:
   image: python:3.8.10-slim-buster
   script:
     - !reference [.setup, back]
+    - echo $NEWS_API_KEY >> src/.env
+    - echo $SECRET_KEY >> src/.env
     - apt-get update
     - apt-get install redis-server -y
     - redis-server&
