@@ -56,14 +56,17 @@ const MultiLineGraph = (props: propsType) => {
       );
       series.setCursorResultTableFormatter(
         (builder, series, xValue, yValue) => {
-          return builder
-            .addRow(`Currency: ${series.getName()}`)
-            .addRow(
-              `Time: ${new Date(xValue + date.getTime()).toLocaleString(
-                "en-UK"
-              )}`
-            )
-            .addRow(`24h Percentage Change: ${yValue.toFixed(2)}%`);
+          return (
+            builder
+              .addRow(`Currency: ${series.getName()}`)
+              .addRow(
+                `Time: ${new Date(xValue + date.getTime()).toLocaleString(
+                  "en-UK"
+                )}`
+              )
+              // eslint-disable-next-line no-magic-numbers
+              .addRow(`24h Percentage Change: ${yValue.toFixed(2)}%`)
+          );
         }
       );
     });
