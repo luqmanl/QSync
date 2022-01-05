@@ -54,6 +54,18 @@ const MultiLineGraph = (props: propsType) => {
           return { x: item.x, y: item.y };
         })
       );
+      series.setCursorResultTableFormatter(
+        (builder, series, xValue, yValue) => {
+          return builder
+            .addRow(`Currency: ${series.getName()}`)
+            .addRow(
+              `Time: ${new Date(xValue + date.getTime()).toLocaleString(
+                "en-UK"
+              )}`
+            )
+            .addRow(`24h Percentage Change: ${yValue.toFixed(2)}%`);
+        }
+      );
     });
 
     chart.addLegendBox(LegendBoxBuilders.HorizontalLegendBox).add(chart);
