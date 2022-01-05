@@ -80,4 +80,4 @@ deploy-app:
     - COMPOSE_DOCKER_CLI_BUILD=0 DOCKER_HOST="ssh://$SSH_USER@$SERVER_ADDRESS" docker-compose up -d
   # only:
   #   - master
-  needs: [test-front, test-back]
+  # needs: [test-front, test-back]
