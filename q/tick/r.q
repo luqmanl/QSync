@@ -43,7 +43,7 @@ hdb:hopen`::5012;
 .syms.percentage:{[syms;exchange] 
     t:.percentage.change[;exchange] each syms;
     `topCurrencyData insert t;
-    -5#topCurrencyData
+    t
     }
 
 .percentage.change:{[sym;exchange]
@@ -61,6 +61,31 @@ hdb:hopen`::5012;
     firstOrderbookEntry:-1#select from orderbooktop where exchangeTime < theTime, sym=sym1, exchange=exchange1;
     price: (exec midprice from (select midprice:(avg bid1 + avg ask1) % 2 by exchangeTime from firstOrderbookEntry))[0]
     }
+
+.historic.easy:{`.historic.percentage[(`$"BTC-USDT";`$"ETH-USDT";`$"ADA-USDT";`$"SOL-USDT";`$"DOGE-USDT");`BINANCE]};
+.historic.percentage:{[syms;exchange]
+    time24hAgo: .z.p - (secondInNanosecs * dayInSeconds);
+    rdbData: .selectByMinTime[time24hAgo];
+    rdbData: delete time from rdbData;
+    hdbData:hdb(`.selectByMinTime, time24hAgo);
+    hdbData: delete date,time from hdbData;
+    allData: raze (hdbData;rdbData);
+    midpricesWithResolution: raze .selectMidpricesWithResolution[allData;] each syms;
+    price24hAgo: (exec midprice from midpricesWithResolution)[0];
+    midpricesWithResolutionAnd24hChange: .calculatePriceChange[;midpricesWithResolution;price24hAgo] each syms;
+    raze midpricesWithResolutionAnd24hChange
+    }
+
+.selectMidpricesWithResolution:{[data;sym] select midprice:(avg bid1 + avg ask1) % 2 by (secondInNanosecs*60) xbar exchangeTime,sym,exchange from data}
+
+.selectByMinTime:{[timeFrom] select from orderbooktop where exchangeTime > timeFrom}
+
+
+.calculatePriceChange:{[sym1;data;price24Ago] 
+    price24hAgo: (exec midprice from (select from data where sym=sym1))[0];
+    select sym,exchangeTime,change24h:((midprice - price24hAgo) % price24hAgo) from (select from data where sym=sym1)}
+
+
 
 / close hdb
 /hclose hdb;
