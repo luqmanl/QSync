@@ -11,3 +11,5 @@ secondInNanosecs: 1000000000j
     firstOrderbookEntry:-1#select from orderbooktop where exchangeTime < theTime, sym=sym1, exchange=exchange1;
     price: (exec midprice from (select midprice:(avg bid1 + avg ask1) % 2 by exchangeTime from firstOrderbookEntry))[0]
     }
+
+.selectByMinTime:{[timeFrom] select from orderbooktop where exchangeTime > timeFrom}

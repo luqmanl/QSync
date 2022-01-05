@@ -99,6 +99,36 @@ def getHistoricalBasisData(request, period, spotSym, futureSym, spotExch, future
     return JsonResponse(outputData)
 
 
+def getKDBHistorical24hChangeData():
+    outputData = {"points": []}
+
+    # hdb data
+    with qconnection.QConnection(host='localhost', port=5011) as q:
+        try:
+            data = q.sendSync('.historic.easy', np.string_())
+        except Exception as e:
+            print(e)
+
+    # print(data)
+    for d in data:
+        point = {}
+        point["currency"] = d[0].decode('UTF-8')
+        point["timestamp"] = convertExchangeTimestamp(d[1])
+        point["percentage"] = d[2]
+        outputData["points"].append(point)
+
+    return outputData
+
+# Returns the historical value of the difference in midprices of the given currencies and exchanges
+
+
+@csrf_exempt
+def getHistorical24hChangeData(request):
+
+    outputData = getKDBHistorical24hChangeData()
+    return JsonResponse(outputData)
+
+
 @csrf_exempt
 def getNewsfeed(request):
 
