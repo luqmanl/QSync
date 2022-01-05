@@ -19,7 +19,7 @@ interface Item {
   bookData: bookData;
 }
 
-interface bookData {
+export interface bookData {
   sym: string;
   exchange: string;
   bids: number[];
