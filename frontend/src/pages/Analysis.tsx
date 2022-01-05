@@ -13,7 +13,7 @@ import {
   initalData,
 } from "../exampleData/ExampleDetailedAnalysis";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
-import BasisTable from "../components/BasisTable"
+import BasisTable from "../components/BasisTable";
 import OrderBookTable from "../components/OrderBookTable";
 
 interface paramType {
@@ -140,8 +140,7 @@ const SubAnalysis = () => {
   }, []);
 
   return (
-    <div
-      className="main-content-box">
+    <div className="main-content-box">
       <div className="analysis-column">
         <div className="coin-summary">
           <h2 className="summary-title">General Info</h2>
