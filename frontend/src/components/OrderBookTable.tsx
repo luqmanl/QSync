@@ -16,26 +16,31 @@ type rowPropType = {
 };
 
 interface Item {
-  id: number;
   bookData: bookData;
 }
 
 interface bookData {
-  time: string;
-  feedhandlerTime: string;
   sym: string;
+  exchange: string;
   bids: number[];
   asks: number[];
   bidSizes: number[];
   askSizes: number[];
 }
 
+// dataFrontend = {
+//   'sym': book.symbol,
+//   'exchange': book.exchange,
+//   'bids': bids,
+//   'asks': asks,
+//   'bidSizes': bid_sizes,
+//   'askSizes': ask_sizes
+// }
+
 const deafult: Item = {
-  id: 1,
   bookData: {
-    time: "1649141143000",
+    exchange: "BINANCE",
     sym: "BTC-USDT",
-    feedhandlerTime: "688087649133238000",
     bids: [
       65994.95, 65994.94, 65994.35, 65993.95, 65993.38, 65990.83, 65990.0,
       65989.0, 65988.69, 65986.42, 65986.41, 65986.25, 65985.39, 65985.38,
@@ -61,26 +66,21 @@ const deafult: Item = {
 const numDPs = 2;
 
 const OrderBookTableRow = (props: rowPropType) => {
+  const { data, index } = props;
   return (
     <tr>
-      <OrderBookTableDivision data={props.data.bookData.asks[props.index]} />
-      <OrderBookTableDivision
-        data={props.data.bookData.askSizes[props.index]}
-      />
+      <OrderBookTableDivision data={data.bookData.asks[index]} />
+      <OrderBookTableDivision data={data.bookData.askSizes[index]} />
       <OrderBookTableDivision
         data={(
-          props.data.bookData.askSizes[props.index] *
-          props.data.bookData.asks[props.index]
+          data.bookData.askSizes[index] * data.bookData.asks[index]
         ).toFixed(numDPs)}
       />
-      <OrderBookTableDivision data={props.data.bookData.bids[props.index]} />
-      <OrderBookTableDivision
-        data={props.data.bookData.bidSizes[props.index]}
-      />
+      <OrderBookTableDivision data={data.bookData.bids[index]} />
+      <OrderBookTableDivision data={data.bookData.bidSizes[index]} />
       <OrderBookTableDivision
         data={(
-          props.data.bookData.bidSizes[props.index] *
-          props.data.bookData.bids[props.index]
+          data.bookData.bidSizes[index] * data.bookData.bids[index]
         ).toFixed(numDPs)}
       />
     </tr>
@@ -109,10 +109,8 @@ const OrderBookTable = () => {
       const res = JSON.parse(ev.data);
       const newBookData: bookData = {
         ...res,
-        bidSizes: res.buySizes,
       };
       const newData: Item = {
-        id: 2,
         bookData: newBookData,
       };
       setData(newData);
