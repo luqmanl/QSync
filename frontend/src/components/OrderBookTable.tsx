@@ -93,7 +93,9 @@ const OrderBookTable = () => {
 
   useEffect(() => {
     const socket = new WebSocket(
-      "ws://localhost:8000/ws/data/binance/BTC-USDT/l2orderbook/"
+      `ws://${
+        process.env.back || "localhost:8000"
+      }/ws/data/binance/BTC-USDT/l2orderbook/`
     );
 
     socket.addEventListener("message", (ev) => {

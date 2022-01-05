@@ -1,25 +1,22 @@
 .table-row {
   padding: "20px";
-  color: white;
 }
 
 .table-header {
-  color: white;
   border: "1px solid black";
   text-align: center;
   text-transform: capitalize;
 }
 
 .order-book-holder {
-  background-color: black;
+  margin-top: 20px;
   padding: 10px 10px 10px 10px;
-  border: white;
+  border: black;
   border-radius: 20px;
 }
 
 .component-title {
   margin: 0 auto;
-  color: white;
   width: 100%;
   text-align: center;
 }

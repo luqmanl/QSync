@@ -19,7 +19,7 @@ const addList = ["overview", "detailed Analysis", "arbitrage"];
 const links = (addr: string, label: string) => {
   const endPoint = label === addList[1] ? "analysis" : label;
   const linkAddr =
-    `${process.env.PUBLIC_URL}/${endPoint}` || `localhost:3000/${endPoint}`;
+    `${process.env.front}/${endPoint}` || `localhost:3000/${endPoint}`;
   const disable = addr === label;
   if (disable) {
     return (

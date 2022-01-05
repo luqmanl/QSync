@@ -81,10 +81,9 @@ const KeyMetrics = () => {
   const [loading, setLoading] = useState(true);
   const [info, setInfo] = useState<metricInfo[]>([]);
 
-  const endPoint = "/api/key_metrics";
   const linkAddr = `http://${
-    process.env.PUBLIC_URL || "localhost:3000"
-  }/${endPoint}`;
+    process.env.back || "localhost:3000"
+  }/api/key_metrics`;
 
   useEffect(() => {
     axios

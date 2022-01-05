@@ -18,7 +18,7 @@ const CurrencyPair = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [data, setData] = useState<{ [name: string]: CurrencyPairType }>({});
 
-  const wsAddr = `ws://localhost:8000/ws/data/l2overview/`;
+  const wsAddr = `ws://${process.env.back || "localhost:8000"}/ws/data/l2overview/`;
 
   useEffect(() => {
     const socket = new WebSocket(wsAddr);

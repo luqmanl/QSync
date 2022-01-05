@@ -68,7 +68,7 @@ const TopCurrencyTable = () => {
 
   useEffect(() => {
     const ws = new WebSocket(
-      `ws://${process.env.PUBLIC_URL || "localhost:8000"}${endPoint}`
+      `ws://${process.env.back || "localhost:8000"}${endPoint}`
     );
     ws.addEventListener("message", (ev) => {
       const res: { currencyData: responseType[] } = JSON.parse(ev.data);
