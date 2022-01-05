@@ -25,7 +25,8 @@ const TopCurrencyGraph = () => {
   const [graphDataMap, setGraphDataMap] = useState<{
     [name: string]: graphPoint[];
   }>({});
-  const [loading, setLoading] = useState(false);
+  // here
+  const [loading, setLoading] = useState(true);
 
   const historicalAddr = `http://${
     process.env.back || "localhost:8000"

@@ -14,7 +14,7 @@ interface propsType {
 
 const MultiLineGraph = (props: propsType) => {
   const { map } = props;
-
+  console.log(map);
   useEffect(() => {
     // eslint-disable-next-line new-cap
     const chart = lightningChart().ChartXY({
@@ -26,9 +26,9 @@ const MultiLineGraph = (props: propsType) => {
     chart
       .getDefaultAxisX()
       .setTitle("Time")
-      .setTickStrategy(AxisTickStrategies.DateTime, (tickstrategy) =>
-        tickstrategy.setDateOrigin(yesterday)
-      );
+      // .setTickStrategy(AxisTickStrategies.DateTime, (tickstrategy) =>
+      //   tickstrategy.setDateOrigin(yesterday)
+      // );
     yesterday.setDate(yesterday.getDate() - 1);
     chart.getDefaultAxisY().setTitle("Percentage Change");
 
@@ -57,10 +57,10 @@ const MultiLineGraph = (props: propsType) => {
     });
 
     chart.addLegendBox(LegendBoxBuilders.HorizontalLegendBox).add(chart);
-
-    // return () => {
-    //   chart.dispose();
-    // };
+    console.log(lists);
+    return () => {
+      chart.dispose();
+    };
   }, []);
 
   return <div id="currency-graph" style={{ height: "100%" }}></div>;
