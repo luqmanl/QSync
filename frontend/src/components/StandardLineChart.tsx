@@ -13,6 +13,7 @@ type propsType = {
   graphTitle: string;
   xAxis: string;
   yAxis: string;
+  date?: Date;
 };
 
 export type dataPoint = {
