@@ -56,7 +56,7 @@ test-front:
   stage: test
   script:
     - !reference [.setup, front]
-    - CI=true yarn test --passWithNoTests
+    - CI=true yarn test
   needs: [style-front]
 
 test-back:
@@ -69,7 +69,15 @@ test-back:
 
 # Deploy
 deploy-app:
+  image: docker:latest
   stage: deploy
   script:
-    - echo "To Do"
+    - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )'
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - COMPOSE_DOCKER_CLI_BUILD=0 DOCKER_HOST="ssh://$SSH_USER@$SERVER_ADDRESS" docker-compose up -d
+  # only:
+  #   - master
   needs: [test-front, test-back]
