@@ -1,9 +1,16 @@
 from django.shortcuts import render
+from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+from django.utils import timezone
+
 from qpython import qconnection
 import numpy as np
-from django.http import JsonResponse
 from datetime import datetime, timedelta
+import requests
+from django.forms.models import model_to_dict
+
+from .models import CachedNews
 
 
 def index(request):
@@ -120,3 +127,35 @@ def getHistorical24hChangeData(request):
 
     outputData = getKDBHistorical24hChangeData()
     return JsonResponse(outputData)
+@csrf_exempt
+def getNewsfeed(request):
+
+    if len(CachedNews.objects.filter(date_created__gte=timezone.now() - timedelta(minutes=30))):
+        # if already have a cached version in the db
+
+        r = CachedNews.objects.filter(
+            date_created__gte=timezone.now() - timedelta(minutes=30))[0]
+        return JsonResponse(model_to_dict(r)['news_list'])
+    else:
+        r = requests.get(settings.NEWS_URL + settings.NEWS_API_KEY)
+        articles = r.json()['articles']
+        toSave = {
+            "newsListings": [],
+        }
+
+        i = 0
+        for article in articles:
+            if i >= 20:
+                break
+
+            toSave["newsListings"].append({
+                "provider": article["source"]["name"],
+                "timestamp": article["publishedAt"],
+                "description": article["description"],
+                "url": article["url"],
+            })
+            i += 1
+
+        news = CachedNews(news_list=toSave, date_created=timezone.now())
+        news.save()
+        return JsonResponse(toSave)

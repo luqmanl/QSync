@@ -8,4 +8,5 @@ urlpatterns = [
          name='historicalBasisData'),
     path('historical24hChangeData', views.getHistorical24hChangeData,
          name='historical24hChangeData'),
+    path('api/data/newsfeed', views.getNewsfeed, name="newsfeed"),
 ]
