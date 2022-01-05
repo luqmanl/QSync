@@ -56,6 +56,8 @@
 }
 
 .main-content-box {
+  display: grid;
+  grid-template-columns : 50% 50%;
   flex-grow: 100;
   margin: 5px 5px;
   overflow-y: scroll;
