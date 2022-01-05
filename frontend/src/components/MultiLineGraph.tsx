@@ -1,5 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { LegendBoxBuilders, lightningChart, Themes } from "@arction/lcjs";
+import {
+  AxisTickStrategies,
+  LegendBoxBuilders,
+  lightningChart,
+  Themes,
+} from "@arction/lcjs";
 import React, { useEffect } from "react";
 import { graphPoint } from "./TopCurrencyGraph";
 
@@ -17,7 +22,14 @@ const MultiLineGraph = (props: propsType) => {
       container: "currency-graph",
     });
     chart.setTitle("Top Currencies");
-    chart.getDefaultAxisX().setTitle("Time");
+    const yesterday = new Date();
+    chart
+      .getDefaultAxisX()
+      .setTitle("Time")
+      .setTickStrategy(AxisTickStrategies.DateTime, (tickstrategy) =>
+        tickstrategy.setDateOrigin(yesterday)
+      );
+    yesterday.setDate(yesterday.getDate() - 1);
     chart.getDefaultAxisY().setTitle("Percentage Change");
 
     const entries = Object.entries(map);
@@ -37,16 +49,18 @@ const MultiLineGraph = (props: propsType) => {
     );
 
     seriesArray.forEach((series, idx) => {
-      if (idx === 1) {
-        series.add(lists[idx]);
-      }
+      series.add(
+        lists[idx].map((item) => {
+          return { x: item.x, y: item.y };
+        })
+      );
     });
 
     chart.addLegendBox(LegendBoxBuilders.HorizontalLegendBox).add(chart);
 
-    return () => {
-      chart.dispose();
-    };
+    // return () => {
+    //   chart.dispose();
+    // };
   }, []);
 
   return <div id="currency-graph" style={{ height: "100%" }}></div>;
