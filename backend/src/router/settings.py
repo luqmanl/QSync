@@ -25,7 +25,7 @@ if os.path.isfile(dotenv_file):
 
 NEWS_API_KEY = os.environ.get('NEWS_API_KEY')
 # SECRET_KEY = os.environ.get('SECRET_KEY')
-SECRET_KEY =  get_random_secret_key()
+SECRET_KEY = get_random_secret_key()
 
 
 # Quick-start development settings - unsuitable for production
