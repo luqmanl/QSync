@@ -1,3 +1,4 @@
+/* eslint-disable no-magic-numbers */
 import React, { useState, useEffect, useContext } from "react";
 import StandardLineChart from "./StandardLineChart";
 import { nameMap } from "../CoinData";
@@ -16,6 +17,44 @@ const PriceHistoryGraph = () => {
   const addr = `http://${
     process.env.BACK || "localhost:8000"
   }/${priceGraphEndpoint}/${timePeriods[selectedPeriod]}`;
+
+  const changeDate = (curDate: Date, period: number): void => {
+    if (period === 0) {
+      curDate.setDate(curDate.getDay() - 1);
+    } else if (period === 1) {
+      curDate.setDate(curDate.getDay() - 7);
+    } else if (period === 2) {
+      curDate.setMonth(curDate.getMonth() - 1);
+    } else if (period === 3) {
+      curDate.setMonth(curDate.getMonth() - 1);
+    } else if (period === 4) {
+      curDate.setFullYear(curDate.getFullYear() - 1);
+    } else {
+      curDate.setFullYear(2020);
+    }
+  };
+
+  useEffect(() => {
+    const pastDate = new Date();
+    changeDate(pastDate, selectedPeriod);
+    setDate(pastDate);
+    axios
+      .get(addr)
+      .then((res) => {
+        const { data } = res.data;
+        data.map((item: { time: string; price: number }) => {
+          return {
+            x: new Date(item.time).getTime() - pastDate.getTime(),
+            y: item.price,
+          };
+        });
+        setPriceGraphData(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err, "hi");
+      });
+  }, [selectedPeriod]);
 
   useEffect(() => {
     const yesterday = new Date();
@@ -37,7 +76,7 @@ const PriceHistoryGraph = () => {
       .catch((err) => {
         console.log(err, "hi");
       });
-  }, [selectedPeriod]);
+  }, []);
 
   return (
     <div className="his-price-graph-container">
