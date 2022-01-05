@@ -1,7 +1,8 @@
 /* eslint-disable no-magic-numbers */
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Table } from "react-bootstrap";
 import "./OrderBookTable.css";
+import { PairContext } from "../pages/Analysis";
 
 // time     tickersymbol     bid/ask     price      quantity
 
@@ -21,8 +22,8 @@ interface Item {
 
 interface bookData {
   time: string;
-  sym: string;
   feedhandlerTime: string;
+  sym: string;
   bids: number[];
   asks: number[];
   bidSizes: number[];
@@ -62,7 +63,6 @@ const numDPs = 2;
 const OrderBookTableRow = (props: rowPropType) => {
   return (
     <tr>
-      <OrderBookTableDivision data={props.data.bookData.sym} />
       <OrderBookTableDivision data={props.data.bookData.asks[props.index]} />
       <OrderBookTableDivision
         data={props.data.bookData.askSizes[props.index]}
@@ -73,7 +73,6 @@ const OrderBookTableRow = (props: rowPropType) => {
           props.data.bookData.asks[props.index]
         ).toFixed(numDPs)}
       />
-      <OrderBookTableDivision data={props.data.bookData.sym} />
       <OrderBookTableDivision data={props.data.bookData.bids[props.index]} />
       <OrderBookTableDivision
         data={props.data.bookData.bidSizes[props.index]}
@@ -90,13 +89,21 @@ const OrderBookTableRow = (props: rowPropType) => {
 
 const OrderBookTable = () => {
   const [data, setData] = useState<Item>(deafult);
+  const pair = useContext(PairContext);
 
   useEffect(() => {
     const socket = new WebSocket(
-      `ws://${
-        process.env.back || "localhost:8000"
-      }/ws/data/binance/BTC-USDT/l2orderbook/`
+      `ws://${process.env.back || "localhost:8000"}/ws/data/l2orderbook/`
     );
+
+    socket.onopen = () => {
+      socket.send(
+        JSON.stringify({
+          exchange: "BINANCE",
+          pair: pair,
+        })
+      );
+    };
 
     socket.addEventListener("message", (ev) => {
       const res = JSON.parse(ev.data);
@@ -126,11 +133,9 @@ const OrderBookTable = () => {
             </th>
           </tr>
           <tr>
-            <OrderBookTableDivision data="ticker" />
             <OrderBookTableDivision data="price ($)" />
             <OrderBookTableDivision data="quantity" />
             <OrderBookTableDivision data="order total ($)" />
-            <OrderBookTableDivision data="ticker" />
             <OrderBookTableDivision data="price ($)" />
             <OrderBookTableDivision data="quantity" />
             <OrderBookTableDivision data="order total ($)" />

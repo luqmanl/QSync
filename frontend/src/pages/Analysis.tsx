@@ -88,7 +88,7 @@ const Arbitrage = () => {
       <div className="analysis-column">
         <div className="coin-summary">
           <h2 className="summary-title">Arbitrage Explained</h2>
-          <p>INSERT EXPLANATIONHERE</p>
+          <p>INSERT EXPLANATION HERE</p>
         </div>
       </div>
       <div className="analysis-column">

@@ -18,7 +18,6 @@ const addList = ["overview", "detailed Analysis", "arbitrage"];
 
 const links = (addr: string, label: string) => {
   const endPoint = label === addList[1] ? "analysis" : label;
-  const linkAddr = `http:/${process.env.front || "localhost:3000"}/${endPoint}`;
   const disable = addr === label;
   if (disable) {
     return (
@@ -29,7 +28,10 @@ const links = (addr: string, label: string) => {
   }
   return (
     <div key={label} className="link">
-      <Link to={`/${endPoint}`} style={{ textDecoration: "none", color: "black" }}>
+      <Link
+        to={`/${endPoint}`}
+        style={{ textDecoration: "none", color: "black" }}
+      >
         <h4>{label}</h4>
       </Link>
     </div>
