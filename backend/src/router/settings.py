@@ -13,8 +13,6 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 import os
 import dotenv
 
-from django.core.management.utils import get_random_secret_key
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -24,9 +22,7 @@ if os.path.isfile(dotenv_file):
     dotenv.load_dotenv(dotenv_file)
 
 NEWS_API_KEY = os.environ.get('NEWS_API_KEY')
-# SECRET_KEY = os.environ.get('SECRET_KEY')
-SECRET_KEY = get_random_secret_key()
-
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
