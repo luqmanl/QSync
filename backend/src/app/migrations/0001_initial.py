@@ -15,14 +15,16 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='CachedNews',
             fields=[
-                ('date_created', models.DateTimeField(primary_key=True, serialize=False)),
+                ('date_created', models.DateTimeField(
+                    primary_key=True, serialize=False)),
                 ('news_list', models.JSONField()),
             ],
         ),
         migrations.CreateModel(
             name='CurrencyCharacteristics',
             fields=[
-                ('characteristic', models.TextField(primary_key=True, serialize=False)),
+                ('characteristic', models.TextField(
+                    primary_key=True, serialize=False)),
                 ('description', models.TextField()),
             ],
         ),
@@ -35,13 +37,15 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='SupportedExchanges',
             fields=[
-                ('exchange_name', models.TextField(primary_key=True, serialize=False)),
+                ('exchange_name', models.TextField(
+                    primary_key=True, serialize=False)),
             ],
         ),
         migrations.CreateModel(
             name='CurrencyDescriptions',
             fields=[
-                ('currency', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, primary_key=True, serialize=False, to='app.supportedcurrencies')),
+                ('currency', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE,
+                 primary_key=True, serialize=False, to='app.supportedcurrencies')),
                 ('general_description', models.TextField()),
                 ('full_name', models.TextField()),
             ],
@@ -49,15 +53,18 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='CurrencyInformation',
             fields=[
-                ('currency', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, primary_key=True, serialize=False, to='app.supportedcurrencies')),
+                ('currency', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE,
+                 primary_key=True, serialize=False, to='app.supportedcurrencies')),
                 ('current_supply', models.FloatField(blank=True, null=True)),
                 ('total_supply', models.FloatField(blank=True, null=True)),
                 ('transactions_per_second', models.FloatField(blank=True, null=True)),
                 ('total_transactions', models.FloatField(blank=True, null=True)),
-                ('market_dominance_percentage', models.FloatField(blank=True, null=True)),
+                ('market_dominance_percentage',
+                 models.FloatField(blank=True, null=True)),
                 ('active_addresses', models.FloatField(blank=True, null=True)),
                 ('transactions_24h', models.FloatField(blank=True, null=True)),
-                ('average_transaction_fee_usd_24h', models.FloatField(blank=True, null=True)),
+                ('average_transaction_fee_usd_24h',
+                 models.FloatField(blank=True, null=True)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
             ],
@@ -65,7 +72,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='FutureInformation',
             fields=[
-                ('currency', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, primary_key=True, serialize=False, to='app.supportedcurrencies')),
+                ('currency', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE,
+                 primary_key=True, serialize=False, to='app.supportedcurrencies')),
                 ('perpetual_price', models.FloatField(blank=True, null=True)),
                 ('funding_rate', models.FloatField(blank=True, null=True)),
                 ('basis', models.FloatField(blank=True, null=True)),
@@ -77,7 +85,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='PriceInformation',
             fields=[
-                ('currency', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, primary_key=True, serialize=False, to='app.supportedcurrencies')),
+                ('currency', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE,
+                 primary_key=True, serialize=False, to='app.supportedcurrencies')),
                 ('high_24h', models.FloatField(blank=True, null=True)),
                 ('low_24h', models.FloatField(blank=True, null=True)),
                 ('high_1y', models.FloatField(blank=True, null=True)),
@@ -93,14 +102,18 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='supportedcurrencies',
             name='data_supplying_exchange',
-            field=models.ForeignKey(default='UNKNOWN', on_delete=django.db.models.deletion.SET_DEFAULT, to='app.supportedexchanges'),
+            field=models.ForeignKey(
+                default='UNKNOWN', on_delete=django.db.models.deletion.SET_DEFAULT, to='app.supportedexchanges'),
         ),
         migrations.CreateModel(
             name='RelatedCharacteristics',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('characteristic', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='app.currencycharacteristics')),
-                ('currency', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='app.supportedcurrencies')),
+                ('id', models.AutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
+                ('characteristic', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE, to='app.currencycharacteristics')),
+                ('currency', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE, to='app.supportedcurrencies')),
             ],
         ),
     ]

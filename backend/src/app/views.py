@@ -132,19 +132,27 @@ def getNewsfeed(request):
         news.save()
         return JsonResponse(toSave)
 
+
 @csrf_exempt
 def detailedAnalysis(request, currency):
-    currencyInformation = model_to_dict(CurrencyInformation.objects.filter(currency=currency)[0])
-    priceInformation = model_to_dict(PriceInformation.objects.filter(currency=currency)[0])
-    futureInformation = model_to_dict(FutureInformation.objects.filter(currency=currency)[0])
-    description = model_to_dict(CurrencyDescriptions.objects.filter(currency=currency)[0])["general_description"]
-    related_characteristics = RelatedCharacteristics.objects.filter(currency=currency)
+    currencyInformation = model_to_dict(
+        CurrencyInformation.objects.filter(currency=currency)[0])
+    priceInformation = model_to_dict(
+        PriceInformation.objects.filter(currency=currency)[0])
+    futureInformation = model_to_dict(
+        FutureInformation.objects.filter(currency=currency)[0])
+    description = model_to_dict(CurrencyDescriptions.objects.filter(
+        currency=currency)[0])["general_description"]
+    related_characteristics = RelatedCharacteristics.objects.filter(
+        currency=currency)
     characteristics = []
 
     for currency_characteristic in related_characteristics:
-        characteristic_def = model_to_dict(CurrencyCharacteristics.objects.filter(characteristic=model_to_dict(currency_characteristic)["characteristic"])[0])
+        characteristic_def = model_to_dict(CurrencyCharacteristics.objects.filter(
+            characteristic=model_to_dict(currency_characteristic)["characteristic"])[0])
         print(characteristic_def)
-        characteristics.append([characteristic_def["characteristic"], characteristic_def["description"]])
+        characteristics.append(
+            [characteristic_def["characteristic"], characteristic_def["description"]])
 
     toSend = {
         "generalInfoDescription": description,
@@ -167,7 +175,7 @@ def detailedAnalysis(request, currency):
             "marketDominancePercentage": currencyInformation["market_dominance_percentage"],
             "activeAddresses": currencyInformation["active_addresses"],
             "transactions24h": currencyInformation["transactions_24h"],
-            "transactionFee24h": currencyInformation["average_transaction_fee_usd_24h"] 
+            "transactionFee24h": currencyInformation["average_transaction_fee_usd_24h"]
         },
         "futureInformation": {
             "perpetualPrice": futureInformation["perpetual_price"],
