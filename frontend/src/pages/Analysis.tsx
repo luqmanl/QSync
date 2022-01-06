@@ -12,6 +12,7 @@ import {
   exampleData,
   initalData,
 } from "../exampleData/ExampleDetailedAnalysis";
+import PriceHistoryGraph from "../components/PriceHistoryGraph";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import BasisTable from "../components/BasisTable";
 import OrderBookTable from "../components/OrderBookTable";
@@ -20,7 +21,7 @@ import OrderBookScatterGraph from "../components/OrderBookScatterGraph";
 interface paramType {
   pair: string;
 }
-interface graphPoint {
+export interface graphPoint {
   x: number;
   y: number;
 }
@@ -97,7 +98,6 @@ const Arbitrage = () => {
       </div>
       <div className="analysis-column">
         <BasisTable />
-        <OrderBookTable />
       </div>
     </div>
   );
@@ -105,31 +105,11 @@ const Arbitrage = () => {
 
 const SubAnalysis = () => {
   const pair = useContext(PairContext);
-  const [priceGraphData, setPriceGraphData] = useState<graphPoint[]>([]);
-  const [selectedPeriod, setSelectedPeriod] = useState(0);
   const [currencyInfo, setCurrencyInfo] = useState<data>(exampleData);
-
-  const timePeriods = ["1D", "7D", "1M", "3M", "1Y", "all"];
-  const priceGraphEndpoint = `/api/general-info/${pair}`;
-  const addr = `http://${
-    process.env.back || "localhost:8000"
-  }/${priceGraphEndpoint}/${timePeriods[selectedPeriod]}`;
 
   const currencyInfoAddr = `http://${
     process.env.back || "localhost:8000"
   }/api/general-info/${pair}`;
-
-  useEffect(() => {
-    axios
-      .get(addr)
-      .then((res) => {
-        const { prices } = res.data;
-        setPriceGraphData(prices);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [selectedPeriod]);
 
   useEffect(() => {
     axios
@@ -194,32 +174,7 @@ const SubAnalysis = () => {
         </div>
       </div>
       <div className="analysis-column">
-        <div className="his-price-graph-container">
-          <StandardLineChart
-            data={priceGraphData}
-            id="history-price-graph"
-            graphTitle={`Price of ${nameMap[pair]}`}
-            xAxis="Price"
-            yAxis="Time"
-          />
-          <div className="time-buttons-container">
-            {timePeriods.map((period, idx) => {
-              return (
-                <Button
-                  key={idx}
-                  className="time-button"
-                  disabled={idx === selectedPeriod}
-                  onClick={() => {
-                    setSelectedPeriod(idx);
-                  }}
-                  variant="dark"
-                >
-                  {period}
-                </Button>
-              );
-            })}
-          </div>
-        </div>
+        <PriceHistoryGraph />
       </div>
     </div>
   );
@@ -243,6 +198,7 @@ function Analysis(): JSX.Element {
           </h2>
         </div>
         <div className="analysis-content-box">
+          {}
           <div className="tab-container">
             <div
               className="tab"

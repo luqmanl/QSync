@@ -12,6 +12,8 @@ from datetime import datetime, timedelta
 import requests
 from django.forms.models import model_to_dict
 
+from .models import CachedNews
+import sys
 from .models import CachedNews, CurrencyDescriptions, CurrencyInformation, FutureInformation, PriceInformation, RelatedCharacteristics, CurrencyCharacteristics, SupportedCurrencies
 
 
@@ -166,6 +168,23 @@ def getNewsfeed(request):
 
 
 @csrf_exempt
+def getHistoricalPriceData(request, exchange, sym, time_period):
+    data = None
+    response = []
+    time_period_to_hours = {"1D": 24, "7D": 168,
+                            "1M": 720, "3M": 2160, "1Y": 8760, "ALL": -1}
+    with qconnection.QConnection(host='localhost', port=5011) as q:
+        try:
+            data = q.sendSync('.orderbook.price', np.string_(
+                exchange), np.string_(sym), time_period_to_hours[time_period], 1, numpy_temporals=True)
+        except Exception as e:
+            print("QException: " + str(e))
+            sys.exit(1)
+    for (key, row) in data.items():
+        response.append({"time": str(key[0] + key[1]), "price": row[0]})
+    return JsonResponse({"data": response})
+
+
 def detailedAnalysis(request, currency):
     detailedInfoInitial = {
         "generalInfoDescription": "No Description for this currency",

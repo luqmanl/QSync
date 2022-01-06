@@ -1,4 +1,5 @@
 import {
+  AxisTickStrategies,
   FontSettings,
   lightningChart,
   LineSeries,
@@ -13,6 +14,7 @@ type propsType = {
   graphTitle: string;
   xAxis: string;
   yAxis: string;
+  date?: Date;
 };
 
 export type dataPoint = {
@@ -45,6 +47,14 @@ class StandardLineChart extends React.Component<propsType, stateType> {
     chart.getDefaultAxisX().setTitle(this.props.xAxis).setTitleFont(font);
 
     chart.getDefaultAxisY().setTitle(this.props.yAxis).setTitleFont(font);
+
+    if ("date" in this.props) {
+      chart
+        .getDefaultAxisX()
+        .setTickStrategy(AxisTickStrategies.DateTime, (tickstrategy) =>
+          tickstrategy.setDateOrigin(this.props.date)
+        );
+    }
 
     series.add(this.props.data);
   }
