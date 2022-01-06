@@ -73,6 +73,7 @@ weekInSeconds: 604800;
 
 .historic.easy:{`.historic.percentage[(`$"BTC-USDT";`$"ETH-USDT";`$"ADA-USDT";`$"SOL-USDT";`$"DOGE-USDT");`BINANCE]};
 .historic.percentage:{[syms;exchange]
+    hdb:hopen`::5012;
     time24hAgo: .z.p - (secondInNanosecs * dayInSeconds);
     rdbData: .selectByMinTime[time24hAgo];
     rdbData: delete time from rdbData;
