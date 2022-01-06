@@ -4,7 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.utils import timezone
 
-from qpython import qconnection
+from qpython.qconnection import QConnection
 import numpy as np
 from datetime import datetime, timedelta
 import requests
@@ -25,20 +25,20 @@ def convertExchangeTimestamp(nanosecs):
     asDatetime = jan2000 + timedelta(0, nanosecsAsSecs)
     return asDatetime
 
-#
-
 
 def getKDBHistoricalBasisData(spotSym, futureSym, spotExch, futureExch, minTimestamp, resolution):
     data = {}
     outputData = {"data": []}
 
     # hdb data
-    with qconnection.QConnection(host='localhost', port=5012) as q:
-        try:
-            data = q.sendSync('.orderbook.basis', np.string_(
-                spotSym), np.string_(futureSym), np.string_(spotExch), np.string_(futureExch), np.datetime64(minTimestamp, 'ns'), resolution)
-        except Exception as e:
-            print(e)
+    q = QConnection(host='localhost', port=5012)
+    q.open()
+    try:
+        data = q.sendSync('.orderbook.basis', np.string_(
+            spotSym), np.string_(futureSym), np.string_(spotExch), np.string_(futureExch), np.datetime64(minTimestamp, 'ns'), resolution)
+    except Exception as e:
+        print(e)
+    q.close()
 
     for d in data:
         timestamp = convertExchangeTimestamp(d[0])
@@ -48,12 +48,12 @@ def getKDBHistoricalBasisData(spotSym, futureSym, spotExch, futureExch, minTimes
         outputData["data"].append(coordinate)
 
     # rdb data
-    with qconnection.QConnection(host='localhost', port=5011) as q:
-        try:
-            data = q.sendSync('.orderbook.basis', np.string_(
-                spotSym), np.string_(futureSym), np.string_(spotExch), np.string_(futureExch), np.datetime64(minTimestamp, 'ns'), resolution)
-        except Exception as e:
-            print(e)
+    q = QConnection(host='localhost', port=5011)
+    try:
+        data = q.sendSync('.orderbook.basis', np.string_(
+            spotSym), np.string_(futureSym), np.string_(spotExch), np.string_(futureExch), np.datetime64(minTimestamp, 'ns'), resolution)
+    except Exception as e:
+        print(e)
 
     for d in data:
         timestamp = convertExchangeTimestamp(d[0])
@@ -96,6 +96,36 @@ def getHistoricalBasisData(request, period, spotSym, futureSym, spotExch, future
 
     outputData = getKDBHistoricalBasisData(
         spotSym, futureSym, spotExch, futureExch, minTimestamp, resolution)
+    return JsonResponse(outputData)
+
+
+def getKDBHistorical24hChangeData():
+    outputData = {"points": []}
+
+    # hdb data
+    with QConnection(host='localhost', port=5011) as q:
+        try:
+            data = q.sendSync('.historic.easy', np.string_())
+        except Exception as e:
+            print(e)
+
+    # print(data)
+    for d in data:
+        point = {}
+        point["currency"] = d[0].decode('UTF-8')
+        point["timestamp"] = convertExchangeTimestamp(d[1])
+        point["percentage"] = d[2]
+        outputData["points"].append(point)
+
+    return outputData
+
+# Returns the historical value of the difference in midprices of the given currencies and exchanges
+
+
+@csrf_exempt
+def getHistorical24hChangeData(request):
+
+    outputData = getKDBHistorical24hChangeData()
     return JsonResponse(outputData)
 
 
