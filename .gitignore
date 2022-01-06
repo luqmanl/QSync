@@ -26,6 +26,5 @@ backend/src/.env
 dump.rdb
 
 # q
+!q/tables/h.q
 q/tables*
-q/tables/2*
-q/tables/sym

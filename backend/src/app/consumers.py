@@ -1,7 +1,7 @@
 from channels.consumer import AsyncConsumer
 import json
 import numpy as np
-from qpython import qconnection
+from qpython.qconnection import QConnection
 import re
 
 
@@ -133,8 +133,13 @@ class L2overviewConsumer(AsyncConsumer):
         highestBid = data["bids"][0]
         lowestAsk = data["asks"][0]
 
-        with qconnection.QConnection(host='localhost', port=5011) as q:
+        q = QConnection(host='localhost', port=5011)
+        q.open()
+        try:
             volume = q.sendSync('.trades.vol', np.string_(data['sym']))
+        except Exception as e:
+            print(e)
+        q.close()
 
         highestBidSize = data["bidSizes"][0]
         lowestAskSize = data["askSizes"][0]

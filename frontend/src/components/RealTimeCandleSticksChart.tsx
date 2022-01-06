@@ -27,7 +27,9 @@ type dataPoint = {
 
 const RealTimeCandleSticksChart = (props: propsType) => {
   const [data, setData] = useState<dataPoint[]>([]);
-  const socket = new WebSocket(`ws://localhost:8000/ws/data/l2overview/`);
+  const socket = new WebSocket(
+    `ws://${process.env.back || "localhost:8000"}/ws/data/l2overview/`
+  );
 
   useEffect(() => {
     const chart = lightningChart().ChartXY({ container: props.id });

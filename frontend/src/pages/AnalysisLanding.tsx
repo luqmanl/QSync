@@ -81,10 +81,9 @@ const AnalaysisLanding = () => {
     "EXPLANATION NEEDED",
   ];
 
-  const endPoint = "/ws/data/analyses-table";
   const linkAddr = `ws://${
-    process.env.PUBLIC_URL || "localhost:8000"
-  }${endPoint}`;
+    process.env.back || "localhost:8000"
+  }/ws/data/analyses-table`;
 
   useEffect(() => {
     const ws = new WebSocket(linkAddr);

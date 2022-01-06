@@ -47,16 +47,16 @@ const generateColour7d = (value: number): colour => {
 };
 
 const generateColour24h = (value: number): colour => {
-  if (value >= 0.03) {
+  if (value >= 5) {
     return maxGreen;
   }
-  if (value <= -0.03) {
+  if (value <= -5) {
     return maxRed;
   }
   return {
-    red: 143.5 - (gradient.red / 0.06) * value,
-    green: 80 + (gradient.green / 0.06) * value,
-    blue: 7.5 + (gradient.blue / 0.06) * value,
+    red: 143.5 - (gradient.red / 10) * value,
+    green: 80 + (gradient.green / 10) * value,
+    blue: 7.5 + (gradient.blue / 10) * value,
   };
 };
 
@@ -68,7 +68,7 @@ const TopCurrencyTable = () => {
 
   useEffect(() => {
     const ws = new WebSocket(
-      `ws://${process.env.PUBLIC_URL || "localhost:8000"}${endPoint}`
+      `ws://${process.env.back || "localhost:8000"}${endPoint}`
     );
     ws.addEventListener("message", (ev) => {
       const res: { currencyData: responseType[] } = JSON.parse(ev.data);
@@ -78,8 +78,8 @@ const TopCurrencyTable = () => {
       }
       const updatedTable = tableData;
       res.currencyData.forEach((item) => {
-        item.change24h = parseFloat(item.change24h.toFixed(3));
-        item.change7d = parseFloat(item.change7d.toFixed(3));
+        item.change24h = parseFloat((item.change24h * 100).toFixed(3));
+        item.change7d = parseFloat((item.change7d * 100).toFixed(3));
         updatedTable[item.name] = item;
       });
       setTableData(updatedTable);
@@ -103,7 +103,7 @@ const TopCurrencyTable = () => {
             return (
               <tr key={name}>
                 <td>{data.name}</td>
-                <td>${data.price.toLocaleString("en-UK")}</td>
+                <td>${data.price.toPrecision(5)}</td>
                 <td
                   style={{
                     color: `rgb(${colour24h.red},${colour24h.green},${colour24h.blue})`,

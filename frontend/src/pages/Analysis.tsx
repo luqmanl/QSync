@@ -12,8 +12,11 @@ import {
   exampleData,
   initalData,
 } from "../exampleData/ExampleDetailedAnalysis";
-import { OverlayTrigger, Tooltip, Spinner } from "react-bootstrap";
 import PriceHistoryGraph from "../components/PriceHistoryGraph";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
+import BasisTable from "../components/BasisTable";
+import OrderBookTable from "../components/OrderBookTable";
+import OrderBookScatterGraph from "../components/OrderBookScatterGraph";
 
 interface paramType {
   pair: string;
@@ -82,15 +85,37 @@ const futureNames = [
 ];
 
 const Arbitrage = () => {
-  return <div className="main-content-box"></div>;
+  return (
+    <div className="main-content-box">
+      <div className="analysis-column">
+        <div className="coin-summary">
+          <h2 className="summary-title">Arbitrage Explained</h2>
+          <p>INSERT EXPLANATION HERE</p>
+        </div>
+        <div style={{ height: "40vh" }}>
+          <OrderBookScatterGraph />
+        </div>
+      </div>
+      <div className="analysis-column">
+        <BasisTable />
+        <OrderBookTable />
+      </div>
+    </div>
+  );
 };
 
 const SubAnalysis = () => {
   const pair = useContext(PairContext);
   const [currencyInfo, setCurrencyInfo] = useState<data>(exampleData);
 
+  const timePeriods = ["1D", "7D", "1M", "3M", "1Y", "all"];
+  const priceGraphEndpoint = `/api/general-info/${pair}`;
+  const addr = `http://${
+    process.env.back || "localhost:8000"
+  }/${priceGraphEndpoint}/${timePeriods[selectedPeriod]}`;
+
   const currencyInfoAddr = `http://${
-    process.env.PUBLIC_URL || "localhost:8000"
+    process.env.back || "localhost:8000"
   }/api/general-info/${pair}`;
 
   useEffect(() => {
@@ -106,10 +131,7 @@ const SubAnalysis = () => {
   }, []);
 
   return (
-    <div
-      className="main-content-box"
-      style={{ display: "grid", gridTemplateColumns: "50% 50%" }}
-    >
+    <div className="main-content-box">
       <div className="analysis-column">
         <div className="coin-summary">
           <h2 className="summary-title">General Info</h2>
