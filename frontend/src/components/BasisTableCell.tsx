@@ -7,63 +7,60 @@ import { useState, useEffect, useRef } from "react";
 import "./BasisTable.css";
 import "./BasisTableCell.css";
 import { Modal, Button } from "react-bootstrap";
+import StandardLineChart from "./StandardLineChart";
 import { ExampleBasisHistory } from "../exampleData/ExampleBasisHistory";
 import { lightningChart } from "@arction/lcjs";
+import { graphPoint } from "./TopCurrencyGraph";
 import axios from "axios";
 
-const Chart = (props) => {
-  const { data, id } = props;
-  const chartRef = useRef(undefined);
+interface btcPropsType {
+  spot: string;
+  future: string;
+  value: string;
+}
 
-  useEffect(() => {
-    console.log("DATA", data);
-    const chart = lightningChart().ChartXY({ container: id });
-    chart.setTitle("Basis Graph");
-    const series = chart.addLineSeries();
-    chartRef.current = { chart, series };
-
-    return () => {
-      chart.dispose();
-      chartRef.current = undefined;
-    };
-  }, [id]);
-
-  useEffect(() => {
-    const components = chartRef.current;
-    if (!components) {
-      return;
+const basisHistoryGraph = (spot: string, future: string) => {
+  const changeDate = (date: Date, period: number) => {
+    if (period === 1) {
+      date.setDate(date.getDate() - 1);
+    } else if (period === 2) {
+      date.setMonth(date.getMonth() - 1);
+    } else {
+      date.setFullYear(date.getFullYear() - 1);
     }
+  };
 
-    const { series } = components;
-    console.log("set chart data", data);
-    series.clear().add(data);
-  }, [data, chartRef]);
-
-  return <div id={id} className="chart"></div>;
-};
-
-const basisHistoryGraph = (spot, future) => {
   const freqMap = ["SECOND", "MINUTE", "HOUR"];
   const periodMap = ["MONTH", "WEEK", "YEAR"];
-  const [freq, setFreq] = useState(2);
   const [period, setPeriod] = useState(2);
   const [loading, setLoading] = useState(true);
-  const [data, setData] = useState(ExampleBasisHistory);
+  const [date, setDate] = useState<Date>(new Date());
+  const [data, setData] = useState<graphPoint[]>([]);
 
-  const url = `http://localhost:8000/historicalBasisData/1w/BTC-USDT/BTC-USD-PERP/BINANCE/OKEX/`;
+  const url = `http://localhost:8000/historicalBasisData/1w/BTC-USDT/BTC-USD-PERP/${spot}/${future}`;
 
   useEffect(() => {
+    const newDate = new Date();
+    changeDate(newDate, period);
+    setDate(newDate);
     axios
       .get(url, {})
       .then((res) => {
-        console.log("HELLLLLOOOO", res.data);
-        setData(res.data.data);
+        const newData = res.data.data.map((item: { x: string; y: number }) => {
+          return {
+            x: new Date(item.x).getTime() - newDate.getTime(),
+            y: item.y,
+          };
+        });
+        console.log(data);
+        setData(newData);
+        console.log(newData);
         setLoading(false);
       })
       .catch((err) => {
         console.warn(err);
       });
-  }, [freq, period]);
+  }, [period]);
 
   const loadingSpinner = (
     <div className="d-flex justify-content-center">
@@ -80,24 +77,7 @@ const basisHistoryGraph = (spot, future) => {
         loadingSpinner
       ) : (
         <div>
-          <Chart className="graph" data={data} id="id" />
-          <div className="button-container">
-            <h3>Set Data Frequency:</h3>
-            {freqMap.map((opt, i) => {
-              return (
-                <Button
-                  key={i}
-                  disabled={freq === i}
-                  onClick={() => {
-                    setFreq(i);
-                  }}
-                  className="button"
-                >
-                  {opt}
-                </Button>
-              );
-            })}
-          </div>
+          {/* <StandardLineChart data={data} date={date} id="basis-history-graph" xAxis="Time" yAxis="Basis" /> */}
           <div className="button-container">
             <h3>Set Data Period:</h3>
             {periodMap.map((opt, i) => {
@@ -106,6 +86,7 @@ const basisHistoryGraph = (spot, future) => {
                   key={i}
                   disabled={period === i}
                   onClick={() => {
+                    setLoading(true);
                     setPeriod(i);
                   }}
                   className="button"
@@ -121,7 +102,7 @@ const basisHistoryGraph = (spot, future) => {
   );
 };
 
-const BasisTableCell = (props) => {
+const BasisTableCell = (props: btcPropsType) => {
   const [showDetailed, setShowDetailed] = useState(false);
 
   const handleClose = () => setShowDetailed(false);
