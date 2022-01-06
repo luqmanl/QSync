@@ -12,6 +12,7 @@ qpython = "*"
 numpy = "*"
 channels = "*"
 channels-redis = "*"
+mock = "*"
 python-dotenv = "*"
 
 [dev-packages]
