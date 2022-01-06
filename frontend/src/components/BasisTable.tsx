@@ -64,9 +64,7 @@ const BasisTable = () => {
 
   const [basisTable, setBasisTable] = useState<futureMap>(exampleBasisTable);
 
-  const wsAddr = `ws://${
-    window.location.hostname
-  }:8000/ws/data/basis/`;
+  const wsAddr = `ws://${window.location.hostname}:8000/ws/data/basis/`;
 
   useEffect(() => {
     const socket = new WebSocket(wsAddr);

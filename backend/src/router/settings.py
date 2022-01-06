@@ -25,7 +25,7 @@ NEWS_API_KEY = os.environ.get('NEWS_API_KEY')
 SECRET_KEY = os.environ.get('SECRET_KEY')
 KDB_HOST = os.environ.get('KDB_HOST')
 BACK_HOST = os.environ.get('BACK_HOST')
-DEFAULT_AUTO_FIELD='django.db.models.AutoField'
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 
 # Quick-start development settings - unsuitable for production

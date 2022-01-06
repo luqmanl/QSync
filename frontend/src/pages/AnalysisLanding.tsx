@@ -81,9 +81,7 @@ const AnalaysisLanding = () => {
     "EXPLANATION NEEDED",
   ];
 
-  const linkAddr = `ws://${
-    window.location.hostname
-  }:8000/ws/data/analyses-table`;
+  const linkAddr = `ws://${window.location.hostname}:8000/ws/data/analyses-table`;
 
   useEffect(() => {
     const ws = new WebSocket(linkAddr);

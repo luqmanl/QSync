@@ -14,9 +14,7 @@ export interface newsListing {
 }
 
 const NewsFeed = () => {
-  const url = `http://${
-    window.location.hostname
-  }:8000/api/data/newsfeed`;
+  const url = `http://${window.location.hostname}:8000/api/data/newsfeed`;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [loading, setLoading] = useState(true);
   const [news, setNews] = useState<newsListing[]>([]);

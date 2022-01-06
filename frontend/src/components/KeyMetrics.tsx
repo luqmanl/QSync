@@ -81,9 +81,7 @@ const KeyMetrics = () => {
   const [loading, setLoading] = useState(true);
   const [info, setInfo] = useState<metricInfo[]>([]);
 
-  const linkAddr = `http://${
-    window.location.hostname
-  }:8000/api/key_metrics`;
+  const linkAddr = `http://${window.location.hostname}:8000/api/key_metrics`;
 
   useEffect(() => {
     axios
