@@ -150,7 +150,6 @@ def detailedAnalysis(request, currency):
     for currency_characteristic in related_characteristics:
         characteristic_def = model_to_dict(CurrencyCharacteristics.objects.filter(
             characteristic=model_to_dict(currency_characteristic)["characteristic"])[0])
-        print(characteristic_def)
         characteristics.append(
             [characteristic_def["characteristic"], characteristic_def["description"]])
 
