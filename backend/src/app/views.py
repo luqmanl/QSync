@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
-from django.http import JsonResponse
+from django.http import JsonResponse, response
 from django.utils import timezone
 
 from qpython import qconnection
@@ -10,7 +10,7 @@ from datetime import datetime, timedelta
 import requests
 from django.forms.models import model_to_dict
 
-from .models import CachedNews
+from .models import CachedNews, CurrencyDescriptions, CurrencyInformation, FutureInformation, PriceInformation, RelatedCharacteristics, CurrencyCharacteristics
 
 
 def index(request):
@@ -131,3 +131,50 @@ def getNewsfeed(request):
         news = CachedNews(news_list=toSave, date_created=timezone.now())
         news.save()
         return JsonResponse(toSave)
+
+@csrf_exempt
+def detailedAnalysis(request, currency):
+    currencyInformation = model_to_dict(CurrencyInformation.objects.filter(currency=currency)[0])
+    priceInformation = model_to_dict(PriceInformation.objects.filter(currency=currency)[0])
+    futureInformation = model_to_dict(FutureInformation.objects.filter(currency=currency)[0])
+    description = model_to_dict(CurrencyDescriptions.objects.filter(currency=currency)[0])["general_description"]
+    related_characteristics = RelatedCharacteristics.objects.filter(currency=currency)
+    characteristics = []
+
+    for currency_characteristic in related_characteristics:
+        characteristic_def = model_to_dict(CurrencyCharacteristics.objects.filter(characteristic=model_to_dict(currency_characteristic)["characteristic"])[0])
+        print(characteristic_def)
+        characteristics.append([characteristic_def["characteristic"], characteristic_def["description"]])
+
+    toSend = {
+        "generalInfoDescription": description,
+        "currencyCharacteristics": characteristics,
+        "priceInformation": {
+            "high24h": priceInformation["high_24h"],
+            "low24h": priceInformation["low_24h"],
+            "high1y": priceInformation["high_1y"],
+            "low1y": priceInformation["low_1y"],
+            "change1y": priceInformation["change_1y"],
+            "change24h": priceInformation["change_24h"],
+            "volume24h": priceInformation["volume_24h"],
+            "marketCap": priceInformation["market_cap"]
+        },
+        "currencyInformation": {
+            "currentSupply": currencyInformation["current_supply"],
+            "totalSupply": currencyInformation["total_supply"],
+            "transactionsPerSecond": currencyInformation["transactions_per_second"],
+            "totalTransactions": currencyInformation["total_transactions"],
+            "marketDominancePercentage": currencyInformation["market_dominance_percentage"],
+            "activeAddresses": currencyInformation["active_addresses"],
+            "transactions24h": currencyInformation["transactions_24h"],
+            "transactionFee24h": currencyInformation["average_transaction_fee_usd_24h"] 
+        },
+        "futureInformation": {
+            "perpetualPrice": futureInformation["perpetual_price"],
+            "fundingRate": futureInformation["funding_rate"],
+            "basis": futureInformation["basis"],
+            "openInterest": futureInformation["open_interest"]
+        }
+    }
+
+    return JsonResponse(toSend)

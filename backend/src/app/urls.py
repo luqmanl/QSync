@@ -7,4 +7,5 @@ urlpatterns = [
     path('historicalBasisData/<str:period>/<str:spotSym>/<str:futureSym>/<str:spotExch>/<str:futureExch>', views.getHistoricalBasisData,
          name='historicalBasisData'),
     path('api/data/newsfeed', views.getNewsfeed, name="newsfeed"),
+    path('api/data/general-info/<str:currency>', views.detailedAnalysis)
 ]
