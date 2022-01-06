@@ -42,8 +42,8 @@ const PriceHistoryGraph = () => {
     axios
       .get(addr)
       .then((res) => {
-        const { data } = res.data;
-        data.map((item: { time: string; price: number }) => {
+        let { data } = res.data;
+        data = data.map((item: { time: string; price: number }) => {
           return {
             x: new Date(item.time).getTime() - pastDate.getTime(),
             y: item.price,
