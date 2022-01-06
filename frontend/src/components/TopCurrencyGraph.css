@@ -2,3 +2,10 @@
   height: 100%;
   width: 100%;
 }
+
+.top-cur-graph-spinner-container{
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
