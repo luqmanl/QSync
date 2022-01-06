@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand, CommandError
 import app.feed_handler as fh
 from multiprocessing import Process
-import top_currency_subscriber as tcs
+import app.top_currency_subscriber as tcs
 
 
 class Command(BaseCommand):
