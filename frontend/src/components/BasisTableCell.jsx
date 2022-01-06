@@ -51,8 +51,8 @@ const basisHistoryGraph = (spot, future) => {
   const [data, setData] = useState(ExampleBasisHistory);
 
   const url = `http://${
-    process.env.REACT_APP_BACK || "localhost:8000"
-  }/historicalBasisData`;
+    window.location.hostname
+  }:8000/historicalBasisData`;
 
   useEffect(() => {
     axios

@@ -31,8 +31,8 @@ const TopCurrencyGraph = () => {
   yesterday.setDate(yesterday.getDate() - 1);
 
   const historicalAddr = `http://${
-    process.env.REACT_APP_BACK || "localhost:8000"
-  }/historical24hChangeData`;
+    window.location.hostname
+  }:8000/historical24hChangeData`;
 
   useEffect(() => {
     const map: { [name: string]: graphPoint[] } = {};

@@ -19,8 +19,8 @@ const CurrencyPair = () => {
   const [data, setData] = useState<{ [name: string]: CurrencyPairType }>({});
 
   const wsAddr = `ws://${
-    process.env.REACT_APP_BACK || "localhost:8000"
-  }/ws/data/l2overview/`;
+    window.location.hostname
+  }:8000/ws/data/l2overview/`;
 
   useEffect(() => {
     const socket = new WebSocket(wsAddr);

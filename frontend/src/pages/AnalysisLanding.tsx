@@ -82,8 +82,8 @@ const AnalaysisLanding = () => {
   ];
 
   const linkAddr = `ws://${
-    process.env.REACT_APP_BACK || "localhost:8000"
-  }/ws/data/analyses-table`;
+    window.location.hostname
+  }:8000/ws/data/analyses-table`;
 
   useEffect(() => {
     const ws = new WebSocket(linkAddr);

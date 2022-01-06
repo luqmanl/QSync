@@ -95,8 +95,8 @@ const SubAnalysis = () => {
   const [currencyInfo, setCurrencyInfo] = useState<data>(exampleData);
 
   const currencyInfoAddr = `http://${
-    process.env.REACT_APP_BACK || "localhost:8000"
-  }/api/general-info/${pair}`;
+    window.location.hostname
+  }:8000/api/general-info/${pair}`;
 
   useEffect(() => {
     axios
