@@ -98,7 +98,6 @@ const Arbitrage = () => {
       </div>
       <div className="analysis-column">
         <BasisTable />
-        <OrderBookTable />
       </div>
     </div>
   );

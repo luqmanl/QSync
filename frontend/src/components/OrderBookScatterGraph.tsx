@@ -22,11 +22,13 @@ const OrderBookScatterGraph = () => {
     });
     chart.setTitle("Order Book Scatter Graph");
     const askSeries = chart
-      .addPointLineSeries({ pointShape: PointShape.Square })
-      .setName("Asks");
+      .addPointSeries({ pointShape: PointShape.Square })
+      .setName("Asks")
+      .setPointSize(10);
     const bidSeries = chart
-      .addPointLineSeries({ pointShape: PointShape.Circle })
-      .setName("Bids");
+      .addPointSeries({ pointShape: PointShape.Circle })
+      .setName("Bids")
+      .setPointSize(10);
     const legend = chart
       .addLegendBox(LegendBoxBuilders.HorizontalLegendBox)
       .setAutoDispose({
@@ -36,7 +38,7 @@ const OrderBookScatterGraph = () => {
     legend.add(askSeries);
     legend.add(bidSeries);
 
-    let x = 0;
+    let x = 9;
     const socket = new WebSocket(
       `ws://${process.env.back || "localhost:8000"}/ws/data/l2orderbook/`
     );
@@ -51,11 +53,10 @@ const OrderBookScatterGraph = () => {
     };
 
     socket.addEventListener("message", (ev) => {
-      console.log("HLO");
       x += 1;
       const res = JSON.parse(ev.data);
       const { data } = res;
-      const newData = data as bookData;
+      const newData = res as bookData;
       const askList = newData.asks.map((price, idx) => {
         return { x: price, y: newData.askSizes[idx] };
       });
@@ -63,6 +64,7 @@ const OrderBookScatterGraph = () => {
         return { x: price, y: newData.bidSizes[idx] };
       });
       if (x === UPDATE_LIMIT) {
+        x = 0;
         askSeries.clear();
         bidSeries.clear();
         askSeries.add(askList);
