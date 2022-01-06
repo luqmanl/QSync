@@ -18,7 +18,8 @@ class SupportedCurrencies(models.Model):
 
 
 class CoinGeckoCurrencyIDs(models.Model):
-    currency = models.OneToOneField(SupportedCurrencies, on_delete=models.CASCADE, primary_key=True)
+    currency = models.OneToOneField(
+        SupportedCurrencies, on_delete=models.CASCADE, primary_key=True)
     api_id = models.TextField()
 
 

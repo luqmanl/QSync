@@ -18,6 +18,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='coingeckocurrencyids',
             name='currency',
-            field=models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, primary_key=True, serialize=False, to='app.supportedcurrencies'),
+            field=models.OneToOneField(on_delete=django.db.models.deletion.CASCADE,
+                                       primary_key=True, serialize=False, to='app.supportedcurrencies'),
         ),
     ]
