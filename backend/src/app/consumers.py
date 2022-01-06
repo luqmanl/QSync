@@ -3,6 +3,7 @@ import json
 import numpy as np
 from qpython.qconnection import QConnection
 import re
+from django.conf import settings
 
 
 """ 
@@ -133,7 +134,7 @@ class L2overviewConsumer(AsyncConsumer):
         highestBid = data["bids"][0]
         lowestAsk = data["asks"][0]
 
-        q = QConnection(host='localhost', port=5011)
+        q = QConnection(host=settings.KDB_HOST, port=5011)
         q.open()
         try:
             volume = q.sendSync('.trades.vol', np.string_(data['sym']))

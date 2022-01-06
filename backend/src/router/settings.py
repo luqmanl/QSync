@@ -23,6 +23,9 @@ if os.path.isfile(dotenv_file):
 
 NEWS_API_KEY = os.environ.get('NEWS_API_KEY')
 SECRET_KEY = os.environ.get('SECRET_KEY')
+KDB_HOST = os.environ.get('KDB_HOST')
+DEFAULT_AUTO_FIELD='django.db.models.AutoField'
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/

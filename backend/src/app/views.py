@@ -35,7 +35,7 @@ def getKDBHistoricalBasisData(spotSym, futureSym, spotExch, futureExch, minTimes
     outputData = {"data": []}
 
     # hdb data
-    q = QConnection(host='localhost', port=5012)
+    q = QConnection(host=settings.KDB_HOST, port=5012)
     q.open()
     try:
         data = q.sendSync('.orderbook.basis', np.string_(
@@ -52,7 +52,7 @@ def getKDBHistoricalBasisData(spotSym, futureSym, spotExch, futureExch, minTimes
         outputData["data"].append(coordinate)
 
     # rdb data
-    q = QConnection(host='localhost', port=5011)
+    q = QConnection(host=settings.KDB_HOST, port=5011)
     try:
         data = q.sendSync('.orderbook.basis', np.string_(
             spotSym), np.string_(futureSym), np.string_(spotExch), np.string_(futureExch), np.datetime64(minTimestamp, 'ns'), resolution)
@@ -107,7 +107,7 @@ def getKDBHistorical24hChangeData():
     outputData = {"points": []}
 
     # hdb data
-    with QConnection(host='localhost', port=5011) as q:
+    with QConnection(host=settings.KDB_HOST, port=5011) as q:
         try:
             data = q.sendSync('.historic.easy', np.string_())
         except Exception as e:
@@ -173,7 +173,7 @@ def getHistoricalPriceData(request, exchange, sym, time_period):
     response = []
     time_period_to_hours = {"1D": 24, "7D": 168,
                             "1M": 720, "3M": 2160, "1Y": 8760, "ALL": -1}
-    with qconnection.QConnection(host='localhost', port=5011) as q:
+    with qconnection.QConnection(host=settings.KDB_HOST, port=5011) as q:
         try:
             data = q.sendSync('.orderbook.price', np.string_(
                 exchange), np.string_(sym), time_period_to_hours[time_period], 1, numpy_temporals=True)
