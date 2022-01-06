@@ -1,3 +1,4 @@
+/* eslint-disable no-magic-numbers */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-duplicate-imports */
 import React, { useContext, useEffect, useState } from "react";
@@ -5,8 +6,6 @@ import SideBar from "../components/SideBar";
 import "./Analysis.css";
 import { useParams } from "react-router-dom";
 import { nameMap } from "../CoinData";
-import StandardLineChart from "../components/StandardLineChart";
-import { Button } from "react-bootstrap";
 import axios from "axios";
 import {
   exampleData,
@@ -14,7 +13,6 @@ import {
 } from "../exampleData/ExampleDetailedAnalysis";
 import PriceHistoryGraph from "../components/PriceHistoryGraph";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
-import BasisTable from "../components/BasisTable";
 import OrderBookScatterGraph from "../components/OrderBookScatterGraph";
 
 interface paramType {
@@ -38,10 +36,10 @@ type currencyInformation = {
   totalSupply: number;
   transactionsPerSecond: number;
   totalTransactions: number;
-  totalAddresses: number;
+  marketDominationPercentage: number;
   activeAddresses: number;
-  dailyTransactions: number;
-  transactionFee: number;
+  transactions24h: number;
+  transactionFee24h: number;
 };
 
 type priceInformation = {
@@ -62,46 +60,36 @@ type futuresInformation = {
   openInterest: number;
 };
 
-export const PairContext = React.createContext<string>("");
-
-const priceInfoNames = [
-  "24H High",
-  "24H Low",
-  "1Y High",
-  "1Y Low",
-  "24H Change",
-  "24H Volume",
-  "1Y Change",
-  "Market Cap",
-];
-
-const futureNames = [
-  ["", "EXPLANATION NEEDED"],
-  ["Perpetual Price", "EXPLANATION NEEDED"],
-  ["Funding Rate", "EXPLANATION NEEDED"],
-  ["Basis", "EXPLANATION NEEDED"],
-  ["Open Interest", "EXPLANANTION NEEDED"],
-];
-
-const Arbitrage = () => {
-  return (
-    <div className="main-content-box">
-      <div className="analysis-column">
-        <div className="coin-summary">
-          <h2 className="summary-title">Arbitrage Explained</h2>
-          <p>INSERT EXPLANATION HERE</p>
-        </div>
-        <div style={{ height: "40vh" }}>
-          <OrderBookScatterGraph />
-        </div>
-      </div>
-      <div className="analysis-column">
-        <BasisTable />
-      </div>
-    </div>
-  );
+const priceInfoNames: { [name: string]: string } = {
+  high24h: "24 Hour High",
+  low24h: "24 Hour Low",
+  high1y: "1Y High",
+  low1y: "1Y LOW",
+  change1y: "1Y Change",
+  change24h: "24 Hour Change",
+  volume24h: "24 Hour Volume",
+  marketCap: "Market Cap",
 };
 
+const futureNames: { [name: string]: string[] } = {
+  perpetualPrice: ["Perpetual Price", "EXPLANATION NEEDED"],
+  fundingRate: ["Funding Rate", "EXPLANATION NEEDED"],
+  basis: ["Basis", "EXPLANATION NEEDED"],
+  openInterest: ["Open Interest", "EXPLANANTION NEEDED"],
+};
+
+const curInfoNames: { [name: string]: string[] } = {
+  currentSupply: ["Current Supply", "EXPLAIN"],
+  totalSupply: ["Total Supply", "EXPLAIN"],
+  transactionsPerSecond: ["Transactions Per Second", ""],
+  totalTransactions: ["Total Transactions", ""],
+  marketDominationPercentage: ["Market Domination Percentage", "EXPLAIN"],
+  activeAddresses: ["Active Addresses", "EXPLAIN"],
+  transactions24h: ["Daily Transactions", "EXPLAIN"],
+  transactionFee24h: ["Daily Transaction Fee", "EXPLAIN"],
+};
+
+export const PairContext = React.createContext<string>("");
 const SubAnalysis = () => {
   const pair = useContext(PairContext);
   const [currencyInfo, setCurrencyInfo] = useState<data>(exampleData);
@@ -144,36 +132,75 @@ const SubAnalysis = () => {
         <OrderBookScatterGraph />
       </div>
       <div className="analysis-column">
+        <PriceHistoryGraph />
         <div className="coin-summary">
           <h2 className="summary-title">Price Information</h2>
           <div className="price-info-columns">
-            {Object.values(currencyInfo.priceInformation).map((item, idx) => {
-              return (
-                <h3 key={idx}>
-                  {priceInfoNames[idx]}: {item.toLocaleString("en-UK")}
-                </h3>
-              );
-            })}
+            {Object.entries(currencyInfo.priceInformation).map(
+              ([name, value], idx) => {
+                return (
+                  <h3 key={idx}>
+                    {priceInfoNames[name]}: {value.toLocaleString("en-UK")}
+                  </h3>
+                );
+              }
+            )}
           </div>
         </div>
         <div className="coin-summary">
           <h2 className="summary-title">Future Information</h2>
           <div className="price-info-columns">
-            {Object.values(currencyInfo.futureInformation).map((item, idx) => {
-              const tooltip = (
-                <Tooltip id="button-tooltip">{futureNames[idx + 1][1]}</Tooltip>
-              );
-              return (
-                <OverlayTrigger key={idx} placement="bottom" overlay={tooltip}>
-                  <h3>
-                    {futureNames[idx + 1][0]}: {item.toLocaleString("en-UK")}
-                  </h3>
-                </OverlayTrigger>
-              );
-            })}
+            {Object.entries(currencyInfo.futureInformation).map(
+              ([name, value], idx) => {
+                const tooltip = (
+                  <Tooltip id="button-tooltip">{futureNames[name][1]}</Tooltip>
+                );
+                return (
+                  <OverlayTrigger
+                    key={idx}
+                    placement="bottom"
+                    overlay={tooltip}
+                  >
+                    <h3>
+                      {futureNames[name][0]}: {value.toLocaleString("en-UK")}
+                    </h3>
+                  </OverlayTrigger>
+                );
+              }
+            )}
           </div>
         </div>
-        <PriceHistoryGraph />
+        <div className="coin-summary">
+          <h2 className="summary-title">Currency Information</h2>
+          <div className="price-info-columns">
+            {Object.entries(currencyInfo.currencyInformation).map(
+              ([name, value], idx) => {
+                const [fullName, toolTip] = curInfoNames[name];
+                const percentValue = value * 100;
+                const string =
+                  fullName === "Market Domination Percentage"
+                    ? `${percentValue} %`
+                    : value;
+                const text = (
+                  <h3 key={idx}>
+                    {curInfoNames[name][0]}: {string}
+                  </h3>
+                );
+                if (toolTip === "") {
+                  return text;
+                }
+                const toolTipC = (
+                  <Tooltip id="button-tooltip">{curInfoNames[name][1]}</Tooltip>
+                );
+                return (
+                  <OverlayTrigger key={idx} placement="top" overlay={toolTipC}>
+                    {text}
+                  </OverlayTrigger>
+                );
+              }
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -181,11 +208,6 @@ const SubAnalysis = () => {
 
 function Analysis(): JSX.Element {
   const { pair } = useParams<paramType>();
-  const [showArbitrage, setShowArbitrage] = useState(false);
-  const disabledButtonStyle = {
-    background: "rgba(0, 0, 0, 0.1)",
-    cursor: "auto",
-  };
 
   return (
     <PairContext.Provider value={pair}>
