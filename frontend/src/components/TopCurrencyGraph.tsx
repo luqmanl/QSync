@@ -1,8 +1,9 @@
 /* eslint-disable no-magic-numbers */
 import React, { useEffect, useState } from "react";
-import exampleData from "../exampleData/ExampleTopCurrencyGraphData";
-import { LegendBoxBuilders, lightningChart, Themes } from "@arction/lcjs";
 import "./TopCurrencyGraph.css";
+import axios from "axios";
+import MultiLineGraph from "./MultiLineGraph";
+import { Spinner } from "react-bootstrap";
 export interface data {
   data: dataPoint[];
 }
@@ -10,10 +11,10 @@ export interface data {
 export interface dataPoint {
   currency: string;
   percentage: number;
-  timestamp: number;
+  timestamp: string;
 }
 
-interface graphPoint {
+export interface graphPoint {
   x: number;
   y: number;
 }
@@ -21,56 +22,51 @@ interface graphPoint {
 // const colours = ["red", "blue", "green", "pink", "brown"];
 
 const TopCurrencyGraph = () => {
-  const [graphData, setGraphData] = useState<Map<string, graphPoint[]>>(
-    new Map()
-  );
+  const [graphDataMap, setGraphDataMap] = useState<{
+    [name: string]: graphPoint[];
+  }>({});
+  // here
+  const [loading, setLoading] = useState(true);
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+
+  const historicalAddr = `http://${
+    process.env.back || "localhost:8000"
+  }/historical24hChangeData`;
 
   useEffect(() => {
-    const updatedGraphData = graphData;
-    exampleData.data.forEach((item) => {
-      if (updatedGraphData.has(item.currency)) {
-        const curList = updatedGraphData.get(item.currency);
-        curList?.push({ x: item.timestamp, y: item.percentage });
-      } else {
-        updatedGraphData.set(item.currency, [
-          { x: item.timestamp, y: item.percentage },
-        ]);
-      }
-    });
-    setGraphData(updatedGraphData);
-  });
-
-  useEffect(() => {
-    // eslint-disable-next-line new-cap
-    const chart = lightningChart().ChartXY({
-      theme: Themes.lightNew,
-      container: "currency-graph",
-    });
-    chart.setTitle("Top Currencies");
-    chart.getDefaultAxisX().setTitle("Time");
-    chart.getDefaultAxisY().setTitle("Percentage Change");
-
-    graphData.forEach((list, name) => {
-      const newSeries = chart
-        .addLineSeries({
-          dataPattern: {
-            pattern: "ProgressiveX",
-          },
-        })
-        .setStrokeStyle((strokeStyle) =>
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          strokeStyle.setFillStyle((fill: any) => fill.setA(70)).setThickness(5)
-        )
-        .setName(name);
-
-      newSeries.add(list);
-    });
-    chart.addLegendBox(LegendBoxBuilders.HorizontalLegendBox).add(chart);
+    const map: { [name: string]: graphPoint[] } = {};
+    axios
+      .get(historicalAddr)
+      .then((res) => {
+        const { points } = res.data;
+        const pointList = points as dataPoint[];
+        pointList.forEach((obj) => {
+          const newPoint = {
+            x: new Date(obj.timestamp).getTime() - yesterday.getTime(),
+            y: obj.percentage * 100,
+          };
+          if (obj.currency in map) {
+            map[obj.currency].push(newPoint);
+          } else {
+            map[obj.currency] = [newPoint];
+          }
+        });
+        setGraphDataMap(map);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err, historicalAddr);
+      });
   }, []);
 
   return (
     <div className="graph-container">
-      <div id="currency-graph" className="graph-container"></div>
+      {loading ? (
+        <Spinner animation="border" />
+      ) : (
+        <MultiLineGraph map={graphDataMap} date={yesterday} />
+      )}
     </div>
   );
 };

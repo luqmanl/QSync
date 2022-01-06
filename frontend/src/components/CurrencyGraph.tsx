@@ -28,7 +28,10 @@ const CurrencyGraph = (props: { data: string }) => {
     exampleData.data.forEach((item) => {
       if (item.currency === props.data) {
         //   change item.percentage to actual price of coin
-        updatedGraphData?.push({ x: item.timestamp, y: item.percentage });
+        updatedGraphData?.push({
+          x: new Date(item.timestamp).getTime(),
+          y: item.percentage,
+        });
       }
     });
     setGraphData(updatedGraphData);

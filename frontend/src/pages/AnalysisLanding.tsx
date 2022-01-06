@@ -5,7 +5,7 @@ import SideBar from "../components/SideBar";
 import "./AnalysisLanding.css";
 import { Table, Tooltip, OverlayTrigger } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { nameMap } from "../NameMap";
+import { nameMap } from "../CoinData";
 
 interface colour {
   red: number;

@@ -1,4 +1,9 @@
-import { lightningChart, LineSeries } from "@arction/lcjs";
+import {
+  FontSettings,
+  lightningChart,
+  LineSeries,
+  Themes,
+} from "@arction/lcjs";
 import React from "react";
 
 type stateType = { series: LineSeries; id: string };
@@ -10,7 +15,7 @@ type propsType = {
   yAxis: string;
 };
 
-type dataPoint = {
+export type dataPoint = {
   x: number;
   y: number;
 };
@@ -18,7 +23,10 @@ type dataPoint = {
 class StandardLineChart extends React.Component<propsType, stateType> {
   componentDidMount() {
     // eslint-disable-next-line new-cap
-    const chart = lightningChart().ChartXY({ container: this.props.id });
+    const chart = lightningChart().ChartXY({
+      container: this.props.id,
+      theme: Themes.lightNew,
+    });
     const series = chart.addLineSeries();
 
     this.setState({
@@ -26,11 +34,17 @@ class StandardLineChart extends React.Component<propsType, stateType> {
       id: this.props.id,
     });
 
+    const font = new FontSettings({
+      size: 20,
+      family: "Nunito Sans, sans-serif",
+    });
+    chart.setTitleFont(font);
+
     chart.setTitle(this.props.graphTitle);
 
-    chart.getDefaultAxisX().setTitle(this.props.xAxis);
+    chart.getDefaultAxisX().setTitle(this.props.xAxis).setTitleFont(font);
 
-    chart.getDefaultAxisY().setTitle(this.props.yAxis);
+    chart.getDefaultAxisY().setTitle(this.props.yAxis).setTitleFont(font);
 
     series.add(this.props.data);
   }
