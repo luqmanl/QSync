@@ -35,7 +35,6 @@ const PriceHistoryGraph = () => {
   };
 
   useEffect(() => {
-    console.log(addr);
     const pastDate = new Date();
     changeDate(pastDate, selectedPeriod);
     setDate(pastDate);
@@ -60,10 +59,7 @@ const PriceHistoryGraph = () => {
   return (
     <div className="his-price-graph-container">
       {loading ? (
-        <Spinner
-          animation="border"
-          style={{ height: "30vh", width: "30vh", margin: "auto auto" }}
-        />
+        <Spinner animation="border" style={{ margin: "auto auto" }} />
       ) : (
         <StandardLineChart
           data={priceGraphData}
