@@ -17,6 +17,11 @@ class SupportedCurrencies(models.Model):
         SupportedExchanges, on_delete=models.SET_DEFAULT, default="UNKNOWN")
 
 
+class CoinGeckoCurrencyIDs(models.Model):
+    currency = models.OneToOneField(SupportedCurrencies, on_delete=models.CASCADE, primary_key=True)
+    api_id = models.TextField()
+
+
 class CurrencyDescriptions(models.Model):
     currency = models.OneToOneField(
         SupportedCurrencies, on_delete=models.CASCADE, primary_key=True)
@@ -46,8 +51,8 @@ class CurrencyInformation(models.Model):
     active_addresses = models.FloatField(blank=True, null=True)
     transactions_24h = models.FloatField(blank=True, null=True)
     average_transaction_fee_usd_24h = models.FloatField(blank=True, null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True)
 
 
 class PriceInformation(models.Model):
@@ -61,8 +66,8 @@ class PriceInformation(models.Model):
     change_1y = models.FloatField(blank=True, null=True)
     volume_24h = models.IntegerField(blank=True, null=True)
     market_cap = models.FloatField(blank=True, null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True)
 
 
 class FutureInformation(models.Model):
@@ -72,5 +77,5 @@ class FutureInformation(models.Model):
     funding_rate = models.FloatField(blank=True, null=True)
     basis = models.FloatField(blank=True, null=True)
     open_interest = models.FloatField(blank=True, null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True)
