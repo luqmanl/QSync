@@ -8,4 +8,5 @@ RUN pipenv lock --keep-outdated --requirements > requirements.txt
 RUN pip install -r requirements.txt
 RUN chmod u+x run.sh
 EXPOSE 8000
+EXPOSE 6379
 CMD ./run.sh
