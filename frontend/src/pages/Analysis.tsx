@@ -107,12 +107,6 @@ const SubAnalysis = () => {
   const pair = useContext(PairContext);
   const [currencyInfo, setCurrencyInfo] = useState<data>(exampleData);
 
-  const timePeriods = ["1D", "7D", "1M", "3M", "1Y", "all"];
-  const priceGraphEndpoint = `/api/general-info/${pair}`;
-  const addr = `http://${
-    process.env.back || "localhost:8000"
-  }/${priceGraphEndpoint}/${timePeriods[selectedPeriod]}`;
-
   const currencyInfoAddr = `http://${
     process.env.back || "localhost:8000"
   }/api/general-info/${pair}`;

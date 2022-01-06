@@ -1,4 +1,5 @@
 /* eslint-disable new-cap */
+/* eslint-disable no-magic-numbers */
 import React, { useContext, useEffect } from "react";
 import { bookData } from "./OrderBookTable";
 import { PairContext } from "../pages/Analysis";
@@ -11,6 +12,7 @@ import {
 import "./OrderBookScatterGraph.css";
 
 const UPDATE_LIMIT = 10;
+const POINT_SIZE = 10;
 
 const OrderBookScatterGraph = () => {
   const pair = useContext(PairContext);
@@ -24,11 +26,11 @@ const OrderBookScatterGraph = () => {
     const askSeries = chart
       .addPointSeries({ pointShape: PointShape.Square })
       .setName("Asks")
-      .setPointSize(10);
+      .setPointSize(POINT_SIZE);
     const bidSeries = chart
       .addPointSeries({ pointShape: PointShape.Circle })
       .setName("Bids")
-      .setPointSize(10);
+      .setPointSize(POINT_SIZE);
     const legend = chart
       .addLegendBox(LegendBoxBuilders.HorizontalLegendBox)
       .setAutoDispose({
@@ -55,7 +57,6 @@ const OrderBookScatterGraph = () => {
     socket.addEventListener("message", (ev) => {
       x += 1;
       const res = JSON.parse(ev.data);
-      const { data } = res;
       const newData = res as bookData;
       const askList = newData.asks.map((price, idx) => {
         return { x: price, y: newData.askSizes[idx] };
