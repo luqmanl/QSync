@@ -15,7 +15,6 @@ import {
 import PriceHistoryGraph from "../components/PriceHistoryGraph";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import BasisTable from "../components/BasisTable";
-import OrderBookTable from "../components/OrderBookTable";
 import OrderBookScatterGraph from "../components/OrderBookScatterGraph";
 
 interface paramType {
@@ -142,7 +141,9 @@ const SubAnalysis = () => {
             })}
           </div>
         </div>
-
+        <OrderBookScatterGraph />
+      </div>
+      <div className="analysis-column">
         <div className="coin-summary">
           <h2 className="summary-title">Price Information</h2>
           <div className="price-info-columns">
@@ -172,8 +173,6 @@ const SubAnalysis = () => {
             })}
           </div>
         </div>
-      </div>
-      <div className="analysis-column">
         <PriceHistoryGraph />
       </div>
     </div>
@@ -198,32 +197,7 @@ function Analysis(): JSX.Element {
           </h2>
         </div>
         <div className="analysis-content-box">
-          {}
-          <div className="tab-container">
-            <div
-              className="tab"
-              style={showArbitrage ? {} : disabledButtonStyle}
-              onClick={() => {
-                if (showArbitrage) {
-                  setShowArbitrage(false);
-                }
-              }}
-            >
-              Analysis
-            </div>
-            <div
-              className="tab"
-              style={showArbitrage ? disabledButtonStyle : {}}
-              onClick={() => {
-                if (!showArbitrage) {
-                  setShowArbitrage(true);
-                }
-              }}
-            >
-              Arbitrage
-            </div>
-          </div>
-          {showArbitrage ? <Arbitrage /> : <SubAnalysis />}
+          <SubAnalysis />
         </div>
       </div>
     </PairContext.Provider>

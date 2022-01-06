@@ -35,7 +35,8 @@ const PriceHistoryGraph = () => {
   };
 
   useEffect(() => {
-    console.log(addr);
+    const c = setInterval(()=>{setLoading(false)},2000)
+
     const pastDate = new Date();
     changeDate(pastDate, selectedPeriod);
     setDate(pastDate);
