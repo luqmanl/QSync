@@ -50,7 +50,9 @@ const basisHistoryGraph = (spot, future) => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState(ExampleBasisHistory);
 
-  const url = `http://localhost:8000/historicalBasisData`;
+  const url = `http://${
+    process.env.REACT_APP_BACK || "localhost:8000"
+  }/historicalBasisData`;
 
   useEffect(() => {
     axios

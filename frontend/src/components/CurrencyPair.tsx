@@ -19,7 +19,7 @@ const CurrencyPair = () => {
   const [data, setData] = useState<{ [name: string]: CurrencyPairType }>({});
 
   const wsAddr = `ws://${
-    process.env.back || "localhost:8000"
+    process.env.REACT_APP_BACK || "localhost:8000"
   }/ws/data/l2overview/`;
 
   useEffect(() => {

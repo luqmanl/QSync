@@ -28,7 +28,7 @@ type dataPoint = {
 const RealTimeCandleSticksChart = (props: propsType) => {
   const [data, setData] = useState<dataPoint[]>([]);
   const socket = new WebSocket(
-    `ws://${process.env.back || "localhost:8000"}/ws/data/l2overview/`
+    `ws://${process.env.REACT_APP_BACK || "localhost:8000"}/ws/data/l2overview/`
   );
 
   useEffect(() => {

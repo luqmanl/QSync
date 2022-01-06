@@ -82,7 +82,7 @@ const KeyMetrics = () => {
   const [info, setInfo] = useState<metricInfo[]>([]);
 
   const linkAddr = `http://${
-    process.env.back || "localhost:3000"
+    process.env.REACT_APP_BACK || "localhost:8000"
   }/api/key_metrics`;
 
   useEffect(() => {

@@ -82,7 +82,7 @@ const AnalaysisLanding = () => {
   ];
 
   const linkAddr = `ws://${
-    process.env.back || "localhost:8000"
+    process.env.REACT_APP_BACK || "localhost:8000"
   }/ws/data/analyses-table`;
 
   useEffect(() => {

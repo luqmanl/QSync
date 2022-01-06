@@ -15,7 +15,7 @@ const PriceHistoryGraph = () => {
   const timePeriods = ["1D", "7D", "1M", "3M", "1Y", "ALL"];
   const priceGraphEndpoint = `api/priceHistory/BINANCE/${pair}`;
   const addr = `http://${
-    process.env.BACK || "localhost:8000"
+    process.env.REACT_APP_BACK || "localhost:8000"
   }/${priceGraphEndpoint}/${timePeriods[selectedPeriod]}`;
 
   const changeDate = (curDate: Date, period: number): void => {

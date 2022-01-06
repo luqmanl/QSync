@@ -95,7 +95,7 @@ const SubAnalysis = () => {
   const [currencyInfo, setCurrencyInfo] = useState<data>(exampleData);
 
   const currencyInfoAddr = `http://${
-    process.env.back || "localhost:8000"
+    process.env.REACT_APP_BACK || "localhost:8000"
   }/api/general-info/${pair}`;
 
   useEffect(() => {
