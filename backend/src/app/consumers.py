@@ -199,12 +199,15 @@ class TopCurrenciesConsumer(AsyncConsumer):
         #response = {name, price, change24h, change7d}
         price = (data["bids"][0] + data["asks"][0]) / 2
         prev_price = self.historical_prices[data["sym"]]
+        size_highest_bid = data["bidSizes"][0]
+        size_lowest_ask = data["askSizes"][0]
         response = {
             "name": data["sym"],
             "price": price,
             "change24h": (price - prev_price["1D"]) / prev_price["1D"],
             "change7d": (price - prev_price["7D"]) / prev_price["7D"],
             "marketCap": 0,
+            "imbalance": (size_highest_bid - size_lowest_ask) / (size_lowest_ask + size_highest_bid)
         }
         await self.send({
             "type": 'websocket.send',
