@@ -15,6 +15,7 @@ import {
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import BasisTable from "../components/BasisTable";
 import OrderBookTable from "../components/OrderBookTable";
+import OrderBookScatterGraph from "../components/OrderBookScatterGraph";
 
 interface paramType {
   pair: string;
@@ -89,6 +90,9 @@ const Arbitrage = () => {
         <div className="coin-summary">
           <h2 className="summary-title">Arbitrage Explained</h2>
           <p>INSERT EXPLANATION HERE</p>
+        </div>
+        <div style={{height:"40vh"}}>
+          <OrderBookScatterGraph />
         </div>
       </div>
       <div className="analysis-column">
