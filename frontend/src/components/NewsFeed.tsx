@@ -15,7 +15,7 @@ export interface newsListing {
 
 const NewsFeed = () => {
   const url = `http://${
-    process.env.PUBLIC_URL || "localhost:8000"
+    process.env.back || "localhost:8000"
   }/api/data/newsfeed`;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [loading, setLoading] = useState(true);
