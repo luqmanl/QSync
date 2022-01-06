@@ -4,10 +4,11 @@ import {
   lightningChart,
   LineSeries,
   Themes,
+  ChartXY,
 } from "@arction/lcjs";
 import React from "react";
 
-type stateType = { series: LineSeries; id: string };
+type stateType = { series: LineSeries; id: string; chart: ChartXY };
 type propsType = {
   id: string;
   data: dataPoint[];
@@ -34,6 +35,7 @@ class StandardLineChart extends React.Component<propsType, stateType> {
     this.setState({
       series: series,
       id: this.props.id,
+      chart: chart,
     });
 
     const font = new FontSettings({
@@ -61,6 +63,10 @@ class StandardLineChart extends React.Component<propsType, stateType> {
 
   componentDidUpdate() {
     this.state.series.add(this.props.data);
+  }
+
+  componentWillUnmout() {
+    this.state.chart.dispose();
   }
 
   render() {
