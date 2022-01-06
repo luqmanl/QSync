@@ -1,0 +1,169 @@
+[
+    {
+        "model": "app.SupportedExchanges",
+        "pk": 1,
+        "fields": {
+            "exchange_name": "BINANCE"
+        }
+    },
+    {
+        "model": "app.SupportedCurrencies",
+        "pk": 1,
+        "fields": {
+            "ticker": "BTC",
+            "data_supplying_exchange": "BINANCE"
+        }
+    },
+    {
+        "model": "app.CurrencyDescriptions",
+        "pk": 1,
+        "fields": {
+            "currency": "BTC",
+            "general_description": "Bitcoin is a decentralized cryptocurrency originally described in a 2008 whitepaper by a person, or group of people, using the alias Satoshi Nakamoto. It was launched soon after, in January 2009. \n Bitcoin is a peer-to-peer online currency, meaning that all transactions happen directly between equal, independent network participants, without the need for any intermediary to permit or facilitate them. Bitcoin was created, according to Nakamoto’s own words, to allow \"online payments to be sent directly from one party to another without going through a financial institution.\" \n Some concepts for a similar type of a decentralized electronic currency precede BTC, but Bitcoin holds the distinction of being the first-ever cryptocurrency to come into actual use.",
+            "full_name": "Bitcoin"
+        }
+    },
+    {
+        "model": "app.CurrencyCharacteristics",
+        "pk": 1,
+        "fields": {
+            "characteristic": "Proof of Work",
+            "description": "Proof of Work is a mechanism by which transactions on the blockchain are accepted. Typically, it requires \"miners\" to do some computational work in order to submit transactions to the blockchain."
+        }
+    },
+    {
+        "model": "app.CurrencyCharacteristics",
+        "pk": 2,
+        "fields": {
+            "characteristic": "Blockchain",
+            "description": "The Blockchain is a distributed database that is shared among the nodes of a computer network, and is typically used to store transaction data."
+        }
+    },
+    {
+        "model": "app.CurrencyCharacteristics",
+        "pk": 3,
+        "fields": {
+            "characteristic": "Decentralised",
+            "description": "The functioning of the currency is dependent on a single authority/entity."
+        }
+    },
+    {
+        "model": "app.CurrencyCharacteristics",
+        "pk": 4,
+        "fields": {
+            "characteristic": "Finite Supply",
+            "description": "The total amount of currency that can possibly be in circulation is limited."
+        }
+    },
+    {
+        "model": "app.CurrencyCharacteristics",
+        "pk": 5,
+        "fields": {
+            "characteristic": "Proof of Stake",
+            "description": "Validating entries to a database by using some consensus mechanism."
+        }
+    },
+    {
+        "model": "app.CurrencyCharacteristics",
+        "pk": 6,
+        "fields": {
+            "characteristic": "Smart Contracts",
+            "description": "Smart Contracts are computer programs that are stored on the blockchain that run when predetermined conditions are met."
+        }
+    },
+    {
+        "model": "app.CurrencyCharacteristics",
+        "pk": 7,
+        "fields": {
+            "characteristic": "Mining",
+            "description": "Mining gives users a way to create additional units of currency, typically by providing computational power or a stake of the currency."
+        }
+    },
+    {
+        "model": "app.RelatedCharacteristics",
+        "pk": 1,
+        "fields": {
+            "characteristic": "Proof of Work",
+            "currency": "BTC"
+        }
+    },
+    {
+        "model": "app.RelatedCharacteristics",
+        "pk": 2,
+        "fields": {
+            "characteristic": "Blockchain",
+            "currency": "BTC"
+        }
+    },
+    {
+        "model": "app.RelatedCharacteristics",
+        "pk": 3,
+        "fields": {
+            "characteristic": "Decentralised",
+            "currency": "BTC"
+        }
+    },
+    {
+        "model": "app.RelatedCharacteristics",
+        "pk": 4,
+        "fields": {
+            "characteristic": "Finite Supply",
+            "currency": "BTC"
+        }
+    },
+    {
+        "model": "app.RelatedCharacteristics",
+        "pk": 5,
+        "fields": {
+            "characteristic": "Mining",
+            "currency": "BTC"
+        }
+    },
+    {
+        "model": "app.CurrencyInformation",
+        "pk": 1,
+        "fields": {
+            "currency": "BTC",
+            "current_supply": 18920981.00,
+            "total_supply": 21000000,
+            "transactions_per_second": 2.8,
+            "total_transactions": 654248075,
+            "market_dominance_percentage": 43.03,
+            "active_addresses": 38343147,
+            "transactions_24h": 229726,
+            "average_transaction_fee_usd_24h": 4.719001232335435,
+            "created_at": "2022-01-06 08:23:55",
+            "updated_at": "2022-01-06 08:23:55"
+        }
+    },
+    {
+        "model": "app.PriceInformation",
+        "pk": 1,
+        "fields": {
+            "currency": "BTC",
+            "high_24h": 46929.05,
+            "low_24h": 42761.46,
+            "high_1y": 68789.63,
+            "low_1y": 28893.62,
+            "change_24h": -6.98,
+            "change_1y": 9.67,
+            "volume_24h": 42728868001,
+            "market_cap": 817098539805,
+            "created_at": "2022-01-06 08:23:55",
+            "updated_at": "2022-01-06 08:23:55"
+        }
+    },
+    {
+        "model": "app.FutureInformation",
+        "pk": 1,
+        "fields": {
+            "currency": "BTC",
+            "perpetual_price": 43165.85,
+            "funding_rate": 0.01,
+            "basis": 463.25,
+            "open_interest": 17800000000,
+            "created_at": "2022-01-06 08:23:55",
+            "updated_at": "2022-01-06 08:23:55"
+        }
+    }
+]
