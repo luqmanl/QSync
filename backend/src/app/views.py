@@ -1,9 +1,11 @@
 from django.shortcuts import render
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
-from django.http import JsonResponse
+from django.http import JsonResponse, response
 from django.utils import timezone
 
+from math import nan
+from qpython import qconnection
 from qpython.qconnection import QConnection
 import numpy as np
 from datetime import datetime, timedelta
@@ -11,6 +13,8 @@ import requests
 from django.forms.models import model_to_dict
 
 from .models import CachedNews
+import sys
+from .models import CachedNews, CurrencyDescriptions, CurrencyInformation, FutureInformation, PriceInformation, RelatedCharacteristics, CurrencyCharacteristics, SupportedCurrencies
 
 
 def index(request):
@@ -161,3 +165,121 @@ def getNewsfeed(request):
         news = CachedNews(news_list=toSave, date_created=timezone.now())
         news.save()
         return JsonResponse(toSave)
+
+
+@csrf_exempt
+def getHistoricalPriceData(request, exchange, sym, time_period):
+    data = None
+    response = []
+    time_period_to_hours = {"1D": 24, "7D": 168,
+                            "1M": 720, "3M": 2160, "1Y": 8760, "ALL": -1}
+    with qconnection.QConnection(host='localhost', port=5011) as q:
+        try:
+            data = q.sendSync('.orderbook.price', np.string_(
+                exchange), np.string_(sym), time_period_to_hours[time_period], 1, numpy_temporals=True)
+        except Exception as e:
+            print("QException: " + str(e))
+            sys.exit(1)
+    for (key, row) in data.items():
+        response.append({"time": str(key[0] + key[1]), "price": row[0]})
+    return JsonResponse({"data": response})
+
+
+def detailedAnalysis(request, currency):
+    detailedInfoInitial = {
+        "generalInfoDescription": "No Description for this currency",
+        "currencyCharacteristics": [[]],
+        "priceInformation": {
+            "high24h": nan,
+            "low24h": nan,
+            "high1y": nan,
+            "low1y": nan,
+            "change1y": nan,
+            "change24h": nan,
+            "volume24h": nan,
+            "marketCap": nan
+        },
+        "currencyInformation": {
+            "currentSupply": nan,
+            "totalSupply": nan,
+            "transactionsPerSecond": nan,
+            "totalTransactions": nan,
+            "marketDominancePercentage": nan,
+            "activeAddresses": nan,
+            "transactions24h": nan,
+            "transactionFee24h": nan
+        },
+        "futureInformation": {
+            "perpetualPrice": nan,
+            "fundingRate": nan,
+            "basis": nan,
+            "openInterest": nan
+        }
+    }
+    print(currency)
+    print(len(SupportedCurrencies.objects.filter(ticker=currency)))
+    if len(SupportedCurrencies.objects.filter(ticker=currency)) == 0:
+        return JsonResponse(detailedInfoInitial)
+
+    toSend = detailedInfoInitial
+
+    if len(CurrencyInformation.objects.filter(currency=currency)) > 0:
+        currencyInformation = model_to_dict(
+            CurrencyInformation.objects.filter(currency=currency)[0])
+
+        toSend["currencyInformation"] = {
+            "currentSupply": currencyInformation["current_supply"],
+            "totalSupply": currencyInformation["total_supply"],
+            "transactionsPerSecond": currencyInformation["transactions_per_second"],
+            "totalTransactions": currencyInformation["total_transactions"],
+            "marketDominancePercentage": currencyInformation["market_dominance_percentage"],
+            "activeAddresses": currencyInformation["active_addresses"],
+            "transactions24h": currencyInformation["transactions_24h"],
+            "transactionFee24h": currencyInformation["average_transaction_fee_usd_24h"]
+        }
+
+    if len(PriceInformation.objects.filter(currency=currency)) > 0:
+        priceInformation = model_to_dict(
+            PriceInformation.objects.filter(currency=currency)[0])
+
+        toSend["priceInformation"] = {
+            "high24h": priceInformation["high_24h"],
+            "low24h": priceInformation["low_24h"],
+            "high1y": priceInformation["high_1y"],
+            "low1y": priceInformation["low_1y"],
+            "change1y": priceInformation["change_1y"],
+            "change24h": priceInformation["change_24h"],
+            "volume24h": priceInformation["volume_24h"],
+            "marketCap": priceInformation["market_cap"]
+        }
+
+    if len(FutureInformation.objects.filter(currency=currency)) > 0:
+        futureInformation = model_to_dict(
+            FutureInformation.objects.filter(currency=currency)[0])
+
+        toSend["futureInformation"] = {
+            "perpetualPrice": futureInformation["perpetual_price"],
+            "fundingRate": futureInformation["funding_rate"],
+            "basis": futureInformation["basis"],
+            "openInterest": futureInformation["open_interest"]
+        }
+
+    if len(CurrencyDescriptions.objects.filter(currency=currency)) > 0:
+        description = model_to_dict(CurrencyDescriptions.objects.filter(
+            currency=currency)[0])["general_description"]
+
+        toSend["generalInfoDescription"] = description
+
+    related_characteristics = RelatedCharacteristics.objects.filter(
+        currency=currency)
+    characteristics = []
+
+    for currency_characteristic in related_characteristics:
+        characteristic_def = model_to_dict(CurrencyCharacteristics.objects.filter(
+            characteristic=model_to_dict(currency_characteristic)["characteristic"])[0])
+        characteristics.append(
+            [characteristic_def["characteristic"], characteristic_def["description"]])
+
+    toSend["currencyCharacteristics"] = characteristics
+
+    return JsonResponse(toSend)
