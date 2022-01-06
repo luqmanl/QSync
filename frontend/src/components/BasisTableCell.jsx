@@ -50,7 +50,7 @@ const basisHistoryGraph = (spot, future) => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState(ExampleBasisHistory);
 
-  const url = `http://localhost:8000/historicalBasisData`;
+  const url = `http://localhost:8000/historicalBasisData/1w/BTC-USDT/BTC-USD-PERP/BINANCE/OKEX/`;
 
   useEffect(() => {
     axios

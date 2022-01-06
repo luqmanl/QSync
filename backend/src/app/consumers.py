@@ -189,23 +189,50 @@ class L2orderbookConsumer(AsyncConsumer):
 
 class TopCurrenciesConsumer(AsyncConsumer):
     async def websocket_connect(self, event):
+        self.historical_prices = {}
         await self.send({
             "type": "websocket.accept"
         })
-        await self.channel_layer.group_add(
-            "top_currencies",
-            self.channel_name
-        )
 
-    async def send_top_currencies_data(self, event):
+    async def send_top_currency_data(self, event):
+        data = json.loads(event["data"])
+        #response = {name, price, change24h, change7d}
+        price = (data["bids"][0] + data["asks"][0]) / 2
+        prev_price = self.historical_prices[data["sym"]]
+        response = {
+            "name": data["sym"],
+            "price": price,
+            "change24h": (price - prev_price["1D"]) / prev_price["1D"],
+            "change7d": (price - prev_price["7D"]) / prev_price["7D"],
+            "marketCap": 0,
+        }
         await self.send({
             "type": 'websocket.send',
-            "text": event["data"]
+            "text": json.dumps({"currencyData": [response]})
         })
+        print("Sent top currency update")
 
-    # shouldn't be used
     async def websocket_receive(self, event):
-        pass
+        # data = {exchange: String, pairs: String[]}
+        data = json.loads(event["text"])
+        for pair in data['pairs']:
+            await self.channel_layer.group_add(
+                f"{data['exchange']}_{pair}_top_currency",
+                self.channel_name
+            )
+
+        # get -1D and -7D prices
+        q = QConnection(host='localhost', port=5012)
+        q.open()
+        try:
+            historical_price = q.sendSync(
+                '.orderbook.prevprice', np.string_(data['exchange']), np.array([np.string_(pair) for pair in data['pairs']]))
+            for key, row in historical_price.items():
+                self.historical_prices[key[0].decode(
+                    'UTF-8')] = {"1D": row[0], "7D": row[1]}
+        except Exception as e:
+            print(e)
+        q.close()
 
     async def websocket_disconnect(self, event):
         print('disconnected top currencies websocket: ', event['code'])

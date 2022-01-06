@@ -23,7 +23,7 @@ last_send = {}
     for the corresponding table updates
 """
 table_to_channel_datatypes = {
-    "orderbooktop": (["l2orderbook", "l2overview", "basis"]),
+    "orderbooktop": (["l2orderbook", "l2overview", "basis", "top_currency"]),
     "trades": (["trade"]),
 }
 
