@@ -91,7 +91,7 @@ const Arbitrage = () => {
           <h2 className="summary-title">Arbitrage Explained</h2>
           <p>INSERT EXPLANATION HERE</p>
         </div>
-        <div style={{height:"40vh"}}>
+        <div style={{ height: "40vh" }}>
           <OrderBookScatterGraph />
         </div>
       </div>

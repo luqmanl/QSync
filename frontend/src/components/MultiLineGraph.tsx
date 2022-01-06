@@ -72,8 +72,12 @@ const MultiLineGraph = (props: propsType) => {
     });
 
     chart.addLegendBox(LegendBoxBuilders.HorizontalLegendBox).add(chart);
-    
-    chart.getDefaultAxisY().addConstantLine().setValue(0).setMouseInteractions(false)
+
+    chart
+      .getDefaultAxisY()
+      .addConstantLine()
+      .setValue(0)
+      .setMouseInteractions(false);
 
     return () => {
       chart.dispose();

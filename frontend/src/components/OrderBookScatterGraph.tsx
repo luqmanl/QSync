@@ -7,8 +7,6 @@ import {
   lightningChart,
   PointShape,
   Themes,
-  UIButtonPictures,
-  UIElementBuilders,
 } from "@arction/lcjs";
 import "./OrderBookScatterGraph.css";
 
@@ -53,6 +51,7 @@ const OrderBookScatterGraph = () => {
     };
 
     socket.addEventListener("message", (ev) => {
+      console.log("HLO");
       x += 1;
       const res = JSON.parse(ev.data);
       const { data } = res;

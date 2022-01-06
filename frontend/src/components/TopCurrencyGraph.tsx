@@ -64,8 +64,11 @@ const TopCurrencyGraph = () => {
     <div className="graph-container">
       {loading ? (
         <div className="top-cur-graph-spinner-container">
-
-          <Spinner animation="border" className="top-cur-graph-spinner-container" style={{height:"10vh", width:"10vh", margin:"auto"}} />
+          <Spinner
+            animation="border"
+            className="top-cur-graph-spinner-container"
+            style={{ height: "10vh", width: "10vh", margin: "auto" }}
+          />
         </div>
       ) : (
         <MultiLineGraph map={graphDataMap} date={yesterday} />
