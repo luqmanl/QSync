@@ -76,7 +76,7 @@ deploy-app:
   image: docker/compose:debian-1.29.2
   stage: deploy
   script:
-    - cat $ENV_FILE &> src/.env
+    - cat $ENV_FILE &> backend/src/.env
     - 'command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )'
     - eval $(ssh-agent -s)
     - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
