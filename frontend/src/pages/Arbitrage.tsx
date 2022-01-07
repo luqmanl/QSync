@@ -19,20 +19,23 @@ const Arbitrage = () => {
           <div className="analysis-summary">
             <h3 className="arbitrage-sub-title">Arbitrage Explained</h3>
             <p>
-              Exercitation sunt officia sunt dolor magna non Lorem eiusmod ea
-              tempor. Irure incididunt sit id exercitation aliqua sunt nostrud
-              ex. Nulla Lorem enim nisi mollit. Occaecat Lorem consectetur velit
-              ut duis sunt. Nisi nostrud adipisicing adipisicing occaecat
-              commodo magna ipsum aliqua deserunt. Magna ipsum nisi exercitation
-              enim aliqua reprehenderit cupidatat dolor cupidatat nostrud nulla.
-              Velit mollit ad sunt proident dolore nostrud nostrud. Cupidatat
-              nostrud non qui sint ad. Eiusmod eu consequat aliquip ex. Velit
-              ipsum adipisicing magna non culpa duis commodo ad amet officia
-              proident esse commodo. Lorem non et exercitation sint occaecat
-              reprehenderit qui minim ut tempor aliquip deserunt aute. Laborum
-              aliqua qui reprehenderit laborum enim mollit non eiusmod ea. Irure
-              in laboris tempor eiusmod est magna et Lorem nostrud excepteur
-              sunt.
+              Arbitrage is exploting the difference between prices of tradeable
+              assets, such that executing a set of trades simultaneously can
+              almost guarantee a profit. Typically, these profit percentages are
+              very small and disappear over time as the difference in prices
+              converge. This causes the markets to become more efficient. There
+              are two main types of arbitrage, which are explained below:
+              Cross-Exchange Arbitrage - This is a type of arbitrage can be
+              exploted when the highest bid on some exchange is larger than the
+              lowest ask on some other exchange. When this occurs, we can send
+              limit orders to both exchanges and make a profit p (highest bid -
+              lowest ask - exchange costs). Triangular Arbitrage - This type of
+              arbitrage exploits the differences in price between tickers on an
+              exchange, and is explotable when a sequence of trades from some
+              currency back to the same currency leaves the trader with more of
+              that currency after the trades than the start. For now, we will
+              only display Cross-Exchange arbitrage opportunities in the table
+              below. Note that these opportunities often disappear very quickly.
             </p>
           </div>
           <ArbitrageLiveTable />

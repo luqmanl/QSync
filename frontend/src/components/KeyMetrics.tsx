@@ -27,8 +27,10 @@ const explanations: { [name: string]: string } = {
     "Measures how much the price of the top coins have changed in the week day. Useful to see the short term direction of the crypto market",
   "Total Volume":
     "Measures the total activity in the top coins over the last 24 hours",
-  "Most Dominant Coin": "Insert explanation here",
-  "Max Arbitrage": "Insert explanation here",
+  "Most Dominant Coin":
+    "The coin which has the largest market cap out of all cryptocurrencies",
+  "Max Arbitrage":
+    "A discovered arbitrage opportunity which offers the largest return",
   "NASDAQ Crypto Index":
     "Tracks the performance of a diverse range of USD-traded digital assests to assess the perfomance of the crypto market",
 };
