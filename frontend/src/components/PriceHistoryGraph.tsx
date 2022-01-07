@@ -66,8 +66,8 @@ const PriceHistoryGraph = () => {
           date={date}
           id="history-price-graph"
           graphTitle={`Price of ${nameMap[pair]}`}
-          xAxis="Price"
-          yAxis="Time"
+          xAxis="Time"
+          yAxis="Price"
         />
       )}
 
