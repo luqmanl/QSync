@@ -122,6 +122,16 @@ async def trade_callback(trade, timestamp):
     ])
 
 
+async def nbbo_callback(symbol, bid, bid_size, ask, ask_size, bid_feed, ask_feed):
+    data = {"sym": symbol,
+            "bid": float(bid),
+            "ask": float(ask),
+            "bidExchange": bid_feed,
+            "askExchange": ask_feed, }
+    group_name = f"{symbol}_arbitrage"
+    await (get_channel_layer().group_send)(group_name, {"type": f"send_arbitrage_data", "data": json.dumps(data)})
+
+
 def run():
     with q:
         config = {'log': {'filename': 'feedhandler.log',
@@ -129,28 +139,24 @@ def run():
         f = FeedHandler(config=config)
 
         # list of pairs for future and spot exchanges
-        spot_pairs = [Binance.symbols()[i] for i in (0, 10, 11)]
-        print(spot_pairs)
+        spot_pairs = ['ETH-BTC', 'BTC-USDT', 'ETH-USDT',
+                      'SOL-USDT', 'DOGE-USDT', 'ADA-USDT']
         future_pairs = ["BTC-USD-PERP"]
 
         # list of future and spot exchanges
-        spot_exchanges = [Coinbase, Bitfinex]
+        spot_exchanges = [Binance, Bitfinex, Coinbase]
         future_exchanges = [Deribit, KrakenFutures, OKEx]
 
         args = {"channels": [L2_BOOK, TRADES], "callbacks": {
             L2_BOOK: l2book_callback, TRADES: trade_callback}}
 
-        for x in spot_exchanges:
-            f.add_feed(x(symbols=spot_pairs, **args))
-
-        for x in future_exchanges:
-            f.add_feed(x(symbols=future_pairs, **args))
-
-        # manually add Binance with extra symbols
-        spot_pairs = ['ETH-BTC', 'BTC-USDT', 'ETH-USDT',
-                      'SOL-USDT', 'DOGE-USDT', 'ADA-USDT']
-        f.add_feed(Binance(symbols=spot_pairs, **args))
-
+        for exch in spot_exchanges[:-1]:
+            f.add_feed(exch(symbols=spot_pairs, **args))
+        f.add_feed(spot_exchanges[-1](symbols=spot_pairs[:-1], **args))
+        for exch in future_exchanges:
+            f.add_feed(exch(symbols=future_pairs, **args))
+        f.add_nbbo(spot_exchanges[:-1], spot_pairs, nbbo_callback)
+        f.add_nbbo(spot_exchanges[-1:], spot_pairs[:-1], nbbo_callback)
         f.run()
 
 
