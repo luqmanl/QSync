@@ -271,7 +271,7 @@ class ArbitrageTableConsumer(AsyncConsumer):
     async def send_arbitrage_data(self, event):
         data = json.loads(event["data"])
         response = {"currency": data["sym"],
-                    "maxArbitrage": (data["ask"] - data["bid"]) / data["bid"],
+                    "maxArbitrage": (data["bid"] - data["ask"]) / data["ask"],
                     "highestBid": data["bid"],
                     "bidExchange": data["bidExchange"],
                     "askExchange": data["askExchange"],
