@@ -1,4 +1,4 @@
-QHOME="./" l64/q tick.q tables . -p 5010 &
+QHOME="./" l64/q tick.q tables logs -p 5010 &
 echo "Tickerplant started"
 
 sleep 1
