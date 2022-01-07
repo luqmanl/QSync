@@ -2,6 +2,7 @@ from django.core.management.base import BaseCommand, CommandError
 import app.feed_handler as fh
 from multiprocessing import Process
 import app.top_currency_subscriber as tcs
+import app.update_currency_details as ucd
 
 
 class Command(BaseCommand):
@@ -15,3 +16,6 @@ class Command(BaseCommand):
         p2.start()
         self.stdout.write(self.style.SUCCESS(
             'Successfully initialised feedhandler '))
+
+        p3 = Process(target=ucd.run)
+        p3.start()
