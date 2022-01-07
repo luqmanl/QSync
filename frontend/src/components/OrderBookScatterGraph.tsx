@@ -4,11 +4,9 @@ import React, { useContext, useEffect, useState } from "react";
 import { Table } from "react-bootstrap";
 import { PairContext } from "../pages/Analysis";
 import {
-  ColorRGBA,
   LegendBoxBuilders,
   lightningChart,
   PointShape,
-  SolidFill,
   Themes,
 } from "@arction/lcjs";
 import "./OrderBookScatterGraph.css";
@@ -134,25 +132,12 @@ const OrderBookScatterGraph = () => {
         return { x: price, y: newData.bidSizes[idx] };
       });
       if (x === UPDATE_LIMIT) {
+        console.log(ev.data);
         x = 0;
         askSeries.clear();
         bidSeries.clear();
         askSeries.add(askList);
         bidSeries.add(bidList);
-        chart
-          .getDefaultAxisX()
-          .addBand()
-          .setValueEnd(0)
-          .setValueEnd(bidList[0].x)
-          .setFillStyle(new SolidFill({ color: ColorRGBA(255, 0, 0, 85) }))
-          .setMouseInteractions(false);
-        chart
-          .getDefaultAxisX()
-          .addBand()
-          .setValueStart(askList[0].x)
-          .setValueEnd(100000)
-          .setFillStyle(new SolidFill({ color: ColorRGBA(0, 0, 255, 85) }))
-          .setMouseInteractions(false);
       }
     });
 

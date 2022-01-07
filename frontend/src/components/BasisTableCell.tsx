@@ -50,12 +50,14 @@ const basisHistoryGraph = (spot: string, future: string) => {
     axios
       .get(url, {})
       .then((res) => {
-        const newData = res.data.data.map((item: { x: string; y: number }) => {
-          return {
-            x: new Date(item.x).getTime() - newDate.getTime(),
-            y: item.y,
-          };
-        });
+        const newData = res.data.data
+          .slice(0, res.data.data.length / 2)
+          .map((item: { x: string; y: number }) => {
+            return {
+              x: new Date(item.x).getTime() - newDate.getTime(),
+              y: item.y,
+            };
+          });
         setData(newData);
         setLoading(false);
       })

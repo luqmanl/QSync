@@ -17,6 +17,7 @@ export type tableRep = { [name: string]: LiveTableData };
 
 const ArbitrageLiveTable = () => {
   const [tableData, setTableData] = useState<tableRep>({});
+  const [loading, setLoading] = useState(true);
 
   const url = "ws://localhost:8000/ws/data/arbitrage-overview-table/";
 
@@ -32,10 +33,13 @@ const ArbitrageLiveTable = () => {
     };
 
     ws.addEventListener("message", (ev) => {
+      if (loading) {
+        setLoading(false);
+        setTableData({});
+      }
       const update: LiveTableData = JSON.parse(ev.data);
       const newData = tableData;
       newData[update.currency] = update;
-      console.log(newData);
       setTableData(newData);
     });
 
