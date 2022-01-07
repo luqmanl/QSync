@@ -21,28 +21,34 @@ interface btcPropsType {
 
 const basisHistoryGraph = (spot: string, future: string) => {
   const changeDate = (date: Date, period: number) => {
+    console.log("old date: ", date);
     if (period === 0) {
       date.setDate(date.getDate() - 1);
     } else if (period === 1) {
+      date.setDate(date.getDate() - 7);
+    } else if (period === 2) {
       date.setMonth(date.getMonth() - 1);
     } else {
       date.setFullYear(date.getFullYear() - 1);
     }
+    console.log("new date: ", date);
+    return date;
   };
 
-  const freqMap = ["SECOND", "MINUTE", "HOUR"];
-  const periodMap = ["MONTH", "WEEK", "YEAR"];
+  const periodStr = ["1d", "1w", "1m", "1y"];
+  const periodMap = ["DAY", "WEEK", "MONTH", "YEAR"];
   const [period, setPeriod] = useState(2);
   const [loading, setLoading] = useState(true);
   const [date, setDate] = useState<Date>(new Date());
   const [data, setData] = useState<graphPoint[]>([]);
 
-  const url = `http://localhost:8000/historicalBasisData/1w/BTC-USDT/BTC-USD-PERP/${spot}/${future}`;
+  let url = `http://localhost:8000/historicalBasisData/${periodStr[period]}/BTC-USDT/BTC-USD-PERP/${spot}/${future}`;
 
   useEffect(() => {
-    const newDate = new Date();
-    changeDate(newDate, period);
+    const curDate = new Date();
+    const newDate = changeDate(curDate, period);
     setDate(newDate);
+    url = `http://localhost:8000/historicalBasisData/${periodStr[period]}/BTC-USDT/BTC-USD-PERP/${spot}/${future}`;
     axios
       .get(url, {})
       .then((res) => {
@@ -52,9 +58,7 @@ const basisHistoryGraph = (spot: string, future: string) => {
             y: item.y,
           };
         });
-        console.log(data);
         setData(newData);
-        console.log(newData);
         setLoading(false);
       })
       .catch((err) => {
