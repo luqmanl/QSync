@@ -21,7 +21,6 @@ interface btcPropsType {
 
 const basisHistoryGraph = (spot: string, future: string) => {
   const changeDate = (date: Date, period: number) => {
-    console.log("old date: ", date);
     if (period === 0) {
       date.setDate(date.getDate() - 1);
     } else if (period === 1) {
@@ -31,7 +30,6 @@ const basisHistoryGraph = (spot: string, future: string) => {
     } else {
       date.setFullYear(date.getFullYear() - 1);
     }
-    console.log("new date: ", date);
     return date;
   };
 
