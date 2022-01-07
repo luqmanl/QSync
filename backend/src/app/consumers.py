@@ -3,6 +3,7 @@ import json
 import numpy as np
 from qpython.qconnection import QConnection
 import re
+from datetime import datetime, timedelta
 
 
 """ 
@@ -263,6 +264,7 @@ class TopCurrenciesConsumer(AsyncConsumer):
 
 class ArbitrageTableConsumer(AsyncConsumer):
     async def websocket_connect(self, event):
+        self.send_timestamps = {}
         self.channel_groups = []
         await self.send({
             "type": "websocket.accept"
@@ -270,23 +272,26 @@ class ArbitrageTableConsumer(AsyncConsumer):
 
     async def send_arbitrage_data(self, event):
         data = json.loads(event["data"])
-        response = {"currency": data["sym"],
-                    "maxArbitrage": (data["bid"] - data["ask"]) / data["ask"],
-                    "highestBid": data["bid"],
-                    "bidExchange": data["bidExchange"],
-                    "askExchange": data["askExchange"],
-                    "lowestAsk": data["ask"],
-                    "price": (data["ask"] + data["bid"]) / 2
-                    }
-        await self.send({
-            'type': 'websocket.send',
-            'text': json.dumps(response)
-        })
+        if self.send_timestamps[data["sym"]] <= datetime.now() - timedelta(seconds=1):
+            self.send_timestamps[data["sym"]] = datetime.now()
+            response = {"currency": data["sym"],
+                        "maxArbitrage": (data["bid"] - data["ask"]) / data["ask"],
+                        "highestBid": data["bid"],
+                        "bidExchange": data["bidExchange"],
+                        "askExchange": data["askExchange"],
+                        "lowestAsk": data["ask"],
+                        "price": (data["ask"] + data["bid"]) / 2
+                        }
+            await self.send({
+                'type': 'websocket.send',
+                'text': json.dumps(response)
+            })
 
     async def websocket_receive(self, event):
         # data = {"pairs": String}
         data = json.loads(event["text"])
         for pair in data["pairs"]:
+            self.send_timestamps[pair] = datetime.now()
             self.channel_groups.append(f"{pair}_arbitrage")
             await self.channel_layer.group_add(self.channel_groups[-1], self.channel_name)
 

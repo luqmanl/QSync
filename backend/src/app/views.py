@@ -50,7 +50,7 @@ def getKDBHistoricalBasisData(spotSym, futureSym, spotExch, futureExch, minTimes
         coordinate["x"] = timestamp
         coordinate["y"] = float(d[1])
         outputData["data"].append(coordinate)
-
+    tes = len(outputData['data'])
     # rdb data
     q = QConnection(host='localhost', port=5011)
     try:
@@ -65,7 +65,6 @@ def getKDBHistoricalBasisData(spotSym, futureSym, spotExch, futureExch, minTimes
         coordinate["x"] = timestamp
         coordinate["y"] = float(d[1])
         outputData["data"].append(coordinate)
-
     return outputData
 
 
