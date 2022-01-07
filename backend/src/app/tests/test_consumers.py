@@ -15,7 +15,7 @@ class TestTradeConsumer(SimpleTestCase):
 
         await communicator.send_json_to({"exchange": 'BINANCE', "pair": 'BTC-USDT', })
 
-        channel_group = 'BINANCE_BTC-USDT_trade'
+        channel_group = 'BINANCE_BTC-USDT_trades'
         data = {
             'sym': 'BTC-USDT',
             'exchange': 'BINANCE',
@@ -24,7 +24,7 @@ class TestTradeConsumer(SimpleTestCase):
             'amount': 5623.6,
             'side': 'buy'
         }
-        await get_channel_layer().group_send(channel_group, {"type": f"send_trade_data", "data": json.dumps(data)})
+        await get_channel_layer().group_send(channel_group, {"type": f"send_data", "data": json.dumps(data)})
 
         response = await communicator.receive_json_from()
         self.assertEqual(response['sym'], "BTC-USDT")
@@ -43,7 +43,7 @@ class TestTradeConsumer(SimpleTestCase):
 
         await communicator.send_json_to({"exchange": 'BINANCE', "pair": 'BTC-USDT', })
 
-        channel_group = 'COINBASE_BTC-USDT_trade'
+        channel_group = 'COINBASE_BTC-USDT_trades'
         data = {
             'sym': 'BTC-USDT',
             'exchange': 'COINBASE',
@@ -52,7 +52,7 @@ class TestTradeConsumer(SimpleTestCase):
             'amount': 5623.6,
             'side': 'buy'
         }
-        await get_channel_layer().group_send(channel_group, {"type": f"send_trade_data", "data": json.dumps(data)})
+        await get_channel_layer().group_send(channel_group, {"type": f"send_data", "data": json.dumps(data)})
 
         self.assertTrue(await communicator.receive_nothing())
 
@@ -65,7 +65,7 @@ class TestTradeConsumer(SimpleTestCase):
 
         await communicator.send_json_to({"exchange": 'COINBASE', "pair": 'BTC-USDT', })
 
-        channel_group = 'COINBASE_ETH_USDT_trade'
+        channel_group = 'COINBASE_ETH_USDT_trades'
         data = {
             'sym': 'ETH-USDT',
             'exchange': 'COINBASE',
@@ -74,7 +74,7 @@ class TestTradeConsumer(SimpleTestCase):
             'amount': 5623.6,
             'side': 'buy'
         }
-        await get_channel_layer().group_send(channel_group, {"type": f"send_trade_data", "data": json.dumps(data)})
+        await get_channel_layer().group_send(channel_group, {"type": f"send_data", "data": json.dumps(data)})
 
         self.assertTrue(await communicator.receive_nothing())
 
@@ -87,7 +87,7 @@ class TestTradeConsumer(SimpleTestCase):
 
         await communicator.send_json_to({"exchange": 'BINANCE', "pair": 'BTC-USDT', })
 
-        channel_group = 'COINBASE_BTC-USDT_basis'
+        channel_group = 'COINBASE_BTC-USDT_orderbooktop'
         data = {
             'sym': 'BTC-USDT',
             'exchange': 'COINBASE',
@@ -96,7 +96,7 @@ class TestTradeConsumer(SimpleTestCase):
             'amount': 5623.6,
             'side': 'buy'
         }
-        await get_channel_layer().group_send(channel_group, {"type": f"send_trade_data", "data": json.dumps(data)})
+        await get_channel_layer().group_send(channel_group, {"type": f"send_data", "data": json.dumps(data)})
 
         self.assertTrue(await communicator.receive_nothing())
 
@@ -111,7 +111,7 @@ class TestBasisTableConsumer(SimpleTestCase):
 
         await communicator.send_json_to({"futures_exchanges": ['KRAKEN_FUTURES'], "spot_exchanges": ['BINANCE'], "spot_pairs": ['BTC-USDT'], "futures_pairs": ['BTC-USD-PERP']})
 
-        channel_group = 'KRAKEN_FUTURES_BTC-USD-PERP_basis'
+        channel_group = 'KRAKEN_FUTURES_BTC-USD-PERP_orderbooktop'
         future_data = {
             'sym': 'BTC-USD-PERP',
             'exchange': 'KRAKEN_FUTURES',
@@ -121,9 +121,9 @@ class TestBasisTableConsumer(SimpleTestCase):
             'askSizes': [random.uniform(100, 1000) for i in range(10)],
         }
 
-        await get_channel_layer().group_send(channel_group, {"type": f"send_basis_data", "data": json.dumps(future_data)})
+        await get_channel_layer().group_send(channel_group, {"type": f"send_data", "data": json.dumps(future_data)})
 
-        channel_group = 'BINANCE_BTC-USDT_basis'
+        channel_group = 'BINANCE_BTC-USDT_orderbooktop'
         spot_data = {
             'sym': 'BTC-USDT',
             'exchange': 'BINANCE',
@@ -132,7 +132,7 @@ class TestBasisTableConsumer(SimpleTestCase):
             'bidSizes': [random.uniform(100, 1000) for i in range(10)],
             'askSizes': [random.uniform(100, 1000) for i in range(10)],
         }
-        await get_channel_layer().group_send(channel_group, {"type": f"send_basis_data", "data": json.dumps(spot_data)})
+        await get_channel_layer().group_send(channel_group, {"type": f"send_data", "data": json.dumps(spot_data)})
 
         future_mid_price = (future_data['bids']
                             [0] + future_data['asks'][0]) / 2
@@ -157,7 +157,7 @@ class TestBasisTableConsumer(SimpleTestCase):
 
         await communicator.send_json_to({"futures_exchanges": ['KRAKEN_FUTURES', 'OKEX'], "spot_exchanges": ['BINANCE', 'COINBASE'], "spot_pairs": ['BTC-USDT'], "futures_pairs": ['BTC-USD-PERP']})
 
-        channel_group = 'KRAKEN_FUTURES_BTC-USD-PERP_basis'
+        channel_group = 'KRAKEN_FUTURES_BTC-USD-PERP_orderbooktop'
         future_data = {
             'sym': 'BTC-USD-PERP',
             'exchange': 'KRAKEN_FUTURES',
@@ -168,9 +168,9 @@ class TestBasisTableConsumer(SimpleTestCase):
         }
         kraken_mid_price = (future_data['bids']
                             [0] + future_data['asks'][0]) / 2
-        await get_channel_layer().group_send(channel_group, {"type": f"send_basis_data", "data": json.dumps(future_data)})
+        await get_channel_layer().group_send(channel_group, {"type": f"send_data", "data": json.dumps(future_data)})
 
-        channel_group = 'OKEX_BTC-USD-PERP_basis'
+        channel_group = 'OKEX_BTC-USD-PERP_orderbooktop'
         future_data = {
             'sym': 'BTC-USD-PERP',
             'exchange': 'OKEX',
@@ -181,9 +181,9 @@ class TestBasisTableConsumer(SimpleTestCase):
         }
         okex_mid_price = (future_data['bids']
                           [0] + future_data['asks'][0]) / 2
-        await get_channel_layer().group_send(channel_group, {"type": f"send_basis_data", "data": json.dumps(future_data)})
+        await get_channel_layer().group_send(channel_group, {"type": f"send_data", "data": json.dumps(future_data)})
 
-        channel_group = 'BINANCE_BTC-USDT_basis'
+        channel_group = 'BINANCE_BTC-USDT_orderbooktop'
         spot_data = {
             'sym': 'BTC-USDT',
             'exchange': 'BINANCE',
@@ -192,7 +192,7 @@ class TestBasisTableConsumer(SimpleTestCase):
             'bidSizes': [random.uniform(100, 1000) for i in range(10)],
             'askSizes': [random.uniform(100, 1000) for i in range(10)],
         }
-        await get_channel_layer().group_send(channel_group, {"type": f"send_basis_data", "data": json.dumps(spot_data)})
+        await get_channel_layer().group_send(channel_group, {"type": f"send_data", "data": json.dumps(spot_data)})
 
         spot_mid_price = (spot_data['bids'][0] + spot_data['asks'][0]) / 2
 
@@ -221,7 +221,7 @@ class TestBasisTableConsumer(SimpleTestCase):
 
         await communicator.send_json_to({"futures_exchanges": ['KRAKEN_FUTURES'], "spot_exchanges": ['BINANCE'], "spot_pairs": ['BTC-USDT'], "futures_pairs": ['BTC-USD-PERP']})
 
-        channel_group = 'KRAKEN_FUTURES_BTC-USD-PERP_basis'
+        channel_group = 'KRAKEN_FUTURES_BTC-USD-PERP_orderbooktop'
         future_data = {
             'sym': 'BTC-USD-PERP',
             'exchange': 'KRAKEN_FUTURES',
@@ -231,9 +231,9 @@ class TestBasisTableConsumer(SimpleTestCase):
             'askSizes': [random.uniform(100, 1000) for i in range(10)],
         }
 
-        await get_channel_layer().group_send(channel_group, {"type": "send_basis_data", "data": json.dumps(future_data)})
+        await get_channel_layer().group_send(channel_group, {"type": "send_data", "data": json.dumps(future_data)})
 
-        channel_group = 'BINANCE_BTC-USDT_basis'
+        channel_group = 'BINANCE_BTC-USDT_orderbooktop'
         spot_data = {
             'sym': 'BTC-USDT',
             'exchange': 'BINANCE',
@@ -242,11 +242,11 @@ class TestBasisTableConsumer(SimpleTestCase):
             'bidSizes': [random.uniform(100, 1000) for i in range(10)],
             'askSizes': [random.uniform(100, 1000) for i in range(10)],
         }
-        await get_channel_layer().group_send(channel_group, {"type": "send_basis_data", "data": json.dumps(spot_data)})
+        await get_channel_layer().group_send(channel_group, {"type": "send_data", "data": json.dumps(spot_data)})
 
         await communicator.receive_json_from()
 
-        channel_group = 'BINANCE_BTC-USDT_basis'
+        channel_group = 'BINANCE_BTC-USDT_orderbooktop'
         spot_data = {
             'sym': 'BTC-USDT',
             'exchange': 'BINANCE',
@@ -255,7 +255,7 @@ class TestBasisTableConsumer(SimpleTestCase):
             'bidSizes': [random.uniform(100, 1000) for i in range(10)],
             'askSizes': [random.uniform(100, 1000) for i in range(10)],
         }
-        await get_channel_layer().group_send(channel_group, {"type": f"send_basis_data", "data": json.dumps(spot_data)})
+        await get_channel_layer().group_send(channel_group, {"type": f"send_data", "data": json.dumps(spot_data)})
 
         future_mid_price = (future_data['bids']
                             [0] + future_data['asks'][0]) / 2
@@ -280,7 +280,7 @@ class TestBasisTableConsumer(SimpleTestCase):
 
         await communicator.send_json_to({"futures_exchanges": ['KRAKEN_FUTURES'], "spot_exchanges": ['BINANCE', 'COINBASE'], "spot_pairs": ['BTC-USDT'], "futures_pairs": ['BTC-USD-PERP']})
 
-        channel_group = 'BINANCE_BTC-USDT_basis'
+        channel_group = 'BINANCE_BTC-USDT_orderbooktop'
         future_data = {
             'sym': 'BTC-USDT',
             'exchange': 'BINANCE',
@@ -290,10 +290,10 @@ class TestBasisTableConsumer(SimpleTestCase):
             'askSizes': [random.uniform(100, 1000) for i in range(10)],
         }
 
-        await get_channel_layer().group_send(channel_group, {"type": f"send_basis_data", "data": json.dumps(future_data)})
+        await get_channel_layer().group_send(channel_group, {"type": f"send_data", "data": json.dumps(future_data)})
         self.assertTrue(await communicator.receive_nothing())
 
-        channel_group = 'COINBASE_BTC-USDT-basis'
+        channel_group = 'COINBASE_BTC-USDT-orderbooktop'
         future_data = {
             'sym': 'BTC-USDT',
             'exchange': 'COINBASE',
@@ -303,7 +303,7 @@ class TestBasisTableConsumer(SimpleTestCase):
             'askSizes': [random.uniform(100, 1000) for i in range(10)],
         }
 
-        await get_channel_layer().group_send(channel_group, {"type": f"send_basis_data", "data": json.dumps(future_data)})
+        await get_channel_layer().group_send(channel_group, {"type": f"send_data", "data": json.dumps(future_data)})
         self.assertTrue(await communicator.receive_nothing())
 
         await communicator.disconnect()
@@ -315,7 +315,7 @@ class TestBasisTableConsumer(SimpleTestCase):
 
         await communicator.send_json_to({"futures_exchanges": ['KRAKEN_FUTURES', 'DERIBIT'], "spot_exchanges": ['BINANCE', 'COINBASE'], "spot_pairs": ['BTC-USDT'], "futures_pairs": ['BTC-USD-PERP']})
 
-        channel_group = 'OKEX_BTC-USD-PERP_basis'
+        channel_group = 'OKEX_BTC-USD-PERP_orderbooktop'
         future_data = {
             'sym': 'BTC-USD-PERP',
             'exchange': 'OKEX',
@@ -325,7 +325,7 @@ class TestBasisTableConsumer(SimpleTestCase):
             'askSizes': [random.uniform(100, 1000) for i in range(10)],
         }
 
-        await get_channel_layer().group_send(channel_group, {"type": f"send_basis_data", "data": json.dumps(future_data)})
+        await get_channel_layer().group_send(channel_group, {"type": f"send_data", "data": json.dumps(future_data)})
         self.assertTrue(await communicator.receive_nothing())
 
         await communicator.disconnect()
@@ -337,7 +337,7 @@ class TestBasisTableConsumer(SimpleTestCase):
 
         await communicator.send_json_to({"futures_exchanges": ['KRAKEN_FUTURES', 'OKEX'], "spot_exchanges": ['BINANCE', 'COINBASE'], "spot_pairs": ['BTC-USDT'], "futures_pairs": ['BTC-USD-PERP']})
 
-        channel_group = 'OKEX_ETH-USD-PERP_basis'
+        channel_group = 'OKEX_ETH-USD-PERP_orderbooktop'
         future_data = {
             'sym': 'ETH-USD-PERP',
             'exchange': 'OKEX',
@@ -347,7 +347,7 @@ class TestBasisTableConsumer(SimpleTestCase):
             'askSizes': [random.uniform(100, 1000) for i in range(10)],
         }
 
-        await get_channel_layer().group_send(channel_group, {"type": f"send_basis_data", "data": json.dumps(future_data)})
+        await get_channel_layer().group_send(channel_group, {"type": f"send_data", "data": json.dumps(future_data)})
         self.assertTrue(await communicator.receive_nothing())
 
         await communicator.disconnect()
@@ -359,7 +359,7 @@ class TestBasisTableConsumer(SimpleTestCase):
 
         await communicator.send_json_to({"futures_exchanges": ['KRAKEN_FUTURES', 'OKEX'], "spot_exchanges": ['BINANCE', 'COINBASE'], "spot_pairs": ['BTC-USDT'], "futures_pairs": ['BTC-USD-PERP']})
 
-        channel_group = 'OKEX_BTC-USDT_l2overview'
+        channel_group = 'OKEX_BTC-USDT_orderbooktop'
         future_data = {
             'sym': 'BTC-USD-PERP',
             'exchange': 'OKEX',
@@ -369,7 +369,7 @@ class TestBasisTableConsumer(SimpleTestCase):
             'askSizes': [random.uniform(100, 1000) for i in range(10)],
         }
 
-        await get_channel_layer().group_send(channel_group, {"type": f"send_basis_data", "data": json.dumps(future_data)})
+        await get_channel_layer().group_send(channel_group, {"type": f"send_data", "data": json.dumps(future_data)})
         self.assertTrue(await communicator.receive_nothing())
 
         await communicator.disconnect()
@@ -386,7 +386,7 @@ class TestL2overviewConsumer(SimpleTestCase):
         await communicator.send_json_to({"exchanges": ['BINANCE', 'COINBASE', 'BITFINEX'], "pairs": ['BTC-USDT']})
         self.assertTrue(await communicator.receive_nothing())
 
-        channel_group = "BINANCE_BTC-USDT_l2overview"
+        channel_group = "BINANCE_BTC-USDT_orderbooktop"
         data = {
             'sym': 'BTC-USDT',
             'exchange': 'BINANCE',
@@ -395,7 +395,7 @@ class TestL2overviewConsumer(SimpleTestCase):
             'bidSizes': [random.uniform(100, 1000) for i in range(10)],
             'askSizes': [random.uniform(100, 1000) for i in range(10)],
         }
-        await get_channel_layer().group_send(channel_group, {"type": f"send_l2overview_data", "data": json.dumps(data)})
+        await get_channel_layer().group_send(channel_group, {"type": f"send_data", "data": json.dumps(data)})
 
         response = await communicator.receive_json_from()
 
