@@ -62,17 +62,18 @@ weekInSeconds: 604800;
     price: (exec midprice from (select midprice:(avg bid1 + avg ask1) % 2 by exchangeTime from firstOrderbookEntry))[0]
     }
 
-.orderbook.price:{[exch;sym;timeperiod;freq]
+.orderbook.price:{[exch;pair;timeperiod;freq]
     hdb:hopen`::5012;
     priceRdb:select price: (avg bid1 + avg ask1) % 2 
             by date:`date$exchangeTime, time:01:00u*freq xbar exchangeTime.hh 
             from orderbooktop where exchange=exch, sym=pair;
-    priceHdb: hdb(`.orderbook.price, exch, sym, timeperiod, freq);
+    priceHdb: hdb(`.orderbook.price, exch, pair, timeperiod, freq);
     priceHdb,priceRdb
     }
 
 .historic.easy:{`.historic.percentage[(`$"BTC-USDT";`$"ETH-USDT";`$"ADA-USDT";`$"SOL-USDT";`$"DOGE-USDT");`BINANCE]};
 .historic.percentage:{[syms;exchange]
+    hdb:hopen`::5012;
     time24hAgo: .z.p - (secondInNanosecs * dayInSeconds);
     rdbData: .selectByMinTime[time24hAgo];
     rdbData: delete time from rdbData;
