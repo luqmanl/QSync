@@ -1,30 +1,30 @@
-.page-box{
-    background-color: white;
-    display: flex;
-    flex-direction: column;
+.page-box {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
 }
 
-.arbitrage-title-box{
-    justify-content: center;
-    display: flex;
+.arbitrage-title-box {
+  justify-content: center;
+  display: flex;
 }
 
-.arbitrage-title{
-    text-align: center;
-    flex-grow: 1000;
+.arbitrage-title {
+  text-align: center;
+  flex-grow: 1000;
 }
 
-.arbitrage-container{
-    flex-grow: 10000;
-    margin: 10px;
-    display: flex;
+.arbitrage-container {
+  flex-grow: 10000;
+  margin: 10px;
+  display: flex;
 }
 
-.arbitrage-column{
-    width: 50%;
-    height: 100%;
+.arbitrage-column {
+  width: 50%;
+  height: 100%;
 }
 
-.arbitrage-column:nth-child(2){
-    margin-left: 10px;
+.arbitrage-column:nth-child(2) {
+  margin-left: 10px;
 }
