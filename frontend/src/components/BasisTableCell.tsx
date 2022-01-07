@@ -21,9 +21,9 @@ interface btcPropsType {
 
 const basisHistoryGraph = (spot: string, future: string) => {
   const changeDate = (date: Date, period: number) => {
-    if (period === 1) {
+    if (period === 0) {
       date.setDate(date.getDate() - 1);
-    } else if (period === 2) {
+    } else if (period === 1) {
       date.setMonth(date.getMonth() - 1);
     } else {
       date.setFullYear(date.getFullYear() - 1);
@@ -77,7 +77,14 @@ const basisHistoryGraph = (spot: string, future: string) => {
         loadingSpinner
       ) : (
         <div>
-          {/* <StandardLineChart data={data} date={date} id="basis-history-graph" xAxis="Time" yAxis="Basis" /> */}
+          <StandardLineChart
+            graphTitle="Basis History Graph"
+            data={data}
+            date={date}
+            id="basis-history-graph"
+            xAxis="Time"
+            yAxis="Basis"
+          />
           <div className="button-container">
             <h3>Set Data Period:</h3>
             {periodMap.map((opt, i) => {
