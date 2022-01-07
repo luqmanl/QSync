@@ -4,9 +4,11 @@ import React, { useContext, useEffect, useState } from "react";
 import { Table } from "react-bootstrap";
 import { PairContext } from "../pages/Analysis";
 import {
+  ColorRGBA,
   LegendBoxBuilders,
   lightningChart,
   PointShape,
+  SolidFill,
   Themes,
 } from "@arction/lcjs";
 import "./OrderBookScatterGraph.css";
@@ -79,10 +81,10 @@ const OrderBookScatterGraph = () => {
       container: "orderbook-scatter-graph",
       theme: Themes.lightNew,
     });
-    
+
     chart.setTitle("Order Book Scatter Graph");
-    chart.getDefaultAxisX().setTitle("Price ($)")
-    chart.getDefaultAxisY().setTitle("Order Size")
+    chart.getDefaultAxisX().setTitle("Price ($)");
+    chart.getDefaultAxisY().setTitle("Order Size");
     const askSeries = chart
       .addPointSeries({ pointShape: PointShape.Square })
       .setName("Asks")
@@ -137,6 +139,20 @@ const OrderBookScatterGraph = () => {
         bidSeries.clear();
         askSeries.add(askList);
         bidSeries.add(bidList);
+        chart
+          .getDefaultAxisX()
+          .addBand()
+          .setValueEnd(0)
+          .setValueEnd(bidList[0].x)
+          .setFillStyle(new SolidFill({ color: ColorRGBA(255, 0, 0, 85) }))
+          .setMouseInteractions(false);
+        chart
+          .getDefaultAxisX()
+          .addBand()
+          .setValueStart(askList[0].x)
+          .setValueEnd(100000)
+          .setFillStyle(new SolidFill({ color: ColorRGBA(0, 0, 255, 85) }))
+          .setMouseInteractions(false);
       }
     });
 
