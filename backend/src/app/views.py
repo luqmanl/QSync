@@ -89,10 +89,10 @@ def getHistoricalBasisData(request, period, spotSym, futureSym, spotExch, future
         minTimestamp = datetime.now() - timedelta(days=90)
         resolution = 21600  # 6 hours
     elif period == "1y":
-        minTimestamp = datetime.now() - timedelta(year=1)
+        minTimestamp = datetime.now() - timedelta(days=365)
         resolution = 86400  # 1 day
     elif period == "all":
-        minTimestamp = datetime.now() - timedelta(year=100)
+        minTimestamp = datetime.now() - timedelta(years=100)
         resolution = 2629800  # 1 month
     else:  # 1 hour default
         minTimestamp = datetime.now() - timedelta(hours=1)
