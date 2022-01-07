@@ -4,7 +4,7 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import Overview from "./pages/Overview";
 import Analysis from "./pages/Analysis";
 import AnalysisLanding from "./pages/AnalysisLanding";
-import BasisTable from "./components/BasisTable";
+import Arbitrage from "./pages/Arbitrage"
 const App = () => {
   return (
     <div className="page">
@@ -19,7 +19,7 @@ const App = () => {
           <Analysis />
         </Route>
         <Route path="/arbitrage">
-          <BasisTable />
+          <Arbitrage />
         </Route>
         <Redirect from="*" to="/overview" />
       </Switch>
