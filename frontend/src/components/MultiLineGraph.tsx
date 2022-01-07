@@ -15,7 +15,6 @@ interface propsType {
 
 const MultiLineGraph = (props: propsType) => {
   const { map, date } = props;
-  console.log(map);
   useEffect(() => {
     // eslint-disable-next-line new-cap
     const chart = lightningChart().ChartXY({

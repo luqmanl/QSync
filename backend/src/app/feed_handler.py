@@ -41,12 +41,11 @@ async def l2book_callback(book_, timestamp):
         bid_sizes = []
         asks = []
         ask_sizes = []
-
         for i in range(10):
             bid, size = book_.book.bids.index(i)
             bids.append(float(bid))
             bid_sizes.append(float(size))
-            ask, size = book_.book.ask.index(i)
+            ask, size = book_.book.asks.index(i)
             asks.append(float(ask))
             ask_sizes.append(float(size))
 

@@ -79,7 +79,10 @@ const OrderBookScatterGraph = () => {
       container: "orderbook-scatter-graph",
       theme: Themes.lightNew,
     });
+
     chart.setTitle("Order Book Scatter Graph");
+    chart.getDefaultAxisX().setTitle("Price ($)");
+    chart.getDefaultAxisY().setTitle("Order Size");
     const askSeries = chart
       .addPointSeries({ pointShape: PointShape.Square })
       .setName("Asks")
@@ -129,6 +132,7 @@ const OrderBookScatterGraph = () => {
         return { x: price, y: newData.bidSizes[idx] };
       });
       if (x === UPDATE_LIMIT) {
+        console.log(ev.data);
         x = 0;
         askSeries.clear();
         bidSeries.clear();
