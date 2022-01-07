@@ -12,8 +12,8 @@ class Command(BaseCommand):
         p = Process(target=fh.run)
         p.start()
 
-        p2 = Process(target=tcs.run)
-        p2.start()
+        # p2 = Process(target=tcs.run)
+        # p2.start()
         self.stdout.write(self.style.SUCCESS(
             'Successfully initialised feedhandler '))
 
