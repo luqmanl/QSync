@@ -36,7 +36,7 @@ type currencyInformation = {
   totalSupply: number;
   transactionsPerSecond: number;
   totalTransactions: number;
-  marketDominationPercentage: number;
+  marketDominancePercentage: number;
   activeAddresses: number;
   transactions24h: number;
   transactionFee24h: number;
@@ -83,7 +83,7 @@ const curInfoNames: { [name: string]: string[] } = {
   totalSupply: ["Total Supply", "EXPLAIN"],
   transactionsPerSecond: ["Transactions Per Second", ""],
   totalTransactions: ["Total Transactions", ""],
-  marketDominationPercentage: ["Market Domination Percentage", "EXPLAIN"],
+  marketDominancePercentage: ["Market Domination Percentage", "EXPLAIN"],
   activeAddresses: ["Active Addresses", "EXPLAIN"],
   transactions24h: ["Daily Transactions", "EXPLAIN"],
   transactionFee24h: ["Daily Transaction Fee", "EXPLAIN"],
@@ -96,13 +96,14 @@ const SubAnalysis = () => {
 
   const currencyInfoAddr = `http://${
     process.env.back || "localhost:8000"
-  }/api/general-info/${pair}`;
+  }/api/data/general-info/${pair.split("-")[0]}`;
 
   useEffect(() => {
     axios
       .get(currencyInfoAddr)
       .then((res) => {
-        const { data } = res.data;
+        const { data } = res;
+        console.log(Object.entries(data.currencyInformation));
         setCurrencyInfo(data);
       })
       .catch((err) => {
@@ -139,9 +140,10 @@ const SubAnalysis = () => {
             {Object.entries(currencyInfo.priceInformation).map(
               ([name, value], idx) => {
                 return (
-                  <h3 key={idx}>
-                    {priceInfoNames[name]}: {value.toLocaleString("en-UK")}
-                  </h3>
+                  <h4 key={idx}>
+                    {priceInfoNames[name]}:{" "}
+                    {value === null ? "-" : value.toLocaleString("en-UK")}
+                  </h4>
                 );
               }
             )}
@@ -161,9 +163,10 @@ const SubAnalysis = () => {
                     placement="bottom"
                     overlay={tooltip}
                   >
-                    <h3>
-                      {futureNames[name][0]}: {value.toLocaleString("en-UK")}
-                    </h3>
+                    <h4>
+                      {futureNames[name][0]}:{" "}
+                      {value === null ? "-" : value.toLocaleString("en-UK")}
+                    </h4>
                   </OverlayTrigger>
                 );
               }
@@ -176,15 +179,24 @@ const SubAnalysis = () => {
             {Object.entries(currencyInfo.currencyInformation).map(
               ([name, value], idx) => {
                 const [fullName, toolTip] = curInfoNames[name];
-                const percentValue = value * 100;
-                const string =
-                  fullName === "Market Domination Percentage"
-                    ? `${percentValue} %`
-                    : value;
+                const percentValue = value;
+                let string: number | string = value;
+
+                if (fullName === "Market Domination Percentage") {
+                  string = `${percentValue} %`;
+                } else if (
+                  fullName === "Daily Transaction Fee" ||
+                  fullName === "Transactions Per Second"
+                ) {
+                  string = value.toFixed(4);
+                } else {
+                  string = value;
+                }
+
                 const text = (
-                  <h3 key={idx}>
+                  <h4 key={idx}>
                     {curInfoNames[name][0]}: {string}
-                  </h3>
+                  </h4>
                 );
                 if (toolTip === "") {
                   return text;

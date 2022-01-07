@@ -17,7 +17,7 @@ export const exampleData: data = {
     totalSupply: 22493481,
     transactionsPerSecond: 8,
     totalTransactions: 20392103,
-    marketDominationPercentage: 0.79,
+    marketDominancePercentage: 0.79,
     activeAddresses: 1284203,
     transactions24h: 723403,
     transactionFee24h: 1.29,
@@ -41,14 +41,14 @@ export const exampleData: data = {
 };
 
 export const initalData: data = {
-  generalInfoDescription: "",
+  generalInfoDescription: "-",
   currencyCharacteristics: [],
   currencyInformation: {
     currentSupply: 0,
     totalSupply: 0,
     transactionsPerSecond: 8,
     totalTransactions: 0,
-    marketDominationPercentage: 0,
+    marketDominancePercentage: 0,
     activeAddresses: 0,
     transactions24h: 0,
     transactionFee24h: 0,
