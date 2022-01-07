@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import { Table } from "react-bootstrap";
 import "./ArbitrageLiveTable.css";
-import { exampleData } from "../exampleData/ExampleLiveArbitrageTable";
 
 export interface LiveTableData {
   currency: string;
@@ -17,7 +16,7 @@ export interface LiveTableData {
 export type tableRep = { [name: string]: LiveTableData };
 
 const ArbitrageLiveTable = () => {
-  const [tableData, setTableData] = useState<tableRep>(exampleData);
+  const [tableData, setTableData] = useState<tableRep>({});
 
   const url = "ws://localhost:8000/ws/data/arbitrage-overview-table/";
 
@@ -35,7 +34,8 @@ const ArbitrageLiveTable = () => {
     ws.addEventListener("message", (ev) => {
       const update: LiveTableData = JSON.parse(ev.data);
       const newData = tableData;
-      tableData[update.currency] = update;
+      newData[update.currency] = update;
+      console.log(newData);
       setTableData(newData);
     });
 
@@ -61,10 +61,10 @@ const ArbitrageLiveTable = () => {
           </tr>
         </thead>
         <tbody>
-          {Object.entries(tableData).map(([name, value], idx) => {
+          {Object.entries(tableData).map(([name, value]) => {
             const percentValue = (value.maxArbitrage * 100).toPrecision(3);
             return (
-              <tr key={idx}>
+              <tr key={name}>
                 <td>{name}</td>
                 <td>{value.price.toLocaleString("en-UK")}</td>
                 <td>{percentValue} %</td>
