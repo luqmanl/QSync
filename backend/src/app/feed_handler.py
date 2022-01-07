@@ -26,11 +26,13 @@ async def send_data_to_frontend(datatype, data):
     group_name = f"{data['exchange']}_{data['sym']}_{datatype}"
     await (get_channel_layer().group_send)(group_name, {"type": f"send_data", "data": json.dumps(data)})
 
+# formats raw orderbook data from exchange to send to ticker plant and backend
+
 
 async def l2book_callback(book_, timestamp):
     key = f"{book_.exchange}_{book_.symbol}"
 
-    # save data (and send to clients) once a second
+    # save data (and send to backend) once a second
     if ((not key in last_send) or (timestamp > last_send[key] + 1)):
 
         last_send[key] = timestamp
@@ -59,6 +61,7 @@ async def l2book_callback(book_, timestamp):
 
         if SEND_TO_FRONTEND:
             await send_data_to_frontend("orderbooktop", dataFrontend)
+
         dataBackend = [
             qlist([np.string_(book_.symbol)], qtype=QSYMBOL_LIST),
             qlist([np.string_(book_.exchange)], qtype=QSYMBOL_LIST),
