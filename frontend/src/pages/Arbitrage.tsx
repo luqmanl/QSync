@@ -2,6 +2,7 @@ import React from "react";
 import "./Arbitrage.css";
 import SideBar from "../components/SideBar";
 import BasisTable from "../components/BasisTable";
+import ArbitrageLiveTable from "../components/ArbitrageLiveTable";
 
 const Arbitrage = () => {
   return (
@@ -12,7 +13,7 @@ const Arbitrage = () => {
       </div>
       <div className="arbitrage-container">
         <div className="arbitrage-column">
-            <BasisTable />
+          <BasisTable />
         </div>
         <div className="arbitrage-column">
           <div className="analysis-summary">
@@ -34,6 +35,7 @@ const Arbitrage = () => {
               sunt.
             </p>
           </div>
+          <ArbitrageLiveTable />
         </div>
       </div>
     </div>

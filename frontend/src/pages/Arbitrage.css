@@ -28,6 +28,7 @@
 .analysis-summary {
   white-space: pre-line;
   margin-right: 10px;
+  margin: 10px;
 }
 
 .arbitrage-column:nth-child(2) {
