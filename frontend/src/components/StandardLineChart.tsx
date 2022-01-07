@@ -61,10 +61,6 @@ class StandardLineChart extends React.Component<propsType, stateType> {
     series.add(this.props.data);
   }
 
-  componentDidUpdate() {
-    this.state.series.add(this.props.data);
-  }
-
   componentWillUnmout() {
     this.state.chart.dispose();
   }

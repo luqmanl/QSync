@@ -92,7 +92,7 @@ const curInfoNames: { [name: string]: string[] } = {
 export const PairContext = React.createContext<string>("");
 const SubAnalysis = () => {
   const pair = useContext(PairContext);
-  const [currencyInfo, setCurrencyInfo] = useState<data>(exampleData);
+  const [currencyInfo, setCurrencyInfo] = useState<data>(initalData);
 
   const currencyInfoAddr = `http://${
     process.env.back || "localhost:8000"
