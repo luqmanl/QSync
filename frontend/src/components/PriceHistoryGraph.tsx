@@ -12,7 +12,7 @@ const PriceHistoryGraph = () => {
   const [selectedPeriod, setSelectedPeriod] = useState(0);
   const [loading, setLoading] = useState(true);
   const [date, setDate] = useState<Date>(new Date());
-  const timePeriods = ["1D", "7D", "1M", "3M", "1Y", "ALL"];
+  const timePeriods = ["1D", "7D", "1M", "3M", "1Y"];
   const priceGraphEndpoint = `api/priceHistory/BINANCE/${pair}`;
   const addr = `http://${
     process.env.BACK || "localhost:8000"
