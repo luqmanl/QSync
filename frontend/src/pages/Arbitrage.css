@@ -25,6 +25,16 @@
   height: 100%;
 }
 
+.analysis-summary {
+  white-space: pre-line;
+  margin-right: 10px;
+}
+
 .arbitrage-column:nth-child(2) {
   margin-left: 10px;
+}
+
+.arbitrage-sub-title {
+  margin: 10px 0 10px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
 }
