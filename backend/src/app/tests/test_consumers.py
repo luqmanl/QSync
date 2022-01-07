@@ -231,7 +231,7 @@ class TestBasisTableConsumer(SimpleTestCase):
             'askSizes': [random.uniform(100, 1000) for i in range(10)],
         }
 
-        await get_channel_layer().group_send(channel_group, {"type": f"send_basis_data", "data": json.dumps(future_data)})
+        await get_channel_layer().group_send(channel_group, {"type": "send_basis_data", "data": json.dumps(future_data)})
 
         channel_group = 'BINANCE_BTC-USDT_basis'
         spot_data = {
@@ -242,7 +242,7 @@ class TestBasisTableConsumer(SimpleTestCase):
             'bidSizes': [random.uniform(100, 1000) for i in range(10)],
             'askSizes': [random.uniform(100, 1000) for i in range(10)],
         }
-        await get_channel_layer().group_send(channel_group, {"type": f"send_basis_data", "data": json.dumps(spot_data)})
+        await get_channel_layer().group_send(channel_group, {"type": "send_basis_data", "data": json.dumps(spot_data)})
 
         await communicator.receive_json_from()
 

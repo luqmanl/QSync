@@ -38,7 +38,7 @@ class TradeTableConsumer(AsyncConsumer):
 
     async def websocket_disconnect(self, event):
         for channel in self.channel_groups:
-            self.channel_layer.group_discard(channel, self.channel_name)
+            await self.channel_layer.group_discard(channel, self.channel_name)
         print('disconnected trade table websocket: ', event['code'])
 
 
@@ -49,6 +49,7 @@ class BasisTableConsumer(AsyncConsumer):
 
         self.future_prices = {}
         self.spot_prices = {}
+        self.channel_groups = []
 
         await self.send({
             "type": "websocket.accept"
@@ -95,26 +96,30 @@ class BasisTableConsumer(AsyncConsumer):
 
         for exchange in data["futures_exchanges"]:
             for pair in data["futures_pairs"]:
+                self.channel_groups.append(f"{exchange}_{pair}_basis")
                 await self.channel_layer.group_add(
-                    f"{exchange}_{pair}_basis",
+                    self.channel_groups[-1],
                     self.channel_name
                 )
 
         for exchange in data["spot_exchanges"]:
             for pair in data["spot_pairs"]:
+                self.channel_groups.append(f"{exchange}_{pair}_basis")
                 await self.channel_layer.group_add(
-                    f"{exchange}_{pair}_basis",
+                    self.channel_groups[-1],
                     self.channel_name
                 )
 
     async def websocket_disconnect(self, event):
+        for channel in self.channel_groups:
+            await self.channel_layer.group_discard(channel, self.channel_name)
         print('disconnected basis table websocket: ', event['code'])
 
 
 # Handles l2orderbook overview data for exchanges and pairs specified by client in request
 class L2overviewConsumer(AsyncConsumer):
     async def websocket_connect(self, event):
-
+        self.channel_groups = []
         await self.send({
             "type": "websocket.accept"
         })
@@ -124,12 +129,15 @@ class L2overviewConsumer(AsyncConsumer):
         data = json.loads(event["text"])
         for pair in data["pairs"]:
             for exchange in data["exchanges"]:
+                self.channel_groups.append(f"{exchange}_{pair}_l2overview")
                 await self.channel_layer.group_add(
-                    f"{exchange}_{pair}_l2overview",
+                    self.channel_groups[-1],
                     self.channel_name
                 )
 
     async def websocket_disconnect(self, event):
+        for channel in self.channel_groups:
+            await self.channel_layer.group_discard(channel, self.channel_name)
         print('disconnected l2overview websocket: ', event['code'])
 
     async def send_l2overview_data(self, event):
@@ -191,7 +199,7 @@ class L2orderbookConsumer(AsyncConsumer):
 
     async def websocket_disconnect(self, event):
         for channel in self.channel_groups:
-            self.channel_layer.group_discard(channel, self.channel_name)
+            await self.channel_layer.group_discard(channel, self.channel_name)
         print('disconnected l2orderbook websocket: ', event['code'])
 
 
