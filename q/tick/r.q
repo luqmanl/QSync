@@ -52,6 +52,7 @@ weekInSeconds: 604800;
     priceNow:.price.at.time[sym;exchange;timeNow];
     price24hAgo:hdb(`.price.at.time, sym, exchange, timeNow - secondInNanosecs*dayInSeconds);
     price7dAgo:hdb(`.price.at.time, sym, exchange, timeNow - secondInNanosecs*weekInSeconds);
+    hclose hdb;
     percentageChange24h: (priceNow - price24hAgo) % price24hAgo;
     percentageChange7d: (priceNow - price7dAgo) % price7dAgo;
     `time`sym`price`change24h`change7d`marketCap!(timeNow;sym;priceNow;percentageChange24h;percentageChange7d;0f) / market cap zero for the time being
@@ -68,6 +69,7 @@ weekInSeconds: 604800;
             by date:`date$exchangeTime, time:01:00u*freq xbar exchangeTime.hh 
             from orderbooktop where exchange=exch, sym=pair;
     priceHdb: hdb(`.orderbook.price, exch, pair, timeperiod, freq);
+    hclose hdb;
     priceHdb,priceRdb
     }
 
@@ -79,6 +81,7 @@ weekInSeconds: 604800;
     rdbData: delete time from rdbData;
     hdbData:hdb(`.selectByMinTime, time24hAgo);
     hdbData: delete date,time from hdbData;
+    hclose hdb;
     allData: raze (hdbData;rdbData);
     midpricesWithResolution: raze .selectMidpricesWithResolution[allData;] each syms;
     price24hAgo: (exec midprice from midpricesWithResolution)[0];

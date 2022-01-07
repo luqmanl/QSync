@@ -26,7 +26,7 @@ const PriceHistoryGraph = () => {
     } else if (period === 2) {
       curDate.setMonth(curDate.getMonth() - 1);
     } else if (period === 3) {
-      curDate.setMonth(curDate.getMonth() - 1);
+      curDate.setMonth(curDate.getMonth() - 3);
     } else if (period === 4) {
       curDate.setFullYear(curDate.getFullYear() - 1);
     } else {
