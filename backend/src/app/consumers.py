@@ -268,6 +268,8 @@ class ArbitrageTableConsumer(AsyncConsumer):
         response = {"currency": data["sym"],
                     "maxArbitrage": (data["ask"] - data["bid"]) / data["bid"],
                     "highestBid": data["bid"],
+                    "bidExchange": data["bidExchange"],
+                    "askExchange": data["askExchange"],
                     "lowestAsk": data["ask"],
                     "price": (data["ask"] + data["bid"]) / 2
                     }
@@ -277,7 +279,7 @@ class ArbitrageTableConsumer(AsyncConsumer):
         })
 
     async def websocket_receive(self, event):
-        # data = {"exchanges, pairs"}
+        # data = {"pairs": String}
         data = json.loads(event["text"])
         for pair in data["pairs"]:
             self.channel_groups.append(f"{pair}_arbitrage")
