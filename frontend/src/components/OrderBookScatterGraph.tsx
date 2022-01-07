@@ -79,7 +79,10 @@ const OrderBookScatterGraph = () => {
       container: "orderbook-scatter-graph",
       theme: Themes.lightNew,
     });
+    
     chart.setTitle("Order Book Scatter Graph");
+    chart.getDefaultAxisX().setTitle("Price ($)")
+    chart.getDefaultAxisY().setTitle("Order Size")
     const askSeries = chart
       .addPointSeries({ pointShape: PointShape.Square })
       .setName("Asks")
