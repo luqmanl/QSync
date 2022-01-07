@@ -78,7 +78,7 @@ const AnalaysisLanding = () => {
     "The % change in price of the currency over the last 7 days",
     "The number of coins in circulation multiplied by the value of a single coin",
     "The current amount of coins",
-    "EXPLANATION NEEDED",
+    "Difference in volume between bids and asks in the order book",
   ];
 
   const linkAddr = `ws://${
