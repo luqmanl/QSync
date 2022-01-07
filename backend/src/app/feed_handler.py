@@ -14,34 +14,21 @@ from qpython.qcollection import qlist
 from channels.layers import get_channel_layer
 
 
-# Connect to Q
+# Connect to ticker plant
 q = qconnection.QConnection(host='localhost', port=5010)
 # maps data type to last client send (e.g. BINANCE_BTC-USDT_trades -> 20:29:32.549549)
 last_send = {}
 
-""" Maps kdb table names to channels with data types that are subscribing
-    for the corresponding table updates
-"""
-table_to_channel_datatypes = {
-    "orderbooktop": (["l2orderbook", "l2overview", "basis"]),
-    "trades": (["trade"]),
-}
 
-# send input data to frontend through channel group
+# Utilise channel groups to send data to relevent backend consumers
+async def send_data_to_frontend(datatype, data):
 
-
-async def send_data_to_frontend(datatypes, data):
-    key = f"{data['exchange']}_{data['sym']}"
-
-    for datatype in datatypes:
-        group_name = f"{data['exchange']}_{data['sym']}_{datatype}"
-        await (get_channel_layer().group_send)(group_name, {"type": f"send_{datatype}_data", "data": json.dumps(data)})
+    group_name = f"{data['exchange']}_{data['sym']}_{datatype}"
+    await (get_channel_layer().group_send)(group_name, {"type": f"send_data", "data": json.dumps(data)})
 
 
 async def l2book_callback(book_, timestamp):
     key = f"{book_.exchange}_{book_.symbol}"
-    # if book_.timestamp != None:
-    #     timestamp = book_.timestamp
 
     # save data (and send to clients) once a second
     if ((not key in last_send) or (timestamp > last_send[key] + 1)):
@@ -71,8 +58,7 @@ async def l2book_callback(book_, timestamp):
         }
 
         if SEND_TO_FRONTEND:
-            datatypes = table_to_channel_datatypes["orderbooktop"]
-            await send_data_to_frontend(datatypes, dataFrontend)
+            await send_data_to_frontend("orderbooktop", dataFrontend)
         dataBackend = [
             qlist([np.string_(book_.symbol)], qtype=QSYMBOL_LIST),
             qlist([np.string_(book_.exchange)], qtype=QSYMBOL_LIST),
@@ -108,8 +94,7 @@ async def trade_callback(trade, timestamp):
     }
 
     if SEND_TO_FRONTEND:
-        datatypes = table_to_channel_datatypes["trades"]
-        await send_data_to_frontend(datatypes, data)
+        await send_data_to_frontend("trades", data)
 
     q.sendAsync('.u.upd', np.string_('trades'), [
         qlist([np.string_(trade.symbol)], qtype=QSYMBOL_LIST),

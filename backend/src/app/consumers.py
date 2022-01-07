@@ -21,7 +21,7 @@ class TradeTableConsumer(AsyncConsumer):
             "type": "websocket.accept"
         })
 
-    async def send_trade_data(self, event):
+    async def send_data(self, event):
         await self.send({
             'type': 'websocket.send',
             'text': event['data']
@@ -30,7 +30,7 @@ class TradeTableConsumer(AsyncConsumer):
     async def websocket_receive(self, event):
         # req = {exchange: String, pair: String}
         req = json.loads(event["text"])
-        self.channel_groups.append(f"{req['exchange']}_{req['pair']}_trade")
+        self.channel_groups.append(f"{req['exchange']}_{req['pair']}_trades")
         await self.channel_layer.group_add(
             self.channel_groups[-1],
             self.channel_name
@@ -55,7 +55,7 @@ class BasisTableConsumer(AsyncConsumer):
             "type": "websocket.accept"
         })
 
-    async def send_basis_data(self, event):
+    async def send_data(self, event):
         data = json.loads(event["data"])
         highestBid = data["bids"][0]
         lowestAsk = data["asks"][0]
@@ -96,7 +96,7 @@ class BasisTableConsumer(AsyncConsumer):
 
         for exchange in data["futures_exchanges"]:
             for pair in data["futures_pairs"]:
-                self.channel_groups.append(f"{exchange}_{pair}_basis")
+                self.channel_groups.append(f"{exchange}_{pair}_orderbooktop")
                 await self.channel_layer.group_add(
                     self.channel_groups[-1],
                     self.channel_name
@@ -104,7 +104,7 @@ class BasisTableConsumer(AsyncConsumer):
 
         for exchange in data["spot_exchanges"]:
             for pair in data["spot_pairs"]:
-                self.channel_groups.append(f"{exchange}_{pair}_basis")
+                self.channel_groups.append(f"{exchange}_{pair}_orderbooktop")
                 await self.channel_layer.group_add(
                     self.channel_groups[-1],
                     self.channel_name
@@ -129,7 +129,7 @@ class L2overviewConsumer(AsyncConsumer):
         data = json.loads(event["text"])
         for pair in data["pairs"]:
             for exchange in data["exchanges"]:
-                self.channel_groups.append(f"{exchange}_{pair}_l2overview")
+                self.channel_groups.append(f"{exchange}_{pair}_orderbooktop")
                 await self.channel_layer.group_add(
                     self.channel_groups[-1],
                     self.channel_name
@@ -140,7 +140,7 @@ class L2overviewConsumer(AsyncConsumer):
             await self.channel_layer.group_discard(channel, self.channel_name)
         print('disconnected l2overview websocket: ', event['code'])
 
-    async def send_l2overview_data(self, event):
+    async def send_data(self, event):
         data = json.loads(event["data"])
         highestBid = data["bids"][0]
         lowestAsk = data["asks"][0]
@@ -182,7 +182,7 @@ class L2orderbookConsumer(AsyncConsumer):
             "type": "websocket.accept"
         })
 
-    async def send_l2orderbook_data(self, event):
+    async def send_data(self, event):
         await self.send({
             "type": 'websocket.send',
             "text": event["data"]
@@ -192,7 +192,7 @@ class L2orderbookConsumer(AsyncConsumer):
         # data = {exchange: String, pair: String}
         data = json.loads(event["text"])
         self.channel_groups.append(
-            f"{data['exchange']}_{data['pair']}_l2orderbook")
+            f"{data['exchange']}_{data['pair']}_orderbooktop")
         await self.channel_layer.group_add(
             self.channel_groups[-1],
             self.channel_name)
