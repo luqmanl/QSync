@@ -4,8 +4,11 @@ services:
     build: ./frontend
     ports:
       - "3000:80"
+      
   kdb:
     build: ./q
+    volumes:
+      - /mnt/ssd1:/tables
     ports:
       - "5010:5010"
       - "5011:5011"
