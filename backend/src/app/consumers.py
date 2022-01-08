@@ -231,6 +231,8 @@ class TopCurrenciesConsumer(AsyncConsumer):
         if self.get_analysis_data:
             response["imbalance"] = (
                 size_highest_bid - size_lowest_ask) / (size_lowest_ask + size_highest_bid)
+            response["marketCap"] = 0
+            response["currentSupply"] = 0
         await self.send({
             "type": 'websocket.send',
             "text": json.dumps({"currencyData": [response]})
