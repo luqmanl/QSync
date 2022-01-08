@@ -26,5 +26,17 @@
 }
 
 .title {
-  font-size: 26px;
+  text-align: center;
+  padding: 5%;
+  padding-bottom: 0;
+  font-size: 35px;
+  font-weight: 1000;
+}
+
+.newsfeed-desc {
+  font-size: 15px;
+  text-align: center;
+  font-weight: 1000;
+  color: rgb(88, 102, 126);
+
 }

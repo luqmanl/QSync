@@ -15,10 +15,10 @@ interface responseType {
 }
 
 const tableColumns = [
-  "Currency",
+  "Name",
   "Price",
-  "24H Change",
-  "7D Change",
+  "24h %",
+  "7d %",
   "Market Cap",
 ];
 
@@ -40,9 +40,9 @@ const generateColour7d = (value: number): colour => {
     return maxRed;
   }
   return {
-    red: 143.5 - (gradient.red / 10) * value,
-    green: 80 + (gradient.green / 10) * value,
-    blue: 7.5 + (gradient.blue / 10) * value,
+    red: 143.5 - (gradient.red / 5) * value,
+    green: 80 + (gradient.green / 5) * value,
+    blue: 7.5 + (gradient.blue / 5) * value,
   };
 };
 
@@ -96,6 +96,8 @@ const TopCurrencyTable = () => {
 
   return (
     <div className="table-container">
+      <h2 className="table-title">Top Cryptocurrency Prices</h2>
+      <p className="table-desc">Displaying live cryptocurrency prices with the top percentage changes in price</p>
       <Table>
         <thead>
           <tr>

@@ -18,7 +18,7 @@ const Overview = () => {
 
   useEffect(() => {
     if ("user" in cookies) {
-      console.log("hi");
+      console.log("user is in cookies");
     } else {
       addCookie();
       setWarning(true);
@@ -30,7 +30,7 @@ const Overview = () => {
       <FinancialWarning first={warning} />
       <div className="title-box">
         <SideBar addr="overview" />
-        <h2 className="page-title">Market Overview</h2>
+        <h1 className="page-title">Cryptocurrency Market Overview</h1>
       </div>
       <div className="content-box">
         <div className="left-box">
@@ -45,7 +45,9 @@ const Overview = () => {
           <div className="indicator-box">
             <KeyMetrics />
           </div>
-          <NewsFeed />
+          <div className="newsfeed-box">
+            <NewsFeed />
+          </div>
         </div>
       </div>
     </div>

@@ -4,10 +4,20 @@
 }
 
 .metric-title {
-  /* font-weight: bolder; */
   text-align: center;
-  margin-bottom: 5px;
-  font-size: 26px;
+  padding: 5%;
+  padding-bottom: 0;
+  font-size: 35px;
+  font-weight: 1000;
+}
+
+.metric-desc {
+  text-align: center;
+  padding-left: 5%;
+  padding-right: 5%;
+  font-size: 15px;
+  font-weight: 1000;
+  color: rgb(88, 102, 126);
 }
 
 .metrics-container {

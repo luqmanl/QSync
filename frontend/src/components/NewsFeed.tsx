@@ -50,6 +50,7 @@ const NewsFeed = () => {
   return (
     <div className="newsfeed-container">
       <h1 className="title">Newsfeed</h1>
+      <p className="newsfeed-desc">Latest cryptocurrency news displayed here</p>
       {loading ? (
         <div className="loading-container">
           <Spinner animation="border" variant="dark" />
