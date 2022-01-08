@@ -149,10 +149,15 @@ const OrderBookScatterGraph = () => {
   return (
     <div className="scatter-graph-container">
       <div className="scatter-graph-container">
-        <div id="orderbook-scatter-graph"></div>
+        
+        <div id="orderbook-scatter-graph">  
+          <h2 className="order-book-title">Order Book</h2>
+          <p className="order-book-desc">Order book statistics</p>  
+        </div>
       </div>
       <div className="order-book-holder">
-        <h2 className="component-title">Order Book</h2>
+        <h2 className="order-book-title">Order Book</h2>
+        <p className="order-book-desc">Order book statistics</p>
         <Table>
           <thead>
             <tr>

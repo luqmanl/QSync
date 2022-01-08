@@ -1,9 +1,22 @@
 .scatter-graph-container {
-  height: 50%;
+  height: 100%;
   width: 100%;
 }
 
 #orderbook-scatter-graph {
   height: 100%;
   margin: 20px;
+}
+
+.order-book-title {
+  padding-bottom: 0;
+  font-size: 35px;
+  font-weight: 1000;
+}
+
+.order-book-desc {
+  font-size: 15px;
+  font-weight: 1000;
+  color: rgb(88, 102, 126);
+
 }

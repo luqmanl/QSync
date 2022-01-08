@@ -145,7 +145,18 @@ const SubAnalysis = () => {
 
   return (
     <div className="main-content-box">
-      <div className="analysis-column">
+      <div className="analysis-column-left">
+        <div className="price-chart">
+          <h2 className="price-chart-title">Bitcoin to USDT Chart</h2>
+          <p className="price-chart-desc"> This shows the real-time price changes for bitcoin to USDT over time</p>
+          <PriceHistoryGraph />
+        </div>
+        <div className="orderbook">
+          <OrderBookScatterGraph />
+        </div>
+      </div>
+      <div className="analysis-column-right">
+
         <div className="coin-summary">
           <h2 className="summary-title">General Info</h2>
           <p>{currencyInfo.generalInfoDescription}</p>
@@ -162,10 +173,7 @@ const SubAnalysis = () => {
             })}
           </div>
         </div>
-        <OrderBookScatterGraph />
-      </div>
-      <div className="analysis-column">
-        <PriceHistoryGraph />
+        
         <div className="coin-summary">
           <h2 className="summary-title">Price Information</h2>
           <div className="price-info-columns">
