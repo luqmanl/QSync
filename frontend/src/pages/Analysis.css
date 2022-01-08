@@ -12,8 +12,17 @@
   scrollbar-color: rgba(0, 0, 0, 0.4) white;
 }
 
-.analysis-column {
+.analysis-column-left {
   display: flex;
+  flex-flow: column;
+  padding: 5%;
+  flex-grow: 1;
+}
+
+.analysis-column-right {
+  display: flex;
+  flex-grow: 1;
+  padding: 5%;
   flex-direction: column;
 }
 
@@ -59,7 +68,7 @@
 
 .main-content-box {
   display: grid;
-  grid-template-columns: 50% 50%;
+  grid-template-columns: 65% 35%;
   flex-grow: 100;
   margin: 5px 5px;
   overflow-y: scroll;
@@ -125,4 +134,20 @@
   flex-grow: 100;
   font-weight: bold;
   font-size: 60px;
+}
+
+.price-chart-title {
+  padding-bottom: 0;
+  font-size: 35px;
+  font-weight: 1000;
+}
+
+.price-chart-desc {
+  font-size: 15px;
+  font-weight: 1000;
+  color: rgb(88, 102, 126);
+}
+
+.orderbook {
+  margin-top: 9%;
 }
