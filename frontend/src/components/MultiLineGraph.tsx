@@ -83,7 +83,7 @@ const MultiLineGraph = (props: propsType) => {
     };
   }, []);
 
-  return <div id="currency-graph" style={{ height: "5pt" }}></div>;
+  return <div id="currency-graph" style={{ height: "500pt" }}></div>;
 };
 
 export default MultiLineGraph;

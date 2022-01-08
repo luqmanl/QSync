@@ -105,3 +105,19 @@
   grid-template-columns: auto auto;
   margin: 10px 5px 5px 5px;
 }
+
+.title-box {
+  display: flex;
+  padding: 3%;
+  padding-bottom: 1%;
+  justify-content: center;
+}
+
+.page-title {
+  justify-content: center;
+  text-align: center;
+  flex-grow: 100;
+  font-weight:bold;
+  font-size: 60px;
+  text-shadow: 2px 2px 2px grey;
+}

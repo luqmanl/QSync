@@ -3,10 +3,11 @@
   width: 100%;
   display: grid;
   overflow: scroll;
+  padding: 5%;
 }
 
 .newsfeed-container {
-  height: 66%;
+  height: 100%;
   width: 100%;
   text-align: center;
 }
@@ -16,25 +17,24 @@
   margin-bottom: 10px;
   border-radius: 25px;
   background-color: white;
-  padding-top:5%;
-  padding-bottom:5%;
+  padding: 5%;
 }
 
 .provider {
-  text-align: left;
+  float:left;
   font-size: 25px;
   font-weight: 1000;
 }
 
 .timestamp {
-  text-align: right;
+  float: right;
   font-size: 25px;
   font-weight: 1000;
 }
 
 .headline {
   color: rgb(88, 102, 126);
-  font-size: 25px;
+  font-size: 20px;
   font-weight: 700;
   text-decoration: none;
 }

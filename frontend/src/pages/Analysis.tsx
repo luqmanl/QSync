@@ -259,11 +259,10 @@ function Analysis(): JSX.Element {
   return (
     <PairContext.Provider value={pair}>
       <div className="analysis-page-box">
-        <div className="analysis-title-box">
-          <SideBar addr="detailed Analysis" />
-          <h2 className="analysis-page-title">
-            {nameMap[pair] || "Update Pair Name Map"}
-          </h2>
+
+        <div className="title-box">
+          <SideBar addr="overview" />
+          <h1 className="page-title">{nameMap[pair] || "Update Pair Name Map"}</h1>
         </div>
         <div className="analysis-content-box">
           <SubAnalysis />
