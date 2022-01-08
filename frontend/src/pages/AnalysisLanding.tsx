@@ -145,7 +145,7 @@ const AnalaysisLanding = () => {
             {Object.entries(analyses).map(([name, data]) => {
               const colour24h = generateColour24h(data.change24h);
               const colour7d = generateColour7d(data.change7d);
-              const link = `/${data.name}`;
+              const link = `analysis/${data.name}`;
               return (
                 <tr key={name} style={{ fontSize: "x-large" }}>
                   <Link
