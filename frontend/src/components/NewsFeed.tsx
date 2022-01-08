@@ -64,9 +64,12 @@ const NewsFeed = () => {
                   <h3 className="provider">{item.provider}</h3>
                   <h3 className="timestamp">{item.timestamp}</h3>
                 </div>
-                <a href={item.url} className="headline">
-                  <h3>{item.description}</h3>
-                </a>
+                <div className="headlineDiv">
+                  <a href={item.url} className="headline">
+                    <h3>{item.description}</h3>
+                  </a>
+                </div>
+                
               </div>
             );
           })}

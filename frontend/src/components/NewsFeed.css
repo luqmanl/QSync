@@ -1,9 +1,8 @@
 .news-box {
-  height: 90%;
+  height: 100%;
   width: 100%;
   display: grid;
   overflow: scroll;
-  padding: 5%;
 }
 
 .newsfeed-container {
@@ -13,8 +12,8 @@
 }
 
 .headline-container {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
-  margin-bottom: 10px;
+  margin: 5%;
+  width: 100%;
   border-radius: 25px;
   background-color: white;
   padding: 5%;
@@ -57,4 +56,15 @@
   font-weight: 1000;
   color: rgb(88, 102, 126);
 
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.example::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.example {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
 }
