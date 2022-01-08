@@ -4,6 +4,8 @@
   flex-flow: column;
   height: 100%;
   width: 100%;
+  padding-left: 5%;
+  padding-right: 5%;
   overflow-x: hidden;
   font-family: "Nunito Sans", sans-serif;
   scrollbar-width: thin;
@@ -19,12 +21,16 @@
   display: flex;
   justify-content: center;
   background: white;
+  padding: 3%;
+  padding-bottom: 1%;
 }
 
 .analysis-page-title {
   justify-content: center;
   text-align: center;
   flex-grow: 100;
+  font-weight: bold;
+  font-size: 60px;
 }
 
 .analysis-content-box {
@@ -117,7 +123,6 @@
   justify-content: center;
   text-align: center;
   flex-grow: 100;
-  font-weight:bold;
+  font-weight: bold;
   font-size: 60px;
-  text-shadow: 2px 2px 2px grey;
 }

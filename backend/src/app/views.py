@@ -2,7 +2,8 @@ from django.shortcuts import render
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse, response
-from django.utils import timezone
+from django.utils import timezone, dateformat
+from datetime import timedelta
 
 from math import nan
 from qpython import qconnection
@@ -142,7 +143,8 @@ def getNewsfeed(request):
             date_created__gte=timezone.now() - timedelta(minutes=30))[0]
         return JsonResponse(model_to_dict(r)['news_list'])
     else:
-        r = requests.get(settings.NEWS_URL + settings.NEWS_API_KEY)
+        r = requests.get(settings.NEWS_URL.format(date=dateformat.format(
+            timezone.now(), 'Y-m-d'), api_key=settings.NEWS_API_KEY))
         articles = r.json()['articles']
         toSave = {
             "newsListings": [],

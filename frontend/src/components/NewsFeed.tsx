@@ -13,6 +13,8 @@ export interface newsListing {
   url: string;
 }
 
+const MAX_LENGTH = 100;
+
 const NewsFeed = () => {
   const url = `http://${
     process.env.back || "localhost:8000"
@@ -66,10 +68,13 @@ const NewsFeed = () => {
                 </div>
                 <div className="headlineDiv">
                   <a href={item.url} className="headline">
-                    <h3>{item.description}</h3>
+                    <h3>
+                      {item.description.length > MAX_LENGTH
+                        ? `${item.description.substring(0, MAX_LENGTH)}...`
+                        : item.description}
+                    </h3>
                   </a>
                 </div>
-                
               </div>
             );
           })}

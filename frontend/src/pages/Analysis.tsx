@@ -72,54 +72,21 @@ const priceInfoNames: { [name: string]: string } = {
 };
 
 const futureNames: { [name: string]: string[] } = {
-  perpetualPrice: [
-    "Perpetual Price",
-    "Perepetuals are a type of derivative that are supported by some exchanges for some currencies. They provide an indication of where market participants believe the price of the underlying currency is heading.",
-  ],
-  fundingRate: [
-    "Funding Rate",
-    "Perpetual futures have a concept called funding rate, where buyers and sellers of the contracts have to periodically pay a fee to the counterparty depending on this funding rate.",
-  ],
-  basis: ["Basis", "Spot currency price - perpetual future price"],
-  openInterest: [
-    "Open Interest",
-    "The number of contracts or commitments outstanding in futures and options trading on an official exchange at any one time.",
-  ],
+  perpetualPrice: ["Perpetual Price", "EXPLANATION NEEDED"],
+  fundingRate: ["Funding Rate", "EXPLANATION NEEDED"],
+  basis: ["Basis", "EXPLANATION NEEDED"],
+  openInterest: ["Open Interest", "EXPLANANTION NEEDED"],
 };
 
 const curInfoNames: { [name: string]: string[] } = {
-  currentSupply: [
-    "Current Supply",
-    "Current supply of this currency in circulation",
-  ],
-  totalSupply: [
-    "Total Supply",
-    "Maximum possible supply achievable for this currency. Note that some currencies do not have a maximum supply",
-  ],
-  transactionsPerSecond: [
-    "Transactions Per Second",
-    "Average transaction rate per second over the last 24 hours",
-  ],
-  totalTransactions: [
-    "Total Transactions",
-    "All time total number of transactions",
-  ],
-  marketDominancePercentage: [
-    "Market Domination Percentage",
-    "This currency's market cap as a percentage of all cryptocurrency market caps.",
-  ],
-  activeAddresses: [
-    "Active Addresses",
-    "Addresses that have some unit of currency in them.",
-  ],
-  transactions24h: [
-    "Daily Transactions",
-    "Total number of transactions in the last 24 hours",
-  ],
-  transactionFee24h: [
-    "Daily Transaction Fee",
-    "Average transaction fee over the last 24 hours.",
-  ],
+  currentSupply: ["Current Supply", "EXPLAIN"],
+  totalSupply: ["Total Supply", "EXPLAIN"],
+  transactionsPerSecond: ["Transactions Per Second", ""],
+  totalTransactions: ["Total Transactions", ""],
+  marketDominancePercentage: ["Market Domination Percentage", "EXPLAIN"],
+  activeAddresses: ["Active Addresses", "EXPLAIN"],
+  transactions24h: ["Daily Transactions", "EXPLAIN"],
+  transactionFee24h: ["Daily Transaction Fee", "EXPLAIN"],
 };
 
 export const PairContext = React.createContext<string>("");
@@ -210,9 +177,6 @@ const SubAnalysis = () => {
           <div className="price-info-columns">
             {Object.entries(currencyInfo.currencyInformation).map(
               ([name, value], idx) => {
-                if (value === null) {
-                  return <h4 key={idx}>-</h4>;
-                }
                 const [fullName, toolTip] = curInfoNames[name];
                 const percentValue = value;
                 let string: number | string = value;
@@ -259,10 +223,11 @@ function Analysis(): JSX.Element {
   return (
     <PairContext.Provider value={pair}>
       <div className="analysis-page-box">
-
-        <div className="title-box">
-          <SideBar addr="overview" />
-          <h1 className="page-title">{nameMap[pair] || "Update Pair Name Map"}</h1>
+        <div className="analysis-title-box">
+          <SideBar addr="detailed Analysis" />
+          <h2 className="analysis-page-title">
+            {nameMap[pair] || "Update Pair Name Map"}
+          </h2>
         </div>
         <div className="analysis-content-box">
           <SubAnalysis />

@@ -103,7 +103,9 @@ const KeyMetrics = () => {
   return (
     <div className="metric-box">
       <h2 className="metric-title">Key Metrics</h2>
-      <p className="metric-desc">Displaying real-time cryptocurrency statistics</p>
+      <p className="metric-desc">
+        Displaying real-time cryptocurrency statistics
+      </p>
       {loading ? (
         <div className="spinner-container">
           {/* <Spinner animation="border" variant="dark" /> */}

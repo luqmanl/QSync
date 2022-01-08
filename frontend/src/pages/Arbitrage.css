@@ -2,16 +2,22 @@
   background-color: white;
   display: flex;
   flex-direction: column;
+  padding-left: 5%;
+  padding-right: 5%;
 }
 
 .arbitrage-title-box {
   justify-content: center;
   display: flex;
+  padding: 3%;
+  padding-bottom: 1%;
 }
 
 .arbitrage-title {
   text-align: center;
   flex-grow: 1000;
+  font-weight: bold;
+  font-size: 60px;
 }
 
 .arbitrage-container {

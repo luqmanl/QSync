@@ -3,7 +3,6 @@ import SideBar from "../components/SideBar";
 import TopCurrencyGraph from "../components/TopCurrencyGraph";
 import TopCurrencyTable from "../components/TopCurrencyTable";
 import NewsFeed from "../components/NewsFeed";
-import KeyMetrics from "../components/KeyMetrics";
 import FinancialWarning from "../components/FinancialWarning";
 import "./Overview.css";
 import { useCookies } from "react-cookie";
@@ -17,9 +16,7 @@ const Overview = () => {
   };
 
   useEffect(() => {
-    if ("user" in cookies) {
-      console.log("user is in cookies");
-    } else {
+    if (!("user" in cookies)) {
       addCookie();
       setWarning(true);
     }

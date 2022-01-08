@@ -12,15 +12,14 @@ thead tr {
 }
 
 tbody tr {
-  height:75px;
+  height: 75px;
   text-align: right;
   vertical-align: middle;
   font-size: 20px;
   font-weight: 1000;
-
 }
 
-.table-title {  
+.table-title {
   padding-bottom: 0;
   font-size: 35px;
   font-weight: 1000;
@@ -32,4 +31,3 @@ tbody tr {
   font-weight: 1000;
   color: rgb(88, 102, 126);
 }
-

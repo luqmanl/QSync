@@ -14,13 +14,7 @@ interface responseType {
   marketCap: number;
 }
 
-const tableColumns = [
-  "Name",
-  "Price",
-  "24h %",
-  "7d %",
-  "Market Cap",
-];
+const tableColumns = ["Name", "Price", "24h %", "7d %", "Market Cap"];
 
 interface colour {
   red: number;
@@ -28,35 +22,19 @@ interface colour {
   blue: number;
 }
 
-const maxGreen: colour = { red: 32, green: 156, blue: 5 };
-const maxRed: colour = { red: 255, green: 10, blue: 10 };
-const gradient: colour = { red: 222, green: 156, blue: 5 };
+const generateColour = (value: number): colour => {
+  if (value > 0) {
+    return {
+      red: 0,
+      green: Math.min(255, 255 * value + 20),
+      blue: 0,
+    };
+  }
 
-const generateColour7d = (value: number): colour => {
-  if (value >= 5) {
-    return maxGreen;
-  }
-  if (value <= -5) {
-    return maxRed;
-  }
   return {
-    red: 143.5 - (gradient.red / 5) * value,
-    green: 80 + (gradient.green / 5) * value,
-    blue: 7.5 + (gradient.blue / 5) * value,
-  };
-};
-
-const generateColour24h = (value: number): colour => {
-  if (value >= 5) {
-    return maxGreen;
-  }
-  if (value <= -5) {
-    return maxRed;
-  }
-  return {
-    red: 143.5 - (gradient.red / 10) * value,
-    green: 80 + (gradient.green / 10) * value,
-    blue: 7.5 + (gradient.blue / 10) * value,
+    red: Math.min(255, 255 * -value + 20),
+    green: 0,
+    blue: 0,
   };
 };
 
@@ -97,7 +75,10 @@ const TopCurrencyTable = () => {
   return (
     <div className="table-container">
       <h2 className="table-title">Top Cryptocurrency Prices</h2>
-      <p className="table-desc">Displaying live cryptocurrency prices with the top percentage changes in price</p>
+      <p className="table-desc">
+        Displaying live cryptocurrency prices with the top percentage changes in
+        price
+      </p>
       <Table>
         <thead>
           <tr>
@@ -108,8 +89,8 @@ const TopCurrencyTable = () => {
         </thead>
         <tbody>
           {Object.entries(tableData).map(([name, data]) => {
-            const colour24h = generateColour24h(data.change24h);
-            const colour7d = generateColour7d(data.change7d);
+            const colour24h = generateColour(data.change24h);
+            const colour7d = generateColour(data.change7d);
             return (
               <tr key={name}>
                 <td>{data.name}</td>

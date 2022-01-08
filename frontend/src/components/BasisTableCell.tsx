@@ -107,6 +107,7 @@ const basisHistoryGraph = (spot: string, future: string) => {
               );
             })}
           </div>
+          <h5>(Press esc to go back)</h5>
         </div>
       )}
     </div>

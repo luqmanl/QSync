@@ -63,7 +63,9 @@ const TopCurrencyGraph = () => {
   return (
     <div className="graph-container">
       <h1 className="graph-title">Cryptocurrency Percentage Changes</h1>
-      <p className="graph-desc">Real-time price percentage changes for multiple cryptocurrencies</p>
+      <p className="graph-desc">
+        Real-time price percentage changes for multiple cryptocurrencies
+      </p>
       {loading ? (
         <div className="top-cur-graph-spinner-container">
           <Spinner
