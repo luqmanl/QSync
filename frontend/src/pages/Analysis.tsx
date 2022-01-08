@@ -136,7 +136,6 @@ const SubAnalysis = () => {
       .get(currencyInfoAddr)
       .then((res) => {
         const { data } = res;
-        console.log(Object.entries(data.currencyInformation));
         setCurrencyInfo(data);
       })
       .catch((err) => {
@@ -211,6 +210,9 @@ const SubAnalysis = () => {
           <div className="price-info-columns">
             {Object.entries(currencyInfo.currencyInformation).map(
               ([name, value], idx) => {
+                if (value === null) {
+                  return <h4 key={idx}>-</h4>;
+                }
                 const [fullName, toolTip] = curInfoNames[name];
                 const percentValue = value;
                 let string: number | string = value;

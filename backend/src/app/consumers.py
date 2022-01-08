@@ -205,6 +205,9 @@ class L2orderbookConsumer(AsyncConsumer):
 
 
 class TopCurrenciesConsumer(AsyncConsumer):
+    def __init__(self, get_analysis_data=False):
+        self.get_analysis_data = get_analysis_data
+
     async def websocket_connect(self, event):
         self.historical_prices = {}
         await self.send({
@@ -224,8 +227,12 @@ class TopCurrenciesConsumer(AsyncConsumer):
             "change24h": (price - prev_price["1D"]) / prev_price["1D"],
             "change7d": (price - prev_price["7D"]) / prev_price["7D"],
             "marketCap": 0,
-            "imbalance": (size_highest_bid - size_lowest_ask) / (size_lowest_ask + size_highest_bid)
         }
+        if self.get_analysis_data:
+            response["imbalance"] = (
+                size_highest_bid - size_lowest_ask) / (size_lowest_ask + size_highest_bid)
+            response["marketCap"] = 0
+            response["currentSupply"] = 0
         await self.send({
             "type": 'websocket.send',
             "text": json.dumps({"currencyData": [response]})

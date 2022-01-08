@@ -8,4 +8,8 @@ ws_urlpatterns = [path('ws/data/l2overview/', L2overviewConsumer()),
                   path('ws/data/trade/', TradeTableConsumer()),
                   path('ws/data/top_currencies_table/',
                        TopCurrenciesConsumer()),
-                  path('ws/data/arbitrage-overview-table/', ArbitrageTableConsumer()), ]
+                  path('ws/data/general-analysis-table/',
+                       TopCurrenciesConsumer(get_analysis_data=True)),
+                  path('ws/data/arbitrage-overview-table/',
+                       ArbitrageTableConsumer()),
+                  ]

@@ -132,7 +132,6 @@ const OrderBookScatterGraph = () => {
         return { x: price, y: newData.bidSizes[idx] };
       });
       if (x === UPDATE_LIMIT) {
-        console.log(ev.data);
         x = 0;
         askSeries.clear();
         bidSeries.clear();

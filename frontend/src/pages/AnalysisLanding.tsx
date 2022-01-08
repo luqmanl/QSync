@@ -46,7 +46,7 @@ const generateColour24h = (value: number): colour => {
 };
 
 export type data = {
-  analysesRows: analysisRow[];
+  currencyData: analysisRow[];
 };
 
 export type analysisRow = {
@@ -56,7 +56,7 @@ export type analysisRow = {
   change7d: number;
   marketCap: number;
   currentSupply: number;
-  orderImbalance: number;
+  imbalance: number;
 };
 
 const AnalaysisLanding = () => {
@@ -83,17 +83,26 @@ const AnalaysisLanding = () => {
 
   const linkAddr = `ws://${
     process.env.back || "localhost:8000"
-  }/ws/data/analyses-table`;
+  }/ws/data/general-analysis-table/`;
 
   useEffect(() => {
     const ws = new WebSocket(linkAddr);
+    ws.onopen = () => {
+      ws.send(
+        JSON.stringify({
+          exchange: "BINANCE",
+          pairs: ["BTC-USDT", "ETH-USDT", "ADA-USDT", "SOL-USDT", "DOGE-USDT"],
+        })
+      );
+    };
     ws.addEventListener("message", (ev) => {
       if (loading) {
         setLoading(false);
+        setAnalyses({});
       }
-      const newData: data = ev.data;
+      const newData: data = JSON.parse(ev.data);
       const updated = analyses;
-      newData.analysesRows.forEach((e) => {
+      newData.currencyData.forEach((e) => {
         updated[e.name] = e;
       });
       setAnalyses(updated);
@@ -136,9 +145,9 @@ const AnalaysisLanding = () => {
             {Object.entries(analyses).map(([name, data]) => {
               const colour24h = generateColour24h(data.change24h);
               const colour7d = generateColour7d(data.change7d);
-              const link = `analysis/${data.name}`;
+              const link = `/${data.name}`;
               return (
-                <tr key={name}>
+                <tr key={name} style={{ fontSize: "x-large" }}>
                   <Link
                     to={link}
                     style={{ textDecoration: "none", color: "black" }}
@@ -167,7 +176,7 @@ const AnalaysisLanding = () => {
                   </td>
                   <td>${data.marketCap.toLocaleString("en-UK")}</td>
                   <td>{data.currentSupply.toLocaleString("en-UK")}</td>
-                  <td>{data.orderImbalance.toFixed(3)}</td>
+                  <td>{data.imbalance.toFixed(3)}</td>
                 </tr>
               );
             })}
