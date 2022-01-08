@@ -3,15 +3,24 @@
 }
 
 table {
-  margin-top: 10px;
 }
 
-thead {
+thead tr {
   font-size: 20px;
+  text-align: right;
+  font-weight: 1000;
 }
 
-.table-title {
-  padding: 5%;
+tbody tr {
+  height:75px;
+  text-align: right;
+  vertical-align: middle;
+  font-size: 20px;
+  font-weight: 1000;
+
+}
+
+.table-title {  
   padding-bottom: 0;
   font-size: 35px;
   font-weight: 1000;

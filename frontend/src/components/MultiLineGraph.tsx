@@ -21,7 +21,7 @@ const MultiLineGraph = (props: propsType) => {
       theme: Themes.lightNew,
       container: "currency-graph",
     });
-    chart.setTitle("Top Currencies");
+    chart.setTitle("");
     chart
       .getDefaultAxisX()
       .setTitle("Time")
@@ -83,7 +83,7 @@ const MultiLineGraph = (props: propsType) => {
     };
   }, []);
 
-  return <div id="currency-graph" style={{ height: "100%" }}></div>;
+  return <div id="currency-graph" style={{ height: "400px" }}></div>;
 };
 
 export default MultiLineGraph;

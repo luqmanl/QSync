@@ -55,7 +55,8 @@
 }
 
 .graph {
-  height: 80%;
+  margin-bottom: 5%;
+  height: 100%;
 }
 
 .table {

@@ -15,6 +15,7 @@ interface responseType {
 }
 
 const tableColumns = [
+  "#",
   "Name",
   "Price",
   "24h %",
@@ -66,6 +67,8 @@ const TopCurrencyTable = () => {
   const [tableData, setTableData] = useState<tableRep>({});
   const [loading, setLoading] = useState(true);
 
+  let index = 0;
+
   useEffect(() => {
     const ws = new WebSocket(
       `ws://${process.env.back || "localhost:8000"}${endPoint}`
@@ -110,8 +113,10 @@ const TopCurrencyTable = () => {
           {Object.entries(tableData).map(([name, data]) => {
             const colour24h = generateColour24h(data.change24h);
             const colour7d = generateColour7d(data.change7d);
+            index+=1;
             return (
               <tr key={name}>
+                <td>{index}</td>
                 <td>{data.name}</td>
                 <td>${data.price.toPrecision(5)}</td>
                 <td
