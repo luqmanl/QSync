@@ -60,11 +60,12 @@ const NewsFeed = () => {
           {news.map((item) => {
             return (
               <div key={Date.now()} className="headline-container">
-                <h5 className="source-box">
-                  {item.provider} • {item.timestamp}
-                </h5>
+                <div className="source-box">
+                  <h3 className="provider">{item.provider}</h3>
+                  <h3 className="timestamp">{item.timestamp}</h3>
+                </div>
                 <a href={item.url} className="headline">
-                  <h5>{item.description}</h5>
+                  <h3>{item.description}</h3>
                 </a>
               </div>
             );

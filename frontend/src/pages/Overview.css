@@ -69,14 +69,6 @@
   flex-grow: 1;
 }
 
-.indicator-box {
-  height: 30%;
-  background-color:#f0f4fc;
-  border-radius:25px;
-  margin-bottom: 9%;
-  box-shadow:  0px 1px 12px lightgray;
-}
-
 .newsfeed-box {
   height: 100%;
   margin-bottom:9%;

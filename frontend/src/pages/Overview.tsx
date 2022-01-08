@@ -42,9 +42,6 @@ const Overview = () => {
           </div>
         </div>
         <div className="right-box">
-          <div className="indicator-box">
-            <KeyMetrics />
-          </div>
           <div className="newsfeed-box">
             <NewsFeed />
           </div>
