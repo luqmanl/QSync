@@ -24,7 +24,6 @@ if os.path.isfile(dotenv_file):
 NEWS_API_KEY = os.environ.get('NEWS_API_KEY')
 SECRET_KEY = os.environ.get('SECRET_KEY')
 KDB_HOST = os.environ.get('KDB_HOST')
-BACK_HOST = os.environ.get('BACK_HOST')
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 
@@ -32,7 +31,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
 
@@ -91,7 +90,7 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [(BACK_HOST, 6379)],
+            "hosts": [("127.0.0.1", 6379)],
         },
     },
 }
