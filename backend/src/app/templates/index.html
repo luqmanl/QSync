@@ -24,7 +24,11 @@
 
           console.log("socket 2: " + e.data)
       })
-      
+      socket1.onopen = () => {
+        console.log("test")
+        socket1.send(JSON.stringify({exchange: "BINANCE",
+                                                          pairs: ["BTC-USDT", "ETH-USDT", "ETH-BTC"]}))
+    }
 
       // var socket2 = new WebSocket('ws://localhost:8000/ws/data/basis/')
 

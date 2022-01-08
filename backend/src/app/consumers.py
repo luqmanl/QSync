@@ -4,6 +4,7 @@ import numpy as np
 from qpython.qconnection import QConnection
 import re
 from django.conf import settings
+from datetime import datetime, timedelta
 
 
 """ 
@@ -17,11 +18,12 @@ from django.conf import settings
 
 class TradeTableConsumer(AsyncConsumer):
     async def websocket_connect(self, event):
+        self.channel_groups = []
         await self.send({
             "type": "websocket.accept"
         })
 
-    async def send_trade_data(self, event):
+    async def send_data(self, event):
         await self.send({
             'type': 'websocket.send',
             'text': event['data']
@@ -30,12 +32,15 @@ class TradeTableConsumer(AsyncConsumer):
     async def websocket_receive(self, event):
         # req = {exchange: String, pair: String}
         req = json.loads(event["text"])
+        self.channel_groups.append(f"{req['exchange']}_{req['pair']}_trades")
         await self.channel_layer.group_add(
-            f"{req['exchange']}_{req['pair']}_trade",
+            self.channel_groups[-1],
             self.channel_name
         )
 
     async def websocket_disconnect(self, event):
+        for channel in self.channel_groups:
+            await self.channel_layer.group_discard(channel, self.channel_name)
         print('disconnected trade table websocket: ', event['code'])
 
 
@@ -46,12 +51,13 @@ class BasisTableConsumer(AsyncConsumer):
 
         self.future_prices = {}
         self.spot_prices = {}
+        self.channel_groups = []
 
         await self.send({
             "type": "websocket.accept"
         })
 
-    async def send_basis_data(self, event):
+    async def send_data(self, event):
         data = json.loads(event["data"])
         highestBid = data["bids"][0]
         lowestAsk = data["asks"][0]
@@ -92,26 +98,30 @@ class BasisTableConsumer(AsyncConsumer):
 
         for exchange in data["futures_exchanges"]:
             for pair in data["futures_pairs"]:
+                self.channel_groups.append(f"{exchange}_{pair}_orderbooktop")
                 await self.channel_layer.group_add(
-                    f"{exchange}_{pair}_basis",
+                    self.channel_groups[-1],
                     self.channel_name
                 )
 
         for exchange in data["spot_exchanges"]:
             for pair in data["spot_pairs"]:
+                self.channel_groups.append(f"{exchange}_{pair}_orderbooktop")
                 await self.channel_layer.group_add(
-                    f"{exchange}_{pair}_basis",
+                    self.channel_groups[-1],
                     self.channel_name
                 )
 
     async def websocket_disconnect(self, event):
+        for channel in self.channel_groups:
+            await self.channel_layer.group_discard(channel, self.channel_name)
         print('disconnected basis table websocket: ', event['code'])
 
 
 # Handles l2orderbook overview data for exchanges and pairs specified by client in request
 class L2overviewConsumer(AsyncConsumer):
     async def websocket_connect(self, event):
-
+        self.channel_groups = []
         await self.send({
             "type": "websocket.accept"
         })
@@ -121,15 +131,18 @@ class L2overviewConsumer(AsyncConsumer):
         data = json.loads(event["text"])
         for pair in data["pairs"]:
             for exchange in data["exchanges"]:
+                self.channel_groups.append(f"{exchange}_{pair}_orderbooktop")
                 await self.channel_layer.group_add(
-                    f"{exchange}_{pair}_l2overview",
+                    self.channel_groups[-1],
                     self.channel_name
                 )
 
     async def websocket_disconnect(self, event):
+        for channel in self.channel_groups:
+            await self.channel_layer.group_discard(channel, self.channel_name)
         print('disconnected l2overview websocket: ', event['code'])
 
-    async def send_l2overview_data(self, event):
+    async def send_data(self, event):
         data = json.loads(event["data"])
         highestBid = data["bids"][0]
         lowestAsk = data["asks"][0]
@@ -166,11 +179,12 @@ class L2overviewConsumer(AsyncConsumer):
 
 class L2orderbookConsumer(AsyncConsumer):
     async def websocket_connect(self, event):
+        self.channel_groups = []
         await self.send({
             "type": "websocket.accept"
         })
 
-    async def send_l2orderbook_data(self, event):
+    async def send_data(self, event):
         await self.send({
             "type": 'websocket.send',
             "text": event["data"]
@@ -179,34 +193,112 @@ class L2orderbookConsumer(AsyncConsumer):
     async def websocket_receive(self, event):
         # data = {exchange: String, pair: String}
         data = json.loads(event["text"])
+        self.channel_groups.append(
+            f"{data['exchange']}_{data['pair']}_orderbooktop")
         await self.channel_layer.group_add(
-            f"{data['exchange']}_{data['pair']}_l2orderbook",
-            self.channel_name
-        )
+            self.channel_groups[-1],
+            self.channel_name)
 
     async def websocket_disconnect(self, event):
+        for channel in self.channel_groups:
+            await self.channel_layer.group_discard(channel, self.channel_name)
         print('disconnected l2orderbook websocket: ', event['code'])
 
 
 class TopCurrenciesConsumer(AsyncConsumer):
+    def __init__(self, get_analysis_data=False):
+        self.get_analysis_data = get_analysis_data
+
     async def websocket_connect(self, event):
+        self.historical_prices = {}
         await self.send({
             "type": "websocket.accept"
         })
-        await self.channel_layer.group_add(
-            "top_currencies",
-            self.channel_name
-        )
 
-    async def send_top_currencies_data(self, event):
+    async def send_data(self, event):
+        data = json.loads(event["data"])
+        #response = {name, price, change24h, change7d}
+        price = (data["bids"][0] + data["asks"][0]) / 2
+        prev_price = self.historical_prices[data["sym"]]
+        size_highest_bid = data["bidSizes"][0]
+        size_lowest_ask = data["askSizes"][0]
+        response = {
+            "name": data["sym"],
+            "price": price,
+            "change24h": (price - prev_price["1D"]) / prev_price["1D"],
+            "change7d": (price - prev_price["7D"]) / prev_price["7D"],
+            "marketCap": 0,
+        }
+        if self.get_analysis_data:
+            response["imbalance"] = (
+                size_highest_bid - size_lowest_ask) / (size_lowest_ask + size_highest_bid)
+            response["marketCap"] = 0
+            response["currentSupply"] = 0
         await self.send({
             "type": 'websocket.send',
-            "text": event["data"]
+            "text": json.dumps({"currencyData": [response]})
         })
 
-    # shouldn't be used
     async def websocket_receive(self, event):
-        pass
+        # data = {exchange: String, pairs: String[]}
+        data = json.loads(event["text"])
+        for pair in data['pairs']:
+            await self.channel_layer.group_add(
+                f"{data['exchange']}_{pair}_orderbooktop",
+                self.channel_name
+            )
+
+        # get -1D and -7D prices
+        q = QConnection(host='localhost', port=5012)
+        q.open()
+        try:
+            historical_price = q.sendSync(
+                '.orderbook.prevprice', np.string_(data['exchange']), np.array([np.string_(pair) for pair in data['pairs']]))
+            for key, row in historical_price.items():
+                self.historical_prices[key[0].decode(
+                    'UTF-8')] = {"1D": row[0], "7D": row[1]}
+        except Exception as e:
+            print(e)
+        q.close()
 
     async def websocket_disconnect(self, event):
         print('disconnected top currencies websocket: ', event['code'])
+
+
+class ArbitrageTableConsumer(AsyncConsumer):
+    async def websocket_connect(self, event):
+        self.send_timestamps = {}
+        self.channel_groups = []
+        await self.send({
+            "type": "websocket.accept"
+        })
+
+    async def send_arbitrage_data(self, event):
+        data = json.loads(event["data"])
+        if self.send_timestamps[data["sym"]] <= datetime.now() - timedelta(seconds=1):
+            self.send_timestamps[data["sym"]] = datetime.now()
+            response = {"currency": data["sym"],
+                        "maxArbitrage": (data["bid"] - data["ask"]) / data["ask"],
+                        "highestBid": data["bid"],
+                        "bidExchange": data["bidExchange"],
+                        "askExchange": data["askExchange"],
+                        "lowestAsk": data["ask"],
+                        "price": (data["ask"] + data["bid"]) / 2
+                        }
+            await self.send({
+                'type': 'websocket.send',
+                'text': json.dumps(response)
+            })
+
+    async def websocket_receive(self, event):
+        # data = {"pairs": String}
+        data = json.loads(event["text"])
+        for pair in data["pairs"]:
+            self.send_timestamps[pair] = datetime.now()
+            self.channel_groups.append(f"{pair}_arbitrage")
+            await self.channel_layer.group_add(self.channel_groups[-1], self.channel_name)
+
+    async def websocket_disconnect(self, event):
+        for channel in self.channel_groups:
+            await self.channel_layer.group_discard(channel, self.channel_name)
+        print('disconnected arbitrage table websocket: ', event['code'])

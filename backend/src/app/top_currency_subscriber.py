@@ -13,33 +13,31 @@ from asgiref.sync import async_to_sync
 
 def run():
     channel_layer = get_channel_layer()
-
-    with QConnection(host=settings.KDB_HOST, port=5011) as Q:
-
-        while True:
+    while True:
+        with QConnection(host='localhost', port=5011) as Q:
             response = Q.sendSync('.syms.easy', np.string_())
 
-            data = {"currencyData": []}
+        data = {"currencyData": []}
 
-            for d in response:
-                currencyDataPoint = {}
-                currencyDataPoint["name"] = d[1].decode(
-                    'UTF-8')  # change bytes type to string
-                currencyDataPoint["price"] = d[2]
-                num = d[3]
-                if np.isnan(num):
-                    num = 0
-                currencyDataPoint["change24h"] = num
-                num = d[4]
-                if np.isnan(num):
-                    num = 0
-                currencyDataPoint["change7d"] = num
-                currencyDataPoint["marketCap"] = d[5]
-                data["currencyData"].append(currencyDataPoint)
+        for d in response:
+            currencyDataPoint = {}
+            currencyDataPoint["name"] = d[1].decode(
+                'UTF-8')  # change bytes type to string
+            currencyDataPoint["price"] = d[2]
+            num = d[3]
+            if np.isnan(num):
+                num = 0
+            currencyDataPoint["change24h"] = num
+            num = d[4]
+            if np.isnan(num):
+                num = 0
+            currencyDataPoint["change7d"] = num
+            currencyDataPoint["marketCap"] = d[5]
+            data["currencyData"].append(currencyDataPoint)
 
-            group_name = "top_currencies"
-            async_to_sync(
-                channel_layer.group_send)(group_name, {
-                    "type": "send_top_currencies_data", "data": json.dumps(data)})
+        group_name = "top_currencies"
+        async_to_sync(
+            channel_layer.group_send)(group_name, {
+                "type": "send_top_currencies_data", "data": json.dumps(data)})
 
-            time.sleep(2)
+        time.sleep(2)

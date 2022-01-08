@@ -148,3 +148,5 @@ STATIC_URL = '/static/'
 CORS_ORIGIN_ALLOW_ALL = True
 
 NEWS_URL = "https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey="
+
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'

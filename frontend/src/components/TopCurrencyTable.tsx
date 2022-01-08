@@ -70,6 +70,14 @@ const TopCurrencyTable = () => {
     const ws = new WebSocket(
       `ws://${window.location.hostname}:8000${endPoint}`
     );
+    ws.onopen = () => {
+      ws.send(
+        JSON.stringify({
+          exchange: "BINANCE",
+          pairs: ["BTC-USDT", "ETH-USDT", "ADA-USDT", "SOL-USDT", "DOGE-USDT"],
+        })
+      );
+    };
     ws.addEventListener("message", (ev) => {
       const res: { currencyData: responseType[] } = JSON.parse(ev.data);
       if (loading) {

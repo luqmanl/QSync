@@ -12,7 +12,7 @@ const PriceHistoryGraph = () => {
   const [selectedPeriod, setSelectedPeriod] = useState(0);
   const [loading, setLoading] = useState(true);
   const [date, setDate] = useState<Date>(new Date());
-  const timePeriods = ["1D", "7D", "1M", "3M", "1Y", "ALL"];
+  const timePeriods = ["1D", "7D", "1M", "3M", "1Y"];
   const priceGraphEndpoint = `api/priceHistory/BINANCE/${pair}`;
   const addr = `http://${window.location.hostname}:8000/${priceGraphEndpoint}/${timePeriods[selectedPeriod]}`;
 
@@ -24,7 +24,7 @@ const PriceHistoryGraph = () => {
     } else if (period === 2) {
       curDate.setMonth(curDate.getMonth() - 1);
     } else if (period === 3) {
-      curDate.setMonth(curDate.getMonth() - 1);
+      curDate.setMonth(curDate.getMonth() - 3);
     } else if (period === 4) {
       curDate.setFullYear(curDate.getFullYear() - 1);
     } else {
@@ -64,8 +64,8 @@ const PriceHistoryGraph = () => {
           date={date}
           id="history-price-graph"
           graphTitle={`Price of ${nameMap[pair]}`}
-          xAxis="Price"
-          yAxis="Time"
+          xAxis="Time"
+          yAxis="Price"
         />
       )}
 
