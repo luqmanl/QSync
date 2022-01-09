@@ -41,7 +41,7 @@ const ArbitrageLiveTable = () => {
   const [tableData, setTableData] = useState<tableRep>({});
   const [loading, setLoading] = useState(true);
 
-  const url = "ws://localhost:8000/ws/data/arbitrage-overview-table/";
+  const url = `ws://${window.location.hostname}:8000/ws/data/arbitrage-overview-table/`;
 
   useEffect(() => {
     const ws = new WebSocket(url);

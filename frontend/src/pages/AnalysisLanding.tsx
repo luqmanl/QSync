@@ -65,9 +65,7 @@ const AnalaysisLanding = () => {
     "Difference in volume between bids and asks in the order book",
   ];
 
-  const linkAddr = `ws://${
-    process.env.back || "localhost:8000"
-  }/ws/data/general-analysis-table/`;
+  const linkAddr = `ws://${window.location.hostname}/ws/data/general-analysis-table/`;
 
   useEffect(() => {
     const ws = new WebSocket(linkAddr);

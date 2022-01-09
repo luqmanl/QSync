@@ -40,13 +40,13 @@ const basisHistoryGraph = (spot: string, future: string) => {
   const [date, setDate] = useState<Date>(new Date());
   const [data, setData] = useState<graphPoint[]>([]);
 
-  let url = `http://localhost:8000/historicalBasisData/${periodStr[period]}/BTC-USDT/BTC-USD-PERP/${spot}/${future}`;
+  let url = `http://${window.location.hostname}:8000/historicalBasisData/${periodStr[period]}/BTC-USDT/BTC-USD-PERP/${spot}/${future}`;
 
   useEffect(() => {
     const curDate = new Date();
     const newDate = changeDate(curDate, period);
     setDate(newDate);
-    url = `http://localhost:8000/historicalBasisData/${periodStr[period]}/BTC-USDT/BTC-USD-PERP/${spot}/${future}`;
+    url = `http://${window.location.hostname}:8000/historicalBasisData/${periodStr[period]}/BTC-USDT/BTC-USD-PERP/${spot}/${future}`;
     axios
       .get(url, {})
       .then((res) => {
