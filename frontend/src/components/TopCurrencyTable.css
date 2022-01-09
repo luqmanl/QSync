@@ -1,6 +1,33 @@
 .table-container {
-  padding: 0 10px 0 10px;
-  text-align: center;
-  font-size: x-large;
   font-family: "Nunito Sans", sans-serif;
+}
+
+table {
+}
+
+thead tr {
+  font-size: 20px;
+  text-align: right;
+  font-weight: 1000;
+}
+
+tbody tr {
+  height: 75px;
+  text-align: right;
+  vertical-align: middle;
+  font-size: 20px;
+  font-weight: 1000;
+}
+
+.table-title {
+  padding-bottom: 0;
+  font-size: 35px;
+  font-weight: 1000;
+}
+
+.table-desc {
+  padding-left: 1%;
+  font-size: 15px;
+  font-weight: 1000;
+  color: rgb(88, 102, 126);
 }

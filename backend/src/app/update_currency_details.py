@@ -62,16 +62,16 @@ def run():
 
             price_information.save()
 
-            future_information = FutureInformation(
-                currency=currency,
-                perpetual_price=nan,
-                funding_rate=nan,
-                basis=nan,
-                open_interest=nan,
-                created_at=timezone.now(),
-                updated_at=timezone.now()
-            )
+            # future_information = FutureInformation(
+            #     currency=currency,
+            #     perpetual_price=nan,
+            #     funding_rate=nan,
+            #     basis=nan,
+            #     open_interest=nan,
+            #     created_at=timezone.now(),
+            #     updated_at=timezone.now()
+            # )
 
-            future_information.save()
+            # future_information.save()
 
         sleep(30 * 60)

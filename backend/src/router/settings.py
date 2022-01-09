@@ -147,6 +147,6 @@ STATIC_URL = '/static/'
 
 CORS_ORIGIN_ALLOW_ALL = True
 
-NEWS_URL = "https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey="
+NEWS_URL = "https://newsapi.org/v2/everything?q=cryptocurrency&sortBy=popularity&from={date}&apiKey={api_key}"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'

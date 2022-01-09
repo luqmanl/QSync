@@ -2,7 +2,8 @@ from django.shortcuts import render
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse, response
-from django.utils import timezone
+from django.utils import timezone, dateformat
+from datetime import timedelta
 
 from math import nan
 from qpython import qconnection
@@ -142,7 +143,8 @@ def getNewsfeed(request):
             date_created__gte=timezone.now() - timedelta(minutes=30))[0]
         return JsonResponse(model_to_dict(r)['news_list'])
     else:
-        r = requests.get(settings.NEWS_URL + settings.NEWS_API_KEY)
+        r = requests.get(settings.NEWS_URL.format(date=dateformat.format(
+            timezone.now(), 'Y-m-d'), api_key=settings.NEWS_API_KEY))
         articles = r.json()['articles']
         toSave = {
             "newsListings": [],
@@ -189,34 +191,33 @@ def detailedAnalysis(request, currency):
         "generalInfoDescription": "No Description for this currency",
         "currencyCharacteristics": [[]],
         "priceInformation": {
-            "high24h": nan,
-            "low24h": nan,
-            "high1y": nan,
-            "low1y": nan,
-            "change1y": nan,
-            "change24h": nan,
-            "volume24h": nan,
-            "marketCap": nan
+            "high24h": None,
+            "low24h": None,
+            "high1y": None,
+            "low1y": None,
+            "change1y": None,
+            "change24h": None,
+            "volume24h": None,
+            "marketCap": None
         },
         "currencyInformation": {
-            "currentSupply": nan,
-            "totalSupply": nan,
-            "transactionsPerSecond": nan,
-            "totalTransactions": nan,
-            "marketDominancePercentage": nan,
-            "activeAddresses": nan,
-            "transactions24h": nan,
-            "transactionFee24h": nan
+            "currentSupply": None,
+            "totalSupply": None,
+            "transactionsPerSecond": None,
+            "totalTransactions": None,
+            "marketDomiNonecePercentage": None,
+            "activeAddresses": None,
+            "transactions24h": None,
+            "transactionFee24h": None
         },
         "futureInformation": {
-            "perpetualPrice": nan,
-            "fundingRate": nan,
-            "basis": nan,
-            "openInterest": nan
+            "perpetualPrice": None,
+            "fundingRate": None,
+            "basis": None,
+            "openInterest": None
         }
     }
-    print(currency)
-    print(len(SupportedCurrencies.objects.filter(ticker=currency)))
+
     if len(SupportedCurrencies.objects.filter(ticker=currency)) == 0:
         return JsonResponse(detailedInfoInitial)
 
@@ -224,7 +225,7 @@ def detailedAnalysis(request, currency):
 
     if len(CurrencyInformation.objects.filter(currency=currency)) > 0:
         currencyInformation = model_to_dict(
-            CurrencyInformation.objects.filter(currency=currency)[0])
+            CurrencyInformation.objects.filter(currency=currency).order_by('-updated_at')[0])
 
         toSend["currencyInformation"] = {
             "currentSupply": currencyInformation["current_supply"],
@@ -239,7 +240,7 @@ def detailedAnalysis(request, currency):
 
     if len(PriceInformation.objects.filter(currency=currency)) > 0:
         priceInformation = model_to_dict(
-            PriceInformation.objects.filter(currency=currency)[0])
+            PriceInformation.objects.filter(currency=currency).order_by('-updated_at')[0])
 
         toSend["priceInformation"] = {
             "high24h": priceInformation["high_24h"],
@@ -254,7 +255,7 @@ def detailedAnalysis(request, currency):
 
     if len(FutureInformation.objects.filter(currency=currency)) > 0:
         futureInformation = model_to_dict(
-            FutureInformation.objects.filter(currency=currency)[0])
+            FutureInformation.objects.filter(currency=currency).order_by('-updated_at')[0])
 
         toSend["futureInformation"] = {
             "perpetualPrice": futureInformation["perpetual_price"],

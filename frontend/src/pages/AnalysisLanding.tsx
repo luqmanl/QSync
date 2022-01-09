@@ -13,35 +13,19 @@ interface colour {
   blue: number;
 }
 
-const maxGreen: colour = { red: 32, green: 156, blue: 5 };
-const maxRed: colour = { red: 255, green: 10, blue: 10 };
-const gradient: colour = { red: 222, green: 156, blue: 5 };
+const generateColourAnalysis = (value: number): colour => {
+  if (value > 0) {
+    return {
+      red: 0,
+      green: Math.min(255, 20 + 255 * value),
+      blue: 0,
+    };
+  }
 
-const generateColour7d = (value: number): colour => {
-  if (value >= 5) {
-    return maxGreen;
-  }
-  if (value <= -5) {
-    return maxRed;
-  }
   return {
-    red: 143.5 - (gradient.red / 10) * value,
-    green: 80 + (gradient.green / 10) * value,
-    blue: 7.5 + (gradient.blue / 10) * value,
-  };
-};
-
-const generateColour24h = (value: number): colour => {
-  if (value >= 10) {
-    return maxGreen;
-  }
-  if (value <= -10) {
-    return maxRed;
-  }
-  return {
-    red: 143.5 - (gradient.red / 20) * value,
-    green: 80 + (gradient.green / 20) * value,
-    blue: 7.5 + (gradient.blue / 20) * value,
+    red: Math.min(255, 20 + 255 * -value),
+    green: 0,
+    blue: 0,
   };
 };
 
@@ -113,13 +97,14 @@ const AnalaysisLanding = () => {
     <div className="landing-page-box">
       <div className="landing-title-box">
         <SideBar addr="detailed Analysis" />
-        <h2 className="landing-title">Top Currencies</h2>
+        <h2 className="landing-title">Analysis</h2>
       </div>
       <div className="landing-main">
-        <h3 className="landing-subtitle">
-          Hover over the columns to find out more and click on the names to find
-          more detailed analysis!
-        </h3>
+        <h2 className="table-title">Top Cryptocurrency Prices</h2>
+        <p className="table-desc">
+          Displaying live cryptocurrency prices with the top percentage changes
+          in price
+        </p>
         <Table className="landing-table">
           <thead>
             <tr>
@@ -143,9 +128,9 @@ const AnalaysisLanding = () => {
           </thead>
           <tbody>
             {Object.entries(analyses).map(([name, data]) => {
-              const colour24h = generateColour24h(data.change24h);
-              const colour7d = generateColour7d(data.change7d);
-              const link = `/${data.name}`;
+              const colour24h = generateColourAnalysis(data.change24h * 100);
+              const colour7d = generateColourAnalysis(data.change7d * 100);
+              const link = `analysis/${data.name}`;
               return (
                 <tr key={name} style={{ fontSize: "x-large" }}>
                   <Link
@@ -165,14 +150,14 @@ const AnalaysisLanding = () => {
                       color: `rgb(${colour24h.red},${colour24h.green},${colour24h.blue})`,
                     }}
                   >
-                    {data.change24h.toFixed(3)}%
+                    {(data.change24h * 100).toFixed(3)}%
                   </td>
                   <td
                     style={{
                       color: `rgb(${colour7d.red},${colour7d.green},${colour24h.blue})`,
                     }}
                   >
-                    {data.change7d.toFixed(3)}%
+                    {(data.change7d * 100).toFixed(3)}%
                   </td>
                   <td>${data.marketCap.toLocaleString("en-UK")}</td>
                   <td>{data.currentSupply.toLocaleString("en-UK")}</td>

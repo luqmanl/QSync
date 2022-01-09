@@ -50,7 +50,7 @@ const PriceHistoryGraph = () => {
         setLoading(false);
       })
       .catch((err) => {
-        console.log(err, "hi");
+        console.log(err);
       });
   }, [selectedPeriod]);
 

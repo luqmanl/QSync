@@ -68,6 +68,7 @@ test-back:
     - apt-get update
     - apt-get install redis-server -y
     - redis-server&
+    - cd src
     - pipenv run test
   needs: [style-back]
 

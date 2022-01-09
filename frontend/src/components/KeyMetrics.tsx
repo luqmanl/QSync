@@ -100,10 +100,13 @@ const KeyMetrics = () => {
 
   return (
     <div className="metric-box">
-      <h3 className="metric-title">Key Metrics</h3>
+      <h2 className="metric-title">Key Metrics</h2>
+      <p className="metric-desc">
+        Displaying real-time cryptocurrency statistics
+      </p>
       {loading ? (
         <div className="spinner-container">
-          <Spinner animation="border" variant="dark" />
+          {/* <Spinner animation="border" variant="dark" /> */}
         </div>
       ) : (
         <div className="metrics-container">

@@ -96,10 +96,23 @@ const BasisTable = () => {
 
   return (
     <div className="basis-component">
-      <h2 className="table-title">Basis Table</h2>
-      <p className="table-title">Spot</p>
+      <h3
+        className="table-title"
+        style={{
+          width: "100%",
+          fontSize: "xx-large",
+          borderBottom: "1px solid rgba(0, 0, 0, 0.4)",
+        }}
+      >
+        BTC Basis Table
+      </h3>
+      <h4 className="table-title" style={{ fontSize: "large" }}>
+        Spot
+      </h4>
       <div className="table-horizontal-elems">
-        <p className="table-title">Futures</p>
+        <h4 className="table-title" style={{ fontSize: "large" }}>
+          Futures
+        </h4>
         <Table className="basis-table">
           <thead>
             <tr>
