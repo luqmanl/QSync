@@ -13,7 +13,7 @@ secondInNanosecs: 1000000000j
 
 .orderbook.prevprice:{[exch;pairs]
     price1D: select price1D: (last bid2 + last bid1) % 2 by sym from orderbooktop where exchangeTime < .z.z - 24:00, exchange=exch, sym in pairs;
-    price7D: select price7D: (last bid2 + last bid1) % 2 by sym from orderbooktop where exchangeTime < .z.z - 24:00, exchange=exch, sym in pairs;
+    price7D: select price7D: (last bid2 + last bid1) % 2 by sym from orderbooktop where exchangeTime < .z.z - 24:00u*7, exchange=exch, sym in pairs;
     price1D^price7D
     }
 .price.at.time:{[sym1;exchange1;theTime] 
