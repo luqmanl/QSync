@@ -4,7 +4,9 @@ import numpy as np
 from qpython.qconnection import QConnection
 import re
 from datetime import datetime, timedelta
-
+from .models import SupportedCurrencies, PriceInformation, CurrencyInformation
+from django.forms.models import model_to_dict
+from asgiref.sync import sync_to_async
 
 """ 
     Consumers responsible for handling different types of data required by clients.
@@ -208,6 +210,17 @@ class TopCurrenciesConsumer(AsyncConsumer):
     def __init__(self, get_analysis_data=False):
         self.get_analysis_data = get_analysis_data
 
+    def get_current_supply(self, ticker):
+        ticker_object = SupportedCurrencies.objects.filter(ticker=ticker)[0]
+        supply = model_to_dict(
+            CurrencyInformation.objects.filter(currency=ticker_object)[0])
+        return supply["current_supply"]
+
+    def get_market_cap(self, ticker):
+        ticker_object = SupportedCurrencies.objects.filter(ticker=ticker)[0]
+        return model_to_dict(
+            PriceInformation.objects.filter(currency=ticker_object)[0])["market_cap"]
+
     async def websocket_connect(self, event):
         self.historical_prices = {}
         await self.send({
@@ -215,8 +228,9 @@ class TopCurrenciesConsumer(AsyncConsumer):
         })
 
     async def send_data(self, event):
-        data = json.loads(event["data"])
         #response = {name, price, change24h, change7d}
+        data = json.loads(event["data"])
+        ticker = data["sym"].split("-")[0].upper()
         price = (data["bids"][0] + data["asks"][0]) / 2
         prev_price = self.historical_prices[data["sym"]]
         size_highest_bid = data["bidSizes"][0]
@@ -226,13 +240,12 @@ class TopCurrenciesConsumer(AsyncConsumer):
             "price": price,
             "change24h": (price - prev_price["1D"]) / prev_price["1D"],
             "change7d": (price - prev_price["7D"]) / prev_price["7D"],
-            "marketCap": 0,
+            "marketCap": await sync_to_async(self.get_market_cap)(ticker),
         }
         if self.get_analysis_data:
             response["imbalance"] = (
                 size_highest_bid - size_lowest_ask) / (size_lowest_ask + size_highest_bid)
-            response["marketCap"] = 0
-            response["currentSupply"] = 0
+            response["currentSupply"] = await sync_to_async(self.get_current_supply)(ticker)
         await self.send({
             "type": 'websocket.send',
             "text": json.dumps({"currencyData": [response]})

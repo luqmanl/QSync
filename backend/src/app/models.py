@@ -42,8 +42,8 @@ class RelatedCharacteristics(models.Model):
 
 
 class CurrencyInformation(models.Model):
-    currency = models.OneToOneField(
-        SupportedCurrencies, on_delete=models.CASCADE, primary_key=True)
+    currency = models.ForeignKey(
+        SupportedCurrencies, on_delete=models.CASCADE)
     current_supply = models.FloatField(blank=True, null=True)
     total_supply = models.FloatField(blank=True, null=True)
     transactions_per_second = models.FloatField(blank=True, null=True)
@@ -57,8 +57,8 @@ class CurrencyInformation(models.Model):
 
 
 class PriceInformation(models.Model):
-    currency = models.OneToOneField(
-        SupportedCurrencies, on_delete=models.CASCADE, primary_key=True)
+    currency = models.ForeignKey(
+        SupportedCurrencies, on_delete=models.CASCADE)
     high_24h = models.FloatField(blank=True, null=True)
     low_24h = models.FloatField(blank=True, null=True)
     high_1y = models.FloatField(blank=True, null=True)
@@ -72,8 +72,8 @@ class PriceInformation(models.Model):
 
 
 class FutureInformation(models.Model):
-    currency = models.OneToOneField(
-        SupportedCurrencies, on_delete=models.CASCADE, primary_key=True)
+    currency = models.ForeignKey(
+        SupportedCurrencies, on_delete=models.CASCADE)
     perpetual_price = models.FloatField(blank=True, null=True)
     funding_rate = models.FloatField(blank=True, null=True)
     basis = models.FloatField(blank=True, null=True)

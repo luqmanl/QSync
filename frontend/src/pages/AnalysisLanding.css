@@ -4,6 +4,8 @@
   flex-flow: column;
   height: 100%;
   width: 100%;
+  padding-left: 5%;
+  padding-right: 5%;
   overflow: hidden;
   font-family: "Nunito Sans", sans-serif;
   scrollbar-width: thin;
@@ -14,11 +16,15 @@
   display: flex;
   justify-content: center;
   flex-grow: 1;
+  padding: 3%;
+  padding-bottom: 1%;
 }
 
 .landing-title {
   text-align: center;
   flex-grow: 1000;
+  font-weight: bold;
+  font-size: 60px;
 }
 
 .landing-main {
@@ -33,4 +39,16 @@
 
 .landing-table {
   text-align: center;
+}
+
+.table-title {
+  font-size: 35px;
+  font-weight: 1000;
+}
+
+.table-desc {
+  padding-left: 1%;
+  font-size: 15px;
+  font-weight: 1000;
+  color: rgb(88, 102, 126);
 }

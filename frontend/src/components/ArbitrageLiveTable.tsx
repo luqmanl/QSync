@@ -13,6 +13,28 @@ export interface LiveTableData {
   price: number;
 }
 
+interface colour {
+  red: number;
+  green: number;
+  blue: number;
+}
+
+const generateColourArbitrage = (value: number): colour => {
+  if (value > 0) {
+    return {
+      red: 0,
+      green: Math.min(255, 255 * (100 * value)),
+      blue: 0,
+    };
+  }
+
+  return {
+    red: Math.min(255, 255 * -(100 * value)),
+    green: 0,
+    blue: 0,
+  };
+};
+
 export type tableRep = { [name: string]: LiveTableData };
 
 const ArbitrageLiveTable = () => {
@@ -67,11 +89,18 @@ const ArbitrageLiveTable = () => {
         <tbody>
           {Object.entries(tableData).map(([name, value]) => {
             const percentValue = (value.maxArbitrage * 100).toPrecision(3);
+            const colour24h = generateColourArbitrage(value.maxArbitrage * 100);
             return (
               <tr key={name}>
                 <td>{name}</td>
                 <td>{value.price.toLocaleString("en-UK")}</td>
-                <td>{percentValue} %</td>
+                <td
+                  style={{
+                    color: `rgb(${colour24h.red},${colour24h.green},${colour24h.blue})`,
+                  }}
+                >
+                  {percentValue} %
+                </td>
                 <td>
                   {value.bidExchange} {"->"} {value.askExchange}
                 </td>

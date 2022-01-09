@@ -51,8 +51,44 @@
         "pk": 1,
         "fields": {
             "currency": "BTC",
-            "general_description": "Bitcoin is a decentralized cryptocurrency originally described in a 2008 whitepaper by a person, or group of people, using the alias Satoshi Nakamoto. It was launched soon after, in January 2009. \n Bitcoin is a peer-to-peer online currency, meaning that all transactions happen directly between equal, independent network participants, without the need for any intermediary to permit or facilitate them. Bitcoin was created, according to Nakamoto’s own words, to allow \"online payments to be sent directly from one party to another without going through a financial institution.\" \n Some concepts for a similar type of a decentralized electronic currency precede BTC, but Bitcoin holds the distinction of being the first-ever cryptocurrency to come into actual use.",
+            "general_description": "Bitcoin is a decentralized cryptocurrency originally described in a 2008 whitepaper by a person, or group of people, using the alias Satoshi Nakamoto. It was launched soon after, in January 2009.\n\n Bitcoin is a peer-to-peer online currency, meaning that all transactions happen directly between equal, independent network participants, without the need for any intermediary to permit or facilitate them. Bitcoin was created, according to Nakamoto’s own words, to allow \"online payments to be sent directly from one party to another without going through a financial institution.\" \n\n Some concepts for a similar type of a decentralized electronic currency precede BTC, but Bitcoin holds the distinction of being the first-ever cryptocurrency to come into actual use.",
             "full_name": "Bitcoin"
+        }
+    },
+    {
+        "model": "app.CurrencyDescriptions",
+        "pk": 2,
+        "fields": {
+            "currency": "ETH",
+            "general_description": "Ethereum is a platform powered by blockchain technology that is best known for its native cryptocurrency, called Ether, or ETH, or simply Ethereum. The distributed nature of blockchain technology is what makes the Ethereum platform secure, and that security enables ETH to accrue value. The Ethereum platform supports Ether in addition to a network of decentralized apps, otherwise known as dApps. Smart contracts, which originated on the Ethereum platform, are a central component of how the platform operates. Many decentralized finance (DeFi) and other applications use smart contracts in conjunction with blockchain technology.\n\n Ethereum, like other cryptocurrencies, uses blockchain technology. Imagine a very long chain of blocks linked together, with all of the information about each block known to every member of the blockchain network. With every member of the network having the same knowledge of the blockchain, which functions like an electronic ledger, distributed consensus can be created and maintained about the status of the blockchain.\n\n Blockchain technology creates distributed consensus about the state of the Ethereum network. New blocks are added to the very long Ethereum blockchain to process Ethereum transactions and mint new Ether coins, or to execute smart contracts for Ethereum dApps.\n\n The Ethereum network derives its security from the decentralized nature of blockchain technology. A vast network of computers worldwide maintains the Ethereum blockchain network, and the network requires distributed consensus—majority agreement—for any changes to be made to the blockchain. An individual or group of network participants would need to gain majority control of the Ethereum platform’s computing power—a task that would be gargantuan, if not impossible—to successfully manipulate the Ethereum blockchain.",
+            "full_name": "Ethereum"
+        }
+    },
+    {
+        "model": "app.CurrencyDescriptions",
+        "pk": 3,
+        "fields": {
+            "currency": "ADA",
+            "general_description": "Cardano is a third-generation, decentralized proof-of-stake (PoS) blockchain platform designed to be a more efficient alternative to proof-of-work (PoW) networks. Scalability, interoperability, and sustainability on PoW networks like Ethereum are limited by the infrastructure burden of growing costs, energy use, and slow transaction times.\n\n Charles Hoskinson, the co-founder of the proof-of-work (PoW) blockchain Ethereum, understood the implications of these challenges to blockchain networks, and began developing Cardano and its primary cryptocurrency, ada, in 2015, launching the platform and the ada token in 2017.\n\n The Cardano platform runs on the Ouroboros consensus protocol. Ouroboros, created by Cardano in its foundation phase, is the first PoS protocol that not only was proved to be secure, but also was the first to be informed by scholarly academic research. Each development phase, or era, in the Cardano roadmap is anchored by the research-based framework, incorporating peer-reviewed insights with evidence-based methods to make progress toward and achieve the milestones related to the future directions of the use applications of both the blockchain network and the ada token.\n\n Charles Hoskinson began the development of Cardano in 2015 and launched the platform in 2017. Cardano has positioned itself as an alternative to Ethereum. Both platforms are used for similar applications, such as smart contracts, and have goals of building a connected and decentralized system. Cardano considers itself as an updated version of Ethereum and has anointed itself a third-generation platform over Ethereum’s second-generation credentials. The blockchain platform also has a goal of providing banking services to the world’s unbanked.\n\n Cardano’s main applications are in identity management and traceability. The former application can be used to streamline and simplify processes that require the collection of data from multiple sources. The latter application can be used to track and audit a product’s manufacturing processes from provenance to finished goods and, potentially, eliminate the market for counterfeit goods.",
+            "full_name": "Cardano"
+        }
+    },
+    {
+        "model": "app.CurrencyDescriptions",
+        "pk": 4,
+        "fields": {
+            "currency": "SOL",
+            "general_description": "Solana is a blockchain platform designed to host decentralized, scalable applications. Founded in 2017, Solana is an open-source project currently run by Solana Foundation based in Geneva, while the blockchain was built by San Francisco-based Solana Labs. Solana is much faster in terms of the number of transactions it can process and has significantly lower transaction fees compared to rival blockchains like Ethereum. \n\n The goal of Solana's architecture is to demonstrate that there exists a set of software algorithms that, when used in combination to implement a blockchain, eliminates software as a performance bottleneck, enabling transaction throughput to scale proportionally with network bandwidth. Solana's architecture satisfies all three desirable attributes for a blockchain: scalable, secure, and decentralized. Solana's architecture describes a theoretical upper limit of 710,000 transactions per second (tps) on a standard Gigabit network and 28.4 million tps on a 40-Gigabit network. \n\n Solana's blockchain operates on both a Proof of History (PoH) and Proof of Stake (PoS) model. PoS permits validators (those who validate transactions added to the blockchain ledger) to verify transactions based on how many coins or tokens they hold; PoH allows those transactions to be timestamped and verified very quickly.",
+            "full_name": "Solana"
+        }
+    },
+    {
+        "model": "app.CurrencyDescriptions",
+        "pk": 5,
+        "fields": {
+            "currency": "DOGE",
+            "general_description": "Dogecoin (DOGE) is a peer-to-peer, open-source cryptocurrency. It is considered an altcoin and an almost sarcastic meme coin. Launched in December 2013, Dogecoin has the image of a Shiba Inu dog as its logo. While it was created seemingly as a joke, Dogecoin's blockchain still has merit. Its underlying technology is derived from Litecoin. Notable features of Dogecoin, which uses a scrypt algorithm, are its low price and unlimited supply.\n\n Dogecoin started as something of a joke, but after it was created, it gained a following. By late 2017, it was participating in the cryptocurrency bubble that sent the values of many coins up significantly. After the bubble burst in 2018, Dogecoin lost much of its value, but it still has a core of supporters who trade it and use it to tip for content on Twitter and Reddit. Users can buy and sell Dogecoin on digital currency exchanges. They can opt to store their Dogecoin on an exchange or in a Dogecoin wallet.",
+            "full_name": "Dogecoin"
         }
     },
     {
@@ -152,6 +188,158 @@
         }
     },
     {
+        "model": "app.RelatedCharacteristics",
+        "pk": 6,
+        "fields": {
+            "characteristic": "Mining",
+            "currency": "ETH"
+        }
+    },
+    {
+        "model": "app.RelatedCharacteristics",
+        "pk": 7,
+        "fields": {
+            "characteristic": "Decentralised",
+            "currency": "ETH"
+        }
+    },
+    {
+        "model": "app.RelatedCharacteristics",
+        "pk": 8,
+        "fields": {
+            "characteristic": "Proof of Work",
+            "currency": "ETH"
+        }
+    },
+    {
+        "model": "app.RelatedCharacteristics",
+        "pk": 9,
+        "fields": {
+            "characteristic": "Blockchain",
+            "currency": "ETH"
+        }
+    },
+    {
+        "model": "app.RelatedCharacteristics",
+        "pk": 10,
+        "fields": {
+            "characteristic": "Smart Contracts",
+            "currency": "ETH"
+        }
+    },
+    {
+        "model": "app.RelatedCharacteristics",
+        "pk": 11,
+        "fields": {
+            "characteristic": "Mining",
+            "currency": "SOL"
+        }
+    },
+    {
+        "model": "app.RelatedCharacteristics",
+        "pk": 12,
+        "fields": {
+            "characteristic": "Proof of Stake",
+            "currency": "SOL"
+        }
+    },
+    {
+        "model": "app.RelatedCharacteristics",
+        "pk": 13,
+        "fields": {
+            "characteristic": "Blockchain",
+            "currency": "SOL"
+        }
+    },
+    {
+        "model": "app.RelatedCharacteristics",
+        "pk": 14,
+        "fields": {
+            "characteristic": "Decentralised",
+            "currency": "SOL"
+        }
+    },
+    {
+        "model": "app.RelatedCharacteristics",
+        "pk": 15,
+        "fields": {
+            "characteristic": "Mining",
+            "currency": "ADA"
+        }
+    },
+    {
+        "model": "app.RelatedCharacteristics",
+        "pk": 16,
+        "fields": {
+            "characteristic": "Blockchain",
+            "currency": "ADA"
+        }
+    },
+    {
+        "model": "app.RelatedCharacteristics",
+        "pk": 17,
+        "fields": {
+            "characteristic": "Decentralised",
+            "currency": "ADA"
+        }
+    },
+    {
+        "model": "app.RelatedCharacteristics",
+        "pk": 18,
+        "fields": {
+            "characteristic": "Proof of Stake",
+            "currency": "ADA"
+        }
+    },
+    {
+        "model": "app.RelatedCharacteristics",
+        "pk": 19,
+        "fields": {
+            "characteristic": "Mining",
+            "currency": "DOGE"
+        }
+    },
+    {
+        "model": "app.RelatedCharacteristics",
+        "pk": 20,
+        "fields": {
+            "characteristic": "Decentralised",
+            "currency": "DOGE"
+        }
+    },
+    {
+        "model": "app.RelatedCharacteristics",
+        "pk": 21,
+        "fields": {
+            "characteristic": "Finite Supply",
+            "currency": "DOGE"
+        }
+    },
+    {
+        "model": "app.RelatedCharacteristics",
+        "pk": 22,
+        "fields": {
+            "characteristic": "Proof of Work",
+            "currency": "DOGE"
+        }
+    },
+    {
+        "model": "app.RelatedCharacteristics",
+        "pk": 23,
+        "fields": {
+            "characteristic": "Smart Contracts",
+            "currency": "SOL"
+        }
+    },
+    {
+        "model": "app.RelatedCharacteristics",
+        "pk": 24,
+        "fields": {
+            "characteristic": "Smart Contracts",
+            "currency": "ADA"
+        }
+    },
+    {
         "model": "app.CurrencyInformation",
         "pk": 1,
         "fields": {
@@ -194,6 +382,58 @@
             "funding_rate": 0.01,
             "basis": 463.25,
             "open_interest": 17800000000,
+            "created_at": "2022-01-06 08:23:55",
+            "updated_at": "2022-01-06 08:23:55"
+        }
+    },
+    {
+        "model": "app.FutureInformation",
+        "pk": 2,
+        "fields": {
+            "currency": "ADA",
+            "perpetual_price": 1.157,
+            "funding_rate": 0.01,
+            "basis": 0.09,
+            "open_interest": 401000000,
+            "created_at": "2022-01-06 08:23:55",
+            "updated_at": "2022-01-06 08:23:55"
+        }
+    },
+    {
+        "model": "app.FutureInformation",
+        "pk": 3,
+        "fields": {
+            "currency": "DOGE",
+            "perpetual_price": 0.15008,
+            "funding_rate": -0.0146,
+            "basis": 0.011,
+            "open_interest": 342700000,
+            "created_at": "2022-01-06 08:23:55",
+            "updated_at": "2022-01-06 08:23:55"
+        }
+    },
+    {
+        "model": "app.FutureInformation",
+        "pk": 4,
+        "fields": {
+            "currency": "ETH",
+            "perpetual_price": 3105.7,
+            "funding_rate": -0.0008,
+            "basis": 1.23,
+            "open_interest": 1333200804,
+            "created_at": "2022-01-06 08:23:55",
+            "updated_at": "2022-01-06 08:23:55"
+        }
+    },
+    {
+        "model": "app.FutureInformation",
+        "pk": 5,
+        "fields": {
+            "currency": "SOL",
+            "perpetual_price": 139.4625,
+            "funding_rate": -0.0009,
+            "basis": 0.05,
+            "open_interest": 431893280,
             "created_at": "2022-01-06 08:23:55",
             "updated_at": "2022-01-06 08:23:55"
         }

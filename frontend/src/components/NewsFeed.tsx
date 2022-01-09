@@ -13,6 +13,8 @@ export interface newsListing {
   url: string;
 }
 
+const MAX_LENGTH = 100;
+
 const NewsFeed = () => {
   const url = `http://${
     process.env.back || "localhost:8000"
@@ -50,6 +52,7 @@ const NewsFeed = () => {
   return (
     <div className="newsfeed-container">
       <h1 className="title">Newsfeed</h1>
+      <p className="newsfeed-desc">Latest cryptocurrency news displayed here</p>
       {loading ? (
         <div className="loading-container">
           <Spinner animation="border" variant="dark" />
@@ -59,12 +62,19 @@ const NewsFeed = () => {
           {news.map((item) => {
             return (
               <div key={Date.now()} className="headline-container">
-                <h5 className="source-box">
-                  {item.provider} • {item.timestamp}
-                </h5>
-                <a href={item.url} className="headline">
-                  <h5>{item.description}</h5>
-                </a>
+                <div className="source-box">
+                  <h3 className="provider">{item.provider}</h3>
+                  <h3 className="timestamp">{item.timestamp}</h3>
+                </div>
+                <div className="headlineDiv">
+                  <a href={item.url} className="headline">
+                    <h3>
+                      {item.description.length > MAX_LENGTH
+                        ? `${item.description.substring(0, MAX_LENGTH)}...`
+                        : item.description}
+                    </h3>
+                  </a>
+                </div>
               </div>
             );
           })}

@@ -1,23 +1,52 @@
 .news-box {
-  height: 90%;
+  height: 100%;
   width: 100%;
   display: grid;
   overflow: scroll;
 }
 
 .newsfeed-container {
-  height: 66%;
+  height: 100%;
   width: 100%;
   text-align: center;
 }
 
 .headline-container {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
-  margin: 0 15px 0 15px;
+  margin: 2.5%;
+  width: 95%;
+  border-radius: 25px;
+  background-color: white;
+  padding: 5%;
+  display: flex;
+  flex-direction: column;
+}
+
+.source-box {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.provider {
+  margin-left: 5%;
+  margin-right: auto;
+  float: left;
+  font-size: 25px;
+  font-weight: 1000;
+}
+
+.timestamp {
+  margin-right: 5%;
+  margin-left: auto;
+  float: right;
+  font-size: 25px;
+  font-weight: 1000;
 }
 
 .headline {
-  color: black;
+  color: rgb(88, 102, 126);
+  font-size: 20px;
+  font-weight: 700;
   text-decoration: none;
 }
 
@@ -26,5 +55,27 @@
 }
 
 .title {
-  font-size: 26px;
+  text-align: center;
+  padding: 5%;
+  padding-bottom: 0;
+  font-size: 35px;
+  font-weight: 100;
+}
+
+.newsfeed-desc {
+  font-size: 15px;
+  text-align: center;
+  font-weight: 1000;
+  color: rgb(88, 102, 126);
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.example::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.example {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }

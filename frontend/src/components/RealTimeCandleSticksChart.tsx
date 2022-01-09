@@ -51,7 +51,6 @@ const RealTimeCandleSticksChart = (props: propsType) => {
     );
 
     socket.onopen = () => {
-      console.log("OPEN");
       socket.send(
         JSON.stringify({
           exchanges: ["BINANCE"],

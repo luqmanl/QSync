@@ -3,8 +3,12 @@
   display: flex;
   flex-flow: column;
   height: 100%;
+  padding-left: 5%;
+  padding-right: 5%;
+
   width: 100%;
-  overflow: hidden;
+  /* overflow: hidden; */
+
   font-family: "Nunito Sans", sans-serif;
   scrollbar-width: thin;
   scrollbar-color: rgba(0, 0, 0, 0.4) white;
@@ -20,6 +24,8 @@
 
 .title-box {
   display: flex;
+  padding: 3%;
+  padding-bottom: 1%;
   justify-content: center;
 }
 
@@ -27,7 +33,8 @@
   justify-content: center;
   text-align: center;
   flex-grow: 100;
-  font-size: 36px;
+  font-weight: bold;
+  font-size: 60px;
 }
 
 .content-box {
@@ -40,13 +47,15 @@
 .left-box {
   display: flex;
   flex-flow: column;
-  width: 66%;
+  width: 70%;
   flex-grow: 1;
-  border-right: 1px solid rgba(0, 0, 0, 0.4);
+  padding: 2%;
+  /* border-right: 1px solid rgba(0, 0, 0, 0.4); */
 }
 
 .graph {
-  height: 60%;
+  margin-bottom: 5%;
+  height: 100%;
 }
 
 .table {
@@ -54,12 +63,15 @@
 }
 
 .right-box {
-  width: 34%;
+  width: 30%;
+  padding: 2%;
   flex-grow: 1;
 }
 
-.indicator-box {
-  height: 30%;
-  margin: 0 10px 10px 10px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+.newsfeed-box {
+  height: 100%;
+  margin-bottom: 9%;
+  background-color: #f5f5f5;
+  border-radius: 25px;
+  box-shadow: 0px 1px 12px lightgray;
 }

@@ -3,7 +3,6 @@ import SideBar from "../components/SideBar";
 import TopCurrencyGraph from "../components/TopCurrencyGraph";
 import TopCurrencyTable from "../components/TopCurrencyTable";
 import NewsFeed from "../components/NewsFeed";
-import KeyMetrics from "../components/KeyMetrics";
 import FinancialWarning from "../components/FinancialWarning";
 import "./Overview.css";
 import { useCookies } from "react-cookie";
@@ -17,9 +16,7 @@ const Overview = () => {
   };
 
   useEffect(() => {
-    if ("user" in cookies) {
-      console.log("hi");
-    } else {
+    if (!("user" in cookies)) {
       addCookie();
       setWarning(true);
     }
@@ -30,7 +27,7 @@ const Overview = () => {
       <FinancialWarning first={warning} />
       <div className="title-box">
         <SideBar addr="overview" />
-        <h2 className="page-title">Market Overview</h2>
+        <h1 className="page-title">Cryptocurrency Market Overview</h1>
       </div>
       <div className="content-box">
         <div className="left-box">
@@ -42,10 +39,9 @@ const Overview = () => {
           </div>
         </div>
         <div className="right-box">
-          <div className="indicator-box">
-            <KeyMetrics />
+          <div className="newsfeed-box">
+            <NewsFeed />
           </div>
-          <NewsFeed />
         </div>
       </div>
     </div>
