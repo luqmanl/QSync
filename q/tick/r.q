@@ -55,7 +55,6 @@ weekInSeconds: 604800;
     hclose hdb;
     percentageChange24h: (priceNow - price24hAgo) % price24hAgo;
     percentageChange7d: (priceNow - price7dAgo) % price7dAgo;
-    hclose hdb;
     `time`sym`price`change24h`change7d`marketCap!(timeNow;sym;priceNow;percentageChange24h;percentageChange7d;0f) / market cap zero for the time being
     }
 
@@ -87,7 +86,6 @@ weekInSeconds: 604800;
     midpricesWithResolution: raze .selectMidpricesWithResolution[allData;] each syms;
     price24hAgo: (exec midprice from midpricesWithResolution)[0];
     midpricesWithResolutionAnd24hChange: .calculatePriceChange[;midpricesWithResolution;price24hAgo] each syms;
-    hclose hdb;
     raze midpricesWithResolutionAnd24hChange
     }
 
