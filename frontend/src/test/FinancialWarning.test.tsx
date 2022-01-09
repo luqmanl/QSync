@@ -11,7 +11,7 @@ investment, financial, or other advice. Please seek advice for any
 investments`;
 
 test("Successfully displays financial warning if the user has visited the site for the first time", () => {
-    const fw = render(<FinancialWarning first={true} />);
-    const paragraph = screen.getByTestId("financial-warning");
-    expect(paragraph).toBeDefined();
+  const fw = render(<FinancialWarning first={true} />);
+  const paragraph = screen.getByTestId("financial-warning");
+  expect(paragraph).toBeDefined();
 });
