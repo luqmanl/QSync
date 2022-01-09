@@ -64,7 +64,7 @@ const priceInfoNames: { [name: string]: string } = {
   high24h: "24 Hour High",
   low24h: "24 Hour Low",
   high1y: "1Y High",
-  low1y: "1Y LOW",
+  low1y: "1Y Low",
   change1y: "1Y Change",
   change24h: "24 Hour Change",
   volume24h: "24 Hour Volume",
@@ -184,10 +184,34 @@ const SubAnalysis = () => {
           <div className="price-info-columns">
             {Object.entries(currencyInfo.priceInformation).map(
               ([name, value], idx) => {
+                if (value === null) {
+                  return (
+                    <h4 key={idx}>
+                      {priceInfoNames[name]}:{" -"}
+                    </h4>
+                  );
+                }
+
+                let displayString = `${value.toLocaleString("en-UK")}`;
+
+                if (
+                  name === "high24h" ||
+                  name === "low24h" ||
+                  name === "high1y" ||
+                  name === "low1y" ||
+                  name === "volume24h" ||
+                  name === "marketCap"
+                ) {
+                  displayString = `$${value.toLocaleString("en-UK")}`;
+                }
+
+                if (name === "change1y" || name === "change24h") {
+                  displayString = `${value.toLocaleString("en-UK")}%`;
+                }
+
                 return (
                   <h4 key={idx}>
-                    {priceInfoNames[name]}:{" "}
-                    {value === null ? "-" : value.toLocaleString("en-UK")}
+                    {priceInfoNames[name]}: {displayString}
                   </h4>
                 );
               }
@@ -202,6 +226,35 @@ const SubAnalysis = () => {
                 const tooltip = (
                   <Tooltip id="button-tooltip">{futureNames[name][1]}</Tooltip>
                 );
+
+                if (value === null) {
+                  return (
+                    <OverlayTrigger
+                      key={idx}
+                      placement="bottom"
+                      overlay={tooltip}
+                    >
+                      <h4>
+                        {futureNames[name][0]}: {"-"}
+                      </h4>
+                    </OverlayTrigger>
+                  );
+                }
+
+                let displayString = `${value.toLocaleString("en-UK")}`;
+
+                if (
+                  name === "perpetualPrice" ||
+                  name === "basis" ||
+                  name === "openInterest"
+                ) {
+                  displayString = `$${value.toLocaleString("en-UK")}`;
+                }
+
+                if (name === "fundingRate") {
+                  displayString = `${value.toLocaleString("en-UK")}%`;
+                }
+
                 return (
                   <OverlayTrigger
                     key={idx}
@@ -209,8 +262,7 @@ const SubAnalysis = () => {
                     overlay={tooltip}
                   >
                     <h4>
-                      {futureNames[name][0]}:{" "}
-                      {value === null ? "-" : value.toLocaleString("en-UK")}
+                      {futureNames[name][0]}: {displayString}
                     </h4>
                   </OverlayTrigger>
                 );
@@ -223,12 +275,16 @@ const SubAnalysis = () => {
           <div className="price-info-columns">
             {Object.entries(currencyInfo.currencyInformation).map(
               ([name, value], idx) => {
+                if (value === null) {
+                  return "-";
+                }
+
                 const [fullName, toolTip] = curInfoNames[name];
                 const percentValue = value;
                 let string: number | string = value;
 
-                if (fullName === "Market Domination Percentage") {
-                  string = `${percentValue} %`;
+                if (fullName === "Market Dominance Percentage") {
+                  string = `${percentValue}%`;
                 } else if (
                   fullName === "Daily Transaction Fee" ||
                   fullName === "Transactions Per Second"
