@@ -233,7 +233,7 @@ const SubAnalysis = () => {
                   fullName === "Daily Transaction Fee" ||
                   fullName === "Transactions Per Second"
                 ) {
-                  string = value.toFixed(4);
+                  string = value === null ? "-" : value.toFixed(4);
                 } else {
                   string = value;
                 }
