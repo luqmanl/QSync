@@ -128,8 +128,8 @@ const AnalaysisLanding = () => {
           </thead>
           <tbody>
             {Object.entries(analyses).map(([name, data]) => {
-              const colour24h = generateColourAnalysis(data.change24h);
-              const colour7d = generateColourAnalysis(data.change7d);
+              const colour24h = generateColourAnalysis(data.change24h * 100);
+              const colour7d = generateColourAnalysis(data.change7d * 100);
               const link = `analysis/${data.name}`;
               return (
                 <tr key={name} style={{ fontSize: "x-large" }}>
@@ -150,14 +150,14 @@ const AnalaysisLanding = () => {
                       color: `rgb(${colour24h.red},${colour24h.green},${colour24h.blue})`,
                     }}
                   >
-                    {data.change24h.toFixed(3)}%
+                    {(data.change24h * 100).toFixed(3)}%
                   </td>
                   <td
                     style={{
                       color: `rgb(${colour7d.red},${colour7d.green},${colour24h.blue})`,
                     }}
                   >
-                    {data.change7d.toFixed(3)}%
+                    {(data.change7d * 100).toFixed(3)}%
                   </td>
                   <td>${data.marketCap.toLocaleString("en-UK")}</td>
                   <td>{data.currentSupply.toLocaleString("en-UK")}</td>
