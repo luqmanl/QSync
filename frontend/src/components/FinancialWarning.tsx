@@ -24,7 +24,7 @@ const FinancialWarning = (props: propType) => {
           <Modal.Title>Financial Warning</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <p>
+          <p data-testid="financial-warning">
             The Content is for informational purposes only, you should not
             construe any such information or other material as legal, tax,
             investment, financial, or other advice. Please seek advice for any
