@@ -15,7 +15,7 @@ from channels.layers import get_channel_layer
 
 
 # Connect to ticker plant
-q = qconnection.QConnection(host='localhost', port=5010)
+q = qconnection.QConnection(host=settings.KDB_HOST, port=5010)
 # maps data type to last client send (e.g. BINANCE_BTC-USDT_trades -> 20:29:32.549549)
 last_send = {}
 

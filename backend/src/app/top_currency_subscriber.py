@@ -14,7 +14,7 @@ from asgiref.sync import async_to_sync
 def run():
     channel_layer = get_channel_layer()
     while True:
-        with QConnection(host='localhost', port=5011) as Q:
+        with QConnection(host=settings.KDB_HOST, port=5011) as Q:
             response = Q.sendSync('.syms.easy', np.string_())
 
         data = {"currencyData": []}

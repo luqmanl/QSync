@@ -262,7 +262,7 @@ class TopCurrenciesConsumer(AsyncConsumer):
             )
 
         # get -1D and -7D prices
-        q = QConnection(host='localhost', port=5012)
+        q = QConnection(host=settings.KDB_HOST, port=5012)
         q.open()
         try:
             historical_price = q.sendSync(
