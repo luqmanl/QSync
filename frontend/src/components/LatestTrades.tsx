@@ -27,8 +27,7 @@ const LatestTrades = () => {
     );
   };
 
-  const generateExamples = () => {
-  };
+  const generateExamples = () => {};
 
   useEffect(() => {
     const interval = setInterval(() => {

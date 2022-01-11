@@ -19,7 +19,6 @@ export interface graphPoint {
   y: number;
 }
 
-
 const TopCurrencyGraph = () => {
   const [graphDataMap, setGraphDataMap] = useState<{
     [name: string]: graphPoint[];
