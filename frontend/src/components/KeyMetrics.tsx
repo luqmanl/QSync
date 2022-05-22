@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from "react";
 import "./KeyMetrics.css";
 import axios from "axios";
-import Spinner from "react-bootstrap/Spinner";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 
 export interface metricInfo {

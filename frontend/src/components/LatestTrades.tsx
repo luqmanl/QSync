@@ -27,7 +27,23 @@ const LatestTrades = () => {
     );
   };
 
-  const generateExamples = () => {};
+  const generateExamples = () => {
+    // const curTrades = trades;
+    // for (let i = 0; i < EXTEND_LIST_BY; i++) {
+    //   const newTrade: Trade = {
+    //     // eslint-disable-next-line no-magic-numbers
+    //     time: parseInt(new Date().getTime().toFixed(3)),
+    //     // eslint-disable-next-line no-magic-numbers
+    //     buy: Math.floor(Math.random() * 11) % 2 === 0,
+    //     // eslint-disable-next-line no-magic-numbers
+    //     volume: Math.random() * 3,
+    //     // eslint-disable-next-line no-magic-numbers
+    //     price: (Math.random() * 20000) + 10000,
+    //   };
+    //   curTrades.push(newTrade);
+    // }
+    // setTrades(curTrades);
+  };
 
   useEffect(() => {
     const interval = setInterval(() => {
