@@ -19,20 +19,16 @@ export interface graphPoint {
   y: number;
 }
 
-// const colours = ["red", "blue", "green", "pink", "brown"];
-
 const TopCurrencyGraph = () => {
   const [graphDataMap, setGraphDataMap] = useState<{
     [name: string]: graphPoint[];
   }>({});
-  // here
+
   const [loading, setLoading] = useState(true);
   const yesterday = new Date();
   yesterday.setDate(yesterday.getDate() - 1);
 
-  const historicalAddr = `http://${
-    process.env.back || "localhost:8000"
-  }/historical24hChangeData`;
+  const historicalAddr = `http://${window.location.hostname}:8000/historical24hChangeData`;
 
   useEffect(() => {
     const map: { [name: string]: graphPoint[] } = {};

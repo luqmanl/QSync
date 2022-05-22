@@ -102,7 +102,7 @@ const OrderBookScatterGraph = () => {
 
     let x = 9;
     const socket = new WebSocket(
-      `ws://${process.env.back || "localhost:8000"}/ws/data/l2orderbook/`
+      `ws://${window.location.hostname}:8000/ws/data/l2orderbook/`
     );
 
     socket.onopen = () => {

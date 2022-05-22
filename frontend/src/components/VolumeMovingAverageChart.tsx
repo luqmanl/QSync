@@ -86,13 +86,6 @@ class VolumeMovingAverageChart extends React.Component<propsType, stateType> {
       // Synchronize left margins of the stacked charts by assigning a static Y Axis thickness for both.
       .setThickness(80);
 
-    // Add series.
-    // const areaRange = chartOHLC
-    //   .addAreaRangeSeries({ yAxis: stockAxisY })
-    //   .setName("Bollinger band")
-    //   .setMouseInteractions(false)
-    //   .setCursorEnabled(false);
-
     const stockFigureWidth = 5.0;
     const stock = chartOHLC
       .addOHLCSeries({ yAxis: stockAxisY })

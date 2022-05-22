@@ -128,8 +128,8 @@ const SubAnalysis = () => {
   const [currencyInfo, setCurrencyInfo] = useState<data>(initalData);
 
   const currencyInfoAddr = `http://${
-    process.env.back || "localhost:8000"
-  }/api/data/general-info/${pair.split("-")[0]}`;
+    window.location.hostname
+  }:8000/api/data/general-info/${pair.split("-")[0]}`;
 
   useEffect(() => {
     axios

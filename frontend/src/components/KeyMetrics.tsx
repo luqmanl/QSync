@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from "react";
 import "./KeyMetrics.css";
 import axios from "axios";
-import Spinner from "react-bootstrap/Spinner";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 
 export interface metricInfo {
@@ -83,9 +82,7 @@ const KeyMetrics = () => {
   const [loading, setLoading] = useState(true);
   const [info, setInfo] = useState<metricInfo[]>([]);
 
-  const linkAddr = `http://${
-    process.env.back || "localhost:3000"
-  }/api/key_metrics`;
+  const linkAddr = `http://${window.location.hostname}:8000/api/key_metrics`;
 
   useEffect(() => {
     axios

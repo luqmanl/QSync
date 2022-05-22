@@ -3,6 +3,7 @@ import json
 import numpy as np
 from qpython.qconnection import QConnection
 import re
+from django.conf import settings
 from datetime import datetime, timedelta
 from .models import SupportedCurrencies, PriceInformation, CurrencyInformation
 from django.forms.models import model_to_dict
@@ -148,7 +149,7 @@ class L2overviewConsumer(AsyncConsumer):
         highestBid = data["bids"][0]
         lowestAsk = data["asks"][0]
 
-        q = QConnection(host='localhost', port=5011)
+        q = QConnection(host=settings.KDB_HOST, port=5011)
         q.open()
         try:
             volume = q.sendSync('.trades.vol', np.string_(data['sym']))
@@ -261,7 +262,7 @@ class TopCurrenciesConsumer(AsyncConsumer):
             )
 
         # get -1D and -7D prices
-        q = QConnection(host='localhost', port=5012)
+        q = QConnection(host=settings.KDB_HOST, port=5012)
         q.open()
         try:
             historical_price = q.sendSync(

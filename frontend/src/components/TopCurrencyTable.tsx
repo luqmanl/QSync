@@ -46,7 +46,7 @@ const TopCurrencyTable = () => {
 
   useEffect(() => {
     const ws = new WebSocket(
-      `ws://${process.env.back || "localhost:8000"}${endPoint}`
+      `ws://${window.location.hostname}:8000${endPoint}`
     );
     ws.onopen = () => {
       ws.send(
